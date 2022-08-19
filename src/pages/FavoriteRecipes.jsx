@@ -1,5 +1,11 @@
 import React from 'react';
+import Header from '../components/Header';
 
 export default function FavoriteRecipes() {
-  return (<h1>FavoriteRecipes</h1>);
+  return (
+    <>
+      <Header />
+      <h1 data-testid="page-title">Favorite Recipes</h1>
+    </>
+  );
 }
