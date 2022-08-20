@@ -11,14 +11,22 @@ function MockProvider(props) {
       email: '',
       tokens: { mealsToken: '1', cocktailsToken: '1' },
     },
+    tokens: mockedTokens = {
+      mealsToken: '1',
+      cocktailsToken: '1',      
+    },
     children,
   } = props;
   const [user, setUser] = useState(mockedUser);
+  const [tokens, setTokens] = useState(mockedTokens);
+
+  const setStoredUser = (storedUser) => setUser({ ...user, ...storedUser });
+  const setStoredToken = (storedToken) => setTokens({ ...tokens, ...storedToken });
 
   return (
     <RecipeContext.Provider
       value={
-        { user, setUser }
+        { user, setUser, setStoredToken, setStoredUser }
       }
     >
       { children }

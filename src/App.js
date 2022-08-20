@@ -15,14 +15,16 @@ import RecipeContext from './context/RecipeContext';
 function App() {
   const { setStoredToken, setStoredUser } = useContext(RecipeContext);
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    const mealsToken = localStorage.getItem('mealsToken');
-    const cocktailsToken = localStorage.getItem('cocktailsToken');
-    if (storedUser) setStoredUser(storedUser);
-    if (mealsToken) setStoredToken({ mealsToken });
-    if (cocktailsToken) setStoredToken({ cocktailsToken });
-  }, []);
+  (function useLocalStorage() {
+    useEffect(() => {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const mealsToken = localStorage.getItem('mealsToken');
+      const cocktailsToken = localStorage.getItem('cocktailsToken');
+      if (storedUser) setStoredUser(storedUser);
+      if (mealsToken) setStoredToken({ mealsToken });
+      if (cocktailsToken) setStoredToken({ cocktailsToken });
+    }, []);
+  }());
 
   return (
     <div className="App">

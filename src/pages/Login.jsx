@@ -1,14 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import PropType from 'prop-types';
+
+import { useHistory } from 'react-router-dom';
 import RecipeContext from '../context/RecipeContext';
 
-export default function Login({ history }) {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
   const [isInvalidPassword, setIsInvalidPassword] = useState(true);
 
   const { user, setUser } = useContext(RecipeContext);
+  const history = useHistory();
 
   useEffect(() => {
     const emailValidation = () => {
@@ -80,9 +82,3 @@ export default function Login({ history }) {
     </div>
   );
 }
-
-Login.propTypes = {
-  history: PropType.shape({
-    push: PropType.func.isRequired,
-  }).isRequired,
-};
