@@ -8,8 +8,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [isInvalidEmail, setIsInvalidEmail] = useState(true);
   const [isInvalidPassword, setIsInvalidPassword] = useState(true);
-
-  const { user, setUser } = useContext(RecipeContext);
+  const { setUserState } = useContext(RecipeContext);
   const history = useHistory();
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export default function Login() {
     localStorage.setItem('user', JSON.stringify({ email }));
     localStorage.setItem('mealsToken', '1');
     localStorage.setItem('cocktailsToken', '1');
-    setUser({ ...user, email });
+    setUserState(email);
     history.push('foods');
   };
 
