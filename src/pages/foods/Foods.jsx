@@ -3,9 +3,8 @@ import Header from '../../components/Header';
 
 export default function Foods() {
   return (
-    <>
+    <div>
       <Header />
-      <h1 data-testid="page-title">Foods</h1>
-    </>
+    </div>
   );
 }
