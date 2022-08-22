@@ -27,6 +27,9 @@ export default function RecipeProvider({ children }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const [searchClick, setSearchClick] = useState(false);
+  const [foodsDrinksRecipes, setFoodsDrinksRecipes] = useState();
+
   const context = {
     user,
     setUserState,
@@ -34,6 +37,10 @@ export default function RecipeProvider({ children }) {
     setMeals,
     drinks,
     setDrinks,
+    searchClick,
+    setSearchClick,
+    foodsDrinksRecipes,
+    setFoodsDrinksRecipes,
   };
 
   return (
