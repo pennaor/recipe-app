@@ -9,6 +9,10 @@ export default function RecipeProvider({ children }) {
     cocktailsToken: '1',
   });
 
+  const [meals, setMeals] = useState([]);
+
+  const [drinks, setDrinks] = useState([]);
+
   const setUserState = (changes) => {
     setUser({ ...user, ...changes });
   };
@@ -23,8 +27,17 @@ export default function RecipeProvider({ children }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const context = {
+    user,
+    setUserState,
+    meals,
+    setMeals,
+    drinks,
+    setDrinks,
+  };
+
   return (
-    <RecipeContext.Provider value={ { user, setUserState } }>
+    <RecipeContext.Provider value={ context }>
       { children }
     </RecipeContext.Provider>
   );
