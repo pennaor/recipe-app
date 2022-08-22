@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header() {
   const [showSearchInput, setShowSearchInput] = useState(false);
@@ -56,11 +57,7 @@ function Header() {
               </button>
             ) }
             { showSearchInput && (
-              <input
-                type="text"
-                data-testid="search-input"
-                placeholder="Buscar receitas"
-              />
+              <SearchBar />
             ) }
           </div>
         </nav>
