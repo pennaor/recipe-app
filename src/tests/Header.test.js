@@ -1,8 +1,10 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import customRender from './helpers/customRender';
+import mockFetch from './helpers/mockFetch';
+import { meals_single, drinks_single } from './helpers/mockData/single';
 
 describe('Verifica funcionalidades do componente Header', () => {
   describe('testes da composição dos elementos renderizados em Header', () => {
@@ -85,22 +87,176 @@ describe('Verifica funcionalidades do componente Header', () => {
     });
   });
 
-  it('ao clicar no botão de perfil, o usuário deve ser redirecionado para tela de perfil',
-  () => {
-    const { history } = customRender(<App />, '/foods');
-    userEvent.click(screen.getByAltText('icone de perfil'));
-    expect(history.location.pathname).toBe('/profile');
-    expect(screen.getByRole('heading', { name: 'Profile' }));
+  describe('testes do componente SearchBar', () => {
+    it('ao clicar no botão de perfil, o usuário deve ser redirecionado para tela de perfil',
+    () => {
+      const { history } = customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de perfil'));
+      expect(history.location.pathname).toBe('/profile');
+      expect(screen.getByRole('heading', { name: 'Profile' }));
+    });
+    it('com cliques no icone de pesquisa, a barra de busca deve aparecer e desaparecer em Foods',
+    () => {
+      customRender(<App />, '/foods');
+      const searchIcon = screen.getByAltText('icone de pesquisa');
+      expect(searchIcon).toBeInTheDocument();
+      expect(screen.queryByPlaceholderText('Buscar receitas')).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /ingredient/i, checked: true })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /name/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /first letter/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /search/i })).not.toBeInTheDocument();
+      userEvent.click(searchIcon);
+      expect(screen.queryByPlaceholderText('Buscar receitas')).toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /ingredient/i, checked: true })).toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /name/i })).toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /first letter/i })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /search/i })).toBeInTheDocument();
+      userEvent.click(searchIcon);
+      expect(screen.queryByPlaceholderText('Buscar receitas')).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /ingredient/i, checked: true })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /name/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /first letter/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /search/i })).not.toBeInTheDocument();
+    });
+    it('com cliques no icone de pesquisa, a barra de busca deve aparecer e desaparecer em Drinks',
+    () => {
+      customRender(<App />, '/drinks');
+      const searchIcon = screen.getByAltText('icone de pesquisa');
+      expect(searchIcon).toBeInTheDocument();
+      expect(screen.queryByPlaceholderText('Buscar receitas')).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /ingredient/i, checked: true })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /name/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /first letter/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /search/i })).not.toBeInTheDocument();
+      userEvent.click(searchIcon);
+      expect(screen.queryByPlaceholderText('Buscar receitas')).toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /ingredient/i, checked: true })).toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /name/i })).toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /first letter/i })).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /search/i })).toBeInTheDocument();
+      userEvent.click(searchIcon);
+      expect(screen.queryByPlaceholderText('Buscar receitas')).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /ingredient/i, checked: true })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /name/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('radio', { name: /first letter/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /search/i })).not.toBeInTheDocument();
+    });
+    it('verifica requisição para API de comidas filtrada por ingrediente',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Cheese');
+      screen.getByRole('radio', { name: /ingredient/i, checked: true });
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+    });
+    it('verifica requisição para API de comidas filtrada por nome',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Arrabiata');
+      userEvent.click(screen.getByRole('radio', { name: /name/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+    });
+    it('verifica se a requisição para API de comidas filtrada pela letra A',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'A');
+      userEvent.click(screen.getByRole('radio', { name: /first letter/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+    });
+    it('verifica se a requisição para API de comidas filtrada por letra não é feita se houver mais de um caractere',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Arra');
+      userEvent.click(screen.getByRole('radio', { name: /first letter/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).not.toBeCalled(), { timeout: 2500 });
+    });
+    it('verifica se ao receber uma receita de comida ocorre redirecionamento para a página de detalhes',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
+        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(meals_single) }),
+      );
+      const { history } = customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Big Mac');
+      userEvent.click(screen.getByRole('radio', { name: /name/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+      expect(history.location.pathname).toBe('/foods/53013');
+    });
+    it('verifica requisição para API de bebidas filtrada por ingrediente',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/drinks');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Vodka');
+      screen.getByRole('radio', { name: /ingredient/i, checked: true });
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+    });
+    it('verifica requisição para API de bebidas filtrada por nome',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/drinks');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Aquamarine');
+      userEvent.click(screen.getByRole('radio', { name: /name/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+    });
+    it('verifica se a requisição para API de bebidas filtrada pela letra A',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/drinks');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'A');
+      userEvent.click(screen.getByRole('radio', { name: /first letter/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+    });
+    it('verifica se a requisição para API de bebidas filtrada por letra não é feita se houver mais de um caractere',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Arra');
+      userEvent.click(screen.getByRole('radio', { name: /first letter/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).not.toBeCalled(), { timeout: 2500 });
+    });
+    it('verifica se ao receber uma receita de bebida ocorre redirecionamento para a página de detalhes',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
+        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(drinks_single) }),
+      );
+      const { history } = customRender(<App />, '/drinks');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Aquamarine');
+      userEvent.click(screen.getByRole('radio', { name: /name/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => expect(mockSpy).toBeCalled());
+      expect(history.location.pathname).toBe('/drinks/178319');
+    });
   });
-  it('com cliques no icone de pesquisa, a barra de busca deve aparecer e desaparecer',
-  () => {
-    customRender(<App />, '/foods');
-    const searchIcon = screen.getByAltText('icone de pesquisa');
-    expect(searchIcon).toBeInTheDocument();
-    expect(screen.queryByPlaceholderText('Buscar receitas')).not.toBeInTheDocument();
-    userEvent.click(searchIcon);
-    expect(screen.queryByPlaceholderText('Buscar receitas')).toBeInTheDocument();
-    userEvent.click(searchIcon);
-    expect(screen.queryByPlaceholderText('Buscar receitas')).not.toBeInTheDocument();
-  });
+
 });
