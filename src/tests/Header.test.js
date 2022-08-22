@@ -95,6 +95,7 @@ describe('Verifica funcionalidades do componente Header', () => {
       expect(history.location.pathname).toBe('/profile');
       expect(screen.getByRole('heading', { name: 'Profile' }));
     });
+
     it('com cliques no icone de pesquisa, a barra de busca deve aparecer e desaparecer em Foods',
     () => {
       customRender(<App />, '/foods');
@@ -141,6 +142,7 @@ describe('Verifica funcionalidades do componente Header', () => {
       expect(screen.queryByRole('radio', { name: /first letter/i })).not.toBeInTheDocument();
       expect(screen.queryByRole('button', { name: /search/i })).not.toBeInTheDocument();
     });
+
     it('verifica requisição para API de comidas filtrada por ingrediente',
     async () => {
       const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
@@ -199,6 +201,24 @@ describe('Verifica funcionalidades do componente Header', () => {
       await waitFor(() => expect(mockSpy).toBeCalled());
       expect(history.location.pathname).toBe('/foods/53013');
     });
+    it('verifica se ao encontrar nenhuma receita de bebida, um alerta é emitido',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
+        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve({ meals: null }) }),
+      );
+      const alert = jest.spyOn(window, 'alert');
+      customRender(<App />, '/foods');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Big');
+      userEvent.click(screen.getByRole('radio', { name: /name/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => { 
+        expect(mockSpy).toBeCalled();
+        expect(alert).toBeCalled();
+      });
+    });
+
     it('verifica requisição para API de bebidas filtrada por ingrediente',
     async () => {
       const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
@@ -256,6 +276,23 @@ describe('Verifica funcionalidades do componente Header', () => {
       userEvent.click(screen.getByRole('button', { name: /search/i }));
       await waitFor(() => expect(mockSpy).toBeCalled());
       expect(history.location.pathname).toBe('/drinks/178319');
+    });
+    it('verifica se ao encontrar nenhuma receita de bebida, um alerta é emitido',
+    async () => {
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
+        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve({ meals: null }) }),
+      );
+      const alert = jest.spyOn(window, 'alert');
+      customRender(<App />, '/drinks');
+      userEvent.click(screen.getByAltText('icone de pesquisa'));
+      const searchInput = screen.getByPlaceholderText('Buscar receitas');
+      userEvent.type(searchInput, 'Aquamarine');
+      userEvent.click(screen.getByRole('radio', { name: /name/i }));
+      userEvent.click(screen.getByRole('button', { name: /search/i }));
+      await waitFor(() => { 
+        expect(mockSpy).toBeCalled();
+        expect(alert).toBeCalled();
+      });
     });
   });
 
