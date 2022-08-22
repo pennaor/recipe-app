@@ -7,7 +7,7 @@ export default function SearchBar() {
   const [searchInputValue, setSearchInputValue] = useState('');
   const [filtersValue, setFiltersValue] = useState('ingredient');
 
-  const { setMeals, setDrinks } = useContext(RecipeContext);
+  const { setMeals, setDrinks, setSearchClick } = useContext(RecipeContext);
   const history = useHistory();
 
   const onChangeSearchInput = ({ target }) => setSearchInputValue(target.value);
@@ -93,7 +93,14 @@ export default function SearchBar() {
           First letter
         </label>
       </div>
-      <button type="submit" data-testid="exec-search-btn">Search</button>
+      <button
+        type="submit"
+        onClick={ () => setSearchClick(true) }
+        data-testid="exec-search-btn"
+      >
+        Search
+
+      </button>
     </form>
   );
 }
