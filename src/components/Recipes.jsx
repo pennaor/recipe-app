@@ -8,19 +8,33 @@ export default function Recipes() {
 
   const { pathname } = useHistory().location;
   const TWELVE = 12;
+  const FIVE = 5;
   const recipesElement = (pathname === '/foods' ? meals : drinks);
   const dataTestidElement = (pathname === '/foods' ? 'Meal' : 'Drink');
+  const buttonList = (pathname === '/foods' ? foodsDrinksRecipes
+  && foodsDrinksRecipes['2'].meals
+    .filter((_category, index) => index < FIVE) : foodsDrinksRecipes
+    && foodsDrinksRecipes['3'].drinks
+      .filter((_category, index) => index < FIVE));
 
   const fetchAPIDrinkFood = async () => {
     const urlDrink = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
     const urlFood = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+    const urlFoodCategoryList = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
+    const urlDrinkCategoryList = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
     const responseDrink = await fetch(urlDrink).then((data) => data.json());
     const responseFood = await fetch(urlFood).then((data) => data.json());
-    setFoodsDrinksRecipes([responseFood, responseDrink]);
+    const responseFoodCategoryList = await fetch(urlFoodCategoryList)
+      .then((data) => data.json());
+    const responseDrinkCategoryList = await fetch(urlDrinkCategoryList)
+      .then((data) => data.json());
+    setFoodsDrinksRecipes([responseFood, responseDrink,
+      responseFoodCategoryList, responseDrinkCategoryList]);
   };
 
   console.log(foodsDrinksRecipes);
   console.log(searchClick);
+  console.log(buttonList);
 
   useEffect(() => {
     fetchAPIDrinkFood();
@@ -29,6 +43,20 @@ export default function Recipes() {
 
   return (
     <div>
+      <div>
+        {
+          buttonList && buttonList.map((button) => button && (
+            <button
+              type="button"
+              data-testid={ `${button.strCategory}-category-filter` }
+              key={ button.strCategory }
+            >
+              {button.strCategory}
+
+            </button>
+          ))
+        }
+      </div>
       { (meals.length > 0 || drinks.length > 0)
       && recipesElement
         .map((meal, index) => (index < TWELVE) && (
