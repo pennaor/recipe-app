@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipeContext from '../context/RecipeContext';
+import fetchRecipe from '../services/fetchRecipe';
 
 export default function Recipes() {
   const { meals, drinks, searchClick,
@@ -18,23 +19,13 @@ export default function Recipes() {
       .filter((_category, index) => index < FIVE));
 
   const fetchAPIDrinkFood = async () => {
-    const urlDrink = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-    const urlFood = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
-    const urlFoodCategoryList = 'https://www.themealdb.com/api/json/v1/1/list.php?c=list';
-    const urlDrinkCategoryList = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list';
-    const responseDrink = await fetch(urlDrink).then((data) => data.json());
-    const responseFood = await fetch(urlFood).then((data) => data.json());
-    const responseFoodCategoryList = await fetch(urlFoodCategoryList)
-      .then((data) => data.json());
-    const responseDrinkCategoryList = await fetch(urlDrinkCategoryList)
-      .then((data) => data.json());
+    const responseDrink = await fetchRecipe('thecocktaildb', '', 'name');
+    const responseDrinkCategoryList = await fetchRecipe('thecocktaildb', '', 'category');
+    const responseFood = await fetchRecipe('themealdb', '', 'name');
+    const responseFoodCategoryList = await fetchRecipe('themealdb', '', 'category');
     setFoodsDrinksRecipes([responseFood, responseDrink,
       responseFoodCategoryList, responseDrinkCategoryList]);
   };
-
-  console.log(foodsDrinksRecipes);
-  console.log(searchClick);
-  console.log(buttonList);
 
   useEffect(() => {
     fetchAPIDrinkFood();

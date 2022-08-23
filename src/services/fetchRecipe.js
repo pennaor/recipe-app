@@ -9,19 +9,13 @@ async function fetchAPI(url) {
 }
 
 export default function fetchRecipe(api, query, filter) {
-  let url = `https://www.${api}.com/api/json/v1/1`;
-  switch (filter) {
-  case 'ingredient':
-    url = `${url}/filter.php?i=${query}`;
-    break;
-  case 'name':
-    url = `${url}/search.php?s=${query}`;
-    break;
-  case 'firstLetter':
-    url = `${url}/search.php?f=${query}`;
-    break;
-  default:
-    url = `${url}/lookup.php?i=${query}`;
-  }
-  return fetchAPI(url);
+  const url = `https://www.${api}.com/api/json/v1/1`;
+  const urls = {
+    ingredient: `${url}/filter.php?i=${query}`,
+    name: `${url}/search.php?s=${query}`,
+    firstLetter: `${url}/search.php?f=${query}`,
+    category: `${url}/list.php?c=list`,
+    default: `${url}/lookup.php?i=${query}`,
+  };
+  return fetchAPI(urls[filter] ?? urls.default);
 }

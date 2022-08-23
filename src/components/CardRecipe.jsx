@@ -4,6 +4,7 @@ import fetchRecipe from '../services/fetchRecipe';
 
 export default function CardRecipe(teste) {
   const [myRecipe, setMyRecipe] = useState([]);
+  const [recomendations, setRecomendations] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -12,9 +13,20 @@ export default function CardRecipe(teste) {
   useEffect(() => {
     const fetchMeal = async () => {
       const retorno = await fetchRecipe(api, id);
+      const RECOMENDATIONS_LEN = 6;
       if (api === 'themealdb') {
         setMyRecipe(retorno.meals);
-      } else setMyRecipe(retorno.drinks);
+        const options = await fetchRecipe('thecocktaildb', '', 'name');
+        if (options.drinks && options.drinks.length >= RECOMENDATIONS_LEN) {
+          setRecomendations(options.drinks.slice(0, RECOMENDATIONS_LEN));
+        }
+      } else {
+        setMyRecipe(retorno.drinks);
+        const options = await fetchRecipe('themealdb', '', 'name');
+        if (options.meals && options.meals.length >= RECOMENDATIONS_LEN) {
+          setRecomendations(options.meals.slice(0, RECOMENDATIONS_LEN));
+        }
+      }
       setLoading(true);
     };
     fetchMeal();
@@ -31,6 +43,7 @@ export default function CardRecipe(teste) {
     }
   }, [myRecipe]);
 
+  console.log(recomendations);
   return (
     <div>
       {loading
@@ -82,7 +95,32 @@ export default function CardRecipe(teste) {
               />
             )}
             <h2>Recommended</h2>
-            <div data-testid="0-recomendation-card">Outras receitas maneiras.</div>
+            <div
+              style={ { overflow: 'auto', whiteSpace: 'nowrap', width: '300px' } }
+            >
+              { recomendations.map((option, i) => (
+                <div
+                  style={ {
+                    width: '160px',
+                    display: 'inline-block',
+                    textAlign: 'center',
+                  } }
+                  key={ i }
+                  data-testid={ `${i}-recomendation-card` }
+                >
+                  <img
+                    width="130"
+                    src={ option.strMealThumb || option.strDrinkThumb }
+                    alt="recipe recomedations"
+                  />
+                  <p
+                    data-testid={ `${i}-recomendation-title` }
+                  >
+                    { option.strDrink || option.strMeal }
+                  </p>
+                </div>
+              )) }
+            </div>
           </>
         )
         : <i>Laoding...</i>}
