@@ -86,6 +86,13 @@ export default function CardRecipe(teste) {
           </>
         )
         : <i>Laoding...</i>}
+      <button
+        type="button"
+        data-testid="start-recipe-btn"
+        style={ { position: 'fixed', bottom: '0' } }
+      >
+        Start Recipe
+      </button>
     </div>
   );
 }
