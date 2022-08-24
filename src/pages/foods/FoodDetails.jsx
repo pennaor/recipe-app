@@ -1,9 +1,9 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 import CardRecipe from '../../components/CardRecipe';
 
 export default function FoodDetails() {
-  const { id } = useParams();
+  const { params: { id }, url } = useRouteMatch();
 
-  return <CardRecipe infos={ { api: 'themealdb', id } } />;
+  return <CardRecipe infos={ { api: 'themealdb', id, url } } />;
 }

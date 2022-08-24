@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import copy from 'clipboard-copy';
 import fetchRecipe from '../services/fetchRecipe';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -10,7 +11,8 @@ export default function CardRecipe(teste) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { infos: { api, id } } = teste;
+  const [copied, setCopied] = useState(false);
+  const { infos: { api, id, url } } = teste;
 
   useEffect(() => {
     const fetchMeal = async () => {
@@ -45,23 +47,36 @@ export default function CardRecipe(teste) {
     }
   }, [myRecipe]);
 
+  const linkCopied = async () => {
+    await copy(`http://localhost:3000${url}`);
+    setCopied(true);
+    if (typeof url === 'string') {
+      const copyTime = 1000;
+      setTimeout(() => {
+        setCopied(false);
+      }, copyTime);
+    }
+  };
+
   return (
     <div>
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        <img src={ shareIcon } alt="Share button" />
-      </button>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-      >
-        <img src={ whiteHeartIcon } alt="Favorite button" />
-      </button>
       {loading
         ? (
           <>
+            <button
+              type="button"
+              data-testid="share-btn"
+              onClick={ linkCopied }
+            >
+              <img src={ shareIcon } alt="Share button" />
+            </button>
+            {copied && <p>Link copied!</p>}
+            <button
+              type="button"
+              data-testid="favorite-btn"
+            >
+              <img src={ whiteHeartIcon } alt="Favorite button" />
+            </button>
             <img
               width="200"
               src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
