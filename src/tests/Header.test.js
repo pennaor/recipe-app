@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { findAllByAltText, findAllByTestId, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import customRender from './helpers/customRender';
@@ -88,6 +88,7 @@ describe('Verifica funcionalidades do componente Header', () => {
   });
 
   describe('testes do componente SearchBar', () => {
+    beforeEach(() => jest.spyOn(window, 'alert'))
     it('ao clicar no botão de perfil, o usuário deve ser redirecionado para tela de perfil',
     () => {
       const { history } = customRender(<App />, '/foods');
@@ -176,37 +177,35 @@ describe('Verifica funcionalidades do componente Header', () => {
       userEvent.click(screen.getByRole('button', { name: /search/i }));
       await waitFor(() => expect(mockSpy).toBeCalled());
     });
-    it('verifica se a requisição para API de comidas filtrada por letra não é feita se houver mais de um caractere',
+    it('verifica se é emitido um alerta caso a requisição comidas filtrada por letra houver mais de um caractere',
     async () => {
       const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
       customRender(<App />, '/foods');
+      await waitFor(() => expect(mockSpy).toBeCalled());
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
       userEvent.type(searchInput, 'Arra');
       userEvent.click(screen.getByRole('radio', { name: /first letter/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
-      await waitFor(() => expect(mockSpy).not.toBeCalled(), { timeout: 2500 });
+      await waitFor(() => expect(window.alert).toBeCalled());
     });
     it('verifica se ao receber uma receita de comida ocorre redirecionamento para a página de detalhes',
     async () => {
-      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
-        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(meals_single) }),
-      );
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
       const { history } = customRender(<App />, '/foods');
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
-      userEvent.type(searchInput, 'Big Mac');
+      userEvent.type(searchInput, 'Arrabiata');
       userEvent.click(screen.getByRole('radio', { name: /name/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
-      await waitFor(() => expect(mockSpy).toBeCalled());
-      expect(history.location.pathname).toBe('/foods/53013');
+      await waitFor(() => {
+        expect(mockSpy).toBeCalled();
+        expect(history.location.pathname).toBe('/foods/52771');
+      });   
     });
-    it('verifica se ao encontrar nenhuma receita de bebida, um alerta é emitido',
+    it('verifica se ao encontrar nenhuma receita de comida, um alerta é emitido',
     async () => {
-      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
-        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve({ meals: null }) }),
-      );
-      const alert = jest.spyOn(window, 'alert');
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
       customRender(<App />, '/foods');
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
@@ -215,7 +214,7 @@ describe('Verifica funcionalidades do componente Header', () => {
       userEvent.click(screen.getByRole('button', { name: /search/i }));
       await waitFor(() => { 
         expect(mockSpy).toBeCalled();
-        expect(alert).toBeCalled();
+        expect(window.alert).toBeCalled();
       });
     });
 
@@ -255,43 +254,40 @@ describe('Verifica funcionalidades do componente Header', () => {
     it('verifica se a requisição para API de bebidas filtrada por letra não é feita se houver mais de um caractere',
     async () => {
       const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      customRender(<App />, '/foods');
+      customRender(<App />, '/drinks');
+      await waitFor(() => expect(mockSpy).toBeCalled());
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
       userEvent.type(searchInput, 'Arra');
       userEvent.click(screen.getByRole('radio', { name: /first letter/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
-      await waitFor(() => expect(mockSpy).not.toBeCalled(), { timeout: 2500 });
+      await waitFor(() => expect(window.alert).toBeCalled());
     });
     it('verifica se ao receber uma receita de bebida ocorre redirecionamento para a página de detalhes',
     async () => {
-      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
-        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(drinks_single) }),
-      );
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
       const { history } = customRender(<App />, '/drinks');
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
       userEvent.type(searchInput, 'Aquamarine');
       userEvent.click(screen.getByRole('radio', { name: /name/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
-      await waitFor(() => expect(mockSpy).toBeCalled());
-      expect(history.location.pathname).toBe('/drinks/178319');
+      await waitFor(() => {
+        expect(mockSpy).toBeCalled()
+        expect(history.location.pathname).toBe('/drinks/178319');
+      });
     });
     it('verifica se ao encontrar nenhuma receita de bebida, um alerta é emitido',
     async () => {
-      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(
-        () => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve({ meals: null }) }),
-      );
-      const alert = jest.spyOn(window, 'alert');
+      const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
       customRender(<App />, '/drinks');
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
-      userEvent.type(searchInput, 'Aquamarine');
+      userEvent.type(searchInput, 'falhabebida');
       userEvent.click(screen.getByRole('radio', { name: /name/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
       await waitFor(() => { 
-        expect(mockSpy).toBeCalled();
-        expect(alert).toBeCalled();
+        expect(window.alert).toBeCalled();
       });
     });
   });
