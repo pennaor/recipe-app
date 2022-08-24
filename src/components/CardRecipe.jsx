@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import fetchRecipe from '../services/fetchRecipe';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 export default function CardRecipe(teste) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -43,9 +45,20 @@ export default function CardRecipe(teste) {
     }
   }, [myRecipe]);
 
-  console.log(recomendations);
   return (
     <div>
+      <button
+        type="button"
+        data-testid="share-btn"
+      >
+        <img src={ shareIcon } alt="Share button" />
+      </button>
+      <button
+        type="button"
+        data-testid="favorite-btn"
+      >
+        <img src={ whiteHeartIcon } alt="Favorite button" />
+      </button>
       {loading
         ? (
           <>
