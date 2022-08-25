@@ -1,9 +1,9 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router-dom';
-import CardRecipe from '../../components/CardRecipe';
+import RecipeDetails from '../../components/RecipeDetails';
 
 export default function DrinkDetails() {
   const { params: { id }, url } = useRouteMatch();
 
-  return <CardRecipe infos={ { api: 'thecocktaildb', id, url } } />;
+  return <RecipeDetails infos={ { api: 'thecocktaildb', id, url } } />;
 }

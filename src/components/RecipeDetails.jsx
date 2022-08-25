@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import copy from 'clipboard-copy';
 import fetchRecipe from '../services/fetchRecipe';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import linkCopied from '../utils/linkCopied';
 
 export default function CardRecipe(teste) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -13,7 +13,15 @@ export default function CardRecipe(teste) {
   const [measure, setMeasure] = useState([]);
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [favorite, setFavorite] = useState(whiteHeartIcon);
   const { infos: { api, id, url } } = teste;
+
+  const likedRecipe = () => {
+    if ([{ name: 'Corba' }].some(({ name }) => (
+      name === myRecipe[0].strMeal || name === myRecipe[0].strDrink))) {
+      setFavorite(blackHeartIcon);
+    }
+  };
 
   useEffect(() => {
     const fetchMeal = async () => {
@@ -45,56 +53,28 @@ export default function CardRecipe(teste) {
         key.includes('strIngredient') && value)));
       setMeasure(recepies.filter(([key, value]) => (
         key.includes('strMeasure') && value)));
+      likedRecipe();
     }
   }, [myRecipe]);
 
-  const ifFavoriteRecipes = () => {
-    const arrayLocal = JSON.parse(localStorage.getItem('favoriteRecipes'));
-    localStorage.setItem('favoriteRecipes', JSON.stringify([...arrayLocal, {
-      id,
-      type: myRecipe[0].strMeal ? 'food' : 'drink',
-      nationality: myRecipe[0].strArea || '',
-      category: myRecipe[0].strCategory,
-      alcoholicOrNot: myRecipe[0].strAlcoholic ? 'Alcoholic' : '',
-      name: myRecipe[0].strMeal || myRecipe[0].strDrink,
-      image: myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb,
-    }]));
-  };
-
-  const linkCopied = async () => {
-    await copy(`http://localhost:3000${url}`);
-    setCopied(true);
-    if (typeof url === 'string') {
-      const copyTime = 1000;
-      setTimeout(() => {
-        setCopied(false);
-      }, copyTime);
-    }
-  };
+  const favoriteObject = () => ({
+    id,
+    type: myRecipe[0].strMeal ? 'food' : 'drink',
+    nationality: myRecipe[0].strArea || '',
+    category: myRecipe[0].strCategory,
+    alcoholicOrNot: myRecipe[0].strAlcoholic ? 'Alcoholic' : '',
+    name: myRecipe[0].strMeal || myRecipe[0].strDrink,
+    image: myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb,
+  });
 
   const favoriteRecipe = () => {
-    if (localStorage.getItem('favoriteRecipes')) {
-      ifFavoriteRecipes();
+    if (!localStorage.getItem('favoriteRecipes')) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([favoriteObject()]));
     } else {
-      localStorage.setItem('favoriteRecipes', JSON.stringify([{
-        id,
-        type: myRecipe[0].strMeal ? 'food' : 'drink',
-        nationality: myRecipe[0].strArea || '',
-        category: myRecipe[0].strCategory,
-        alcoholicOrNot: myRecipe[0].strAlcoholic ? 'Alcoholic' : '',
-        name: myRecipe[0].strMeal || myRecipe[0].strDrink,
-        image: myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb,
-      }]));
-    }
-  };
-
-  const favoriteIcon = () => {
-    if (JSON.parse(localStorage.getItem('favoriteRecipes'))
-      .some(({ name }) => (
-        name === myRecipe[0].strMeal
-      || name === myRecipe[0].strDrink))
-    ) { return blackHeartIcon; }
-    return whiteHeartIcon;
+      const arrayLocal = JSON.parse(localStorage.getItem('favoriteRecipes'));
+      localStorage.setItem('favoriteRecipes',
+        JSON.stringify([...arrayLocal, favoriteObject()]));
+    } setFavorite(blackHeartIcon);
   };
 
   return (
@@ -112,21 +92,21 @@ export default function CardRecipe(teste) {
             <button
               type="button"
               data-testid="share-btn"
-              onClick={ linkCopied }
+              onClick={ () => linkCopied(url, setCopied) }
             >
               <img src={ shareIcon } alt="Share button" />
             </button>
-            {copied && <p>Link copied!</p>}
             <button
               type="button"
               data-testid="favorite-btn"
               onClick={ favoriteRecipe }
             >
               <img
-                src={ () => loading && favoriteIcon() }
+                src={ favorite }
                 alt="Favorite button"
               />
             </button>
+            {copied && <p style={ { display: 'block' } }>Link copied!</p>}
             <h2 data-testid="recipe-title">
               { myRecipe[0].strMeal
             || myRecipe[0].strDrink}
