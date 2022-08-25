@@ -33,17 +33,17 @@ function RecipeInProgress() {
         data-testid="favorite-btn"
         onClick={ ação de favoritar }
       >
-        <img
-          src={ whiteHeartIcon }
-          alt="icone de favoritar"
-        />
-      </button>
+  <img
+    src={whiteHeartIcon}
+    alt="icone de favoritar"
+  />
+      </button >
 
       <h4 data-testid="recipe-category">Texto da cetegoria</h4>
 
       <p>Ingredients</p>
 
-      { Fazer um map e imprimir na lista abaixo }
+{ Fazer um map e imprimir na lista abaixo }
       <li>
         <input
           data-testid={ `${ind}-ingredient-step` }
@@ -64,7 +64,7 @@ function RecipeInProgress() {
       >
         Finish Recipe
       </button>
-    </div>
+    </div >
   );
 }
 
