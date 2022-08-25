@@ -134,10 +134,10 @@ export default function RecipeDetails(teste) {
             </button>
             <button
               type="button"
-              data-testid="favorite-btn"
               onClick={ favoriteRecipe }
             >
               <img
+                data-testid="favorite-btn"
                 src={ favorite }
                 alt="Favorite button"
               />

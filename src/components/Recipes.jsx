@@ -10,9 +10,6 @@ export default function Recipes() {
   const [buttonClickCategory, setButtonClickCategory] = useState();
   const [buttonAll, setButtonAll] = useState(true);
 
-  console.log(drinks);
-  console.log(foodsDrinksRecipes);
-
   const { location: { pathname }, push } = useHistory();
   const TWELVE = 12;
   const FIVE = 5;
