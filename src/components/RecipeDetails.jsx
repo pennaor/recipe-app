@@ -4,23 +4,35 @@ import { useHistory } from 'react-router-dom';
 import fetchRecipe from '../services/fetchRecipe';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import linkCopied from '../utils/linkCopied';
 import RecipeContext from '../context/RecipeContext';
 
-export default function CardRecipe(teste) {
+export default function RecipeDetails(teste) {
   const [myRecipe, setMyRecipe] = useState([]);
   const [recomendations, setRecomendations] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { infos: { api, id } } = teste;
+  const [copied, setCopied] = useState(false);
+  const [favorite, setFavorite] = useState(whiteHeartIcon);
+  const { infos: { api, id, url } } = teste;
   const [recipeStatus, setRecipeStatus] = useState('Start Recipe');
   const history = useHistory();
-
   const {
     doneRecipes,
     inProgressRecipes,
     setInProgressRecipes,
+    favoriteRecipes,
+    // setFavoriteRecipes,
   } = useContext(RecipeContext);
+
+  const likedRecipe = () => {
+    if (favoriteRecipes.some(({ name }) => (
+      name === myRecipe[0].strMeal || name === myRecipe[0].strDrink))) {
+      setFavorite(blackHeartIcon);
+    }
+  };
 
   useEffect(() => {
     const fetchMeal = async () => {
@@ -52,8 +64,30 @@ export default function CardRecipe(teste) {
         key.includes('strIngredient') && value)));
       setMeasure(recepies.filter(([key, value]) => (
         key.includes('strMeasure') && value)));
+      likedRecipe();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myRecipe]);
+
+  const favoriteObject = () => ({
+    id,
+    type: myRecipe[0].strMeal ? 'food' : 'drink',
+    nationality: myRecipe[0].strArea || '',
+    category: myRecipe[0].strCategory,
+    alcoholicOrNot: myRecipe[0].strAlcoholic ? 'Alcoholic' : '',
+    name: myRecipe[0].strMeal || myRecipe[0].strDrink,
+    image: myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb,
+  });
+
+  const favoriteRecipe = () => {
+    if (!localStorage.getItem('favoriteRecipes')) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([favoriteObject()]));
+    } else {
+      const arrayLocal = JSON.parse(localStorage.getItem('favoriteRecipes'));
+      localStorage.setItem('favoriteRecipes',
+        JSON.stringify([...arrayLocal, favoriteObject()]));
+    } setFavorite(blackHeartIcon);
+  };
 
   const doRecipe = () => {
     if (recipeStatus === 'Start Recipe') {
@@ -81,18 +115,6 @@ export default function CardRecipe(teste) {
 
   return (
     <div>
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        <img src={ shareIcon } alt="Share button" />
-      </button>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-      >
-        <img src={ whiteHeartIcon } alt="Favorite button" />
-      </button>
       {loading
         ? (
           <>
@@ -100,8 +122,27 @@ export default function CardRecipe(teste) {
               width="200"
               src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
               alt="Qualquer foto"
+              style={ { display: 'block' } }
               data-testid="recipe-photo"
             />
+            <button
+              type="button"
+              data-testid="share-btn"
+              onClick={ () => linkCopied(url, setCopied) }
+            >
+              <img src={ shareIcon } alt="Share button" />
+            </button>
+            <button
+              type="button"
+              onClick={ favoriteRecipe }
+            >
+              <img
+                data-testid="favorite-btn"
+                src={ favorite }
+                alt="Favorite button"
+              />
+            </button>
+            {copied && <p style={ { display: 'block' } }>Link copied!</p>}
             <h2 data-testid="recipe-title">
               { myRecipe[0].strMeal
             || myRecipe[0].strDrink}
@@ -190,6 +231,6 @@ export default function CardRecipe(teste) {
   );
 }
 
-CardRecipe.propTypes = {
+RecipeDetails.propTypes = {
   infos: PropTypes.object,
 }.isRequired;
