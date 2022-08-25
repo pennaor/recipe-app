@@ -39,12 +39,6 @@ export default function Recipes() {
     }
   };
 
-  const [habilitySearch, setHabilitySearch] = useState(false);
-
-  useEffect(() => {
-    if (searchClick) setHabilitySearch(true);
-  }, [searchClick]);
-
   useEffect(() => {
     // setFoodsDrinksRecipes();
     if ((meals.length > 0 || drinks.length > 0) && searchClick) {
@@ -52,7 +46,6 @@ export default function Recipes() {
        && (dataTestidElement === 'Meal' ? foodsDrinksRecipes
          .filter((e, i) => i !== 0) : foodsDrinksRecipes
          .filter((e, i) => i !== 1));
-      setHabilitySearch(false);
       if (pathname === '/foods') {
         return setFoodsDrinksRecipes((mealsOrDrinks && meals)
         && [{ meals }, ...mealsOrDrinks]);
