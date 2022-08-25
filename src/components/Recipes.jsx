@@ -9,9 +9,11 @@ export default function Recipes() {
   const [buttonClickCategory, setButtonClickCategory] = useState();
   const [buttonAll, setButtonAll] = useState(true);
 
-  const { pathname } = useHistory().location;
+  console.log(useHistory());
+  const { location: { pathname }, push } = useHistory();
   const TWELVE = 12;
   const FIVE = 5;
+  const pathToRedirect = (pathname === '/foods' ? '/foods/' : '/drinks/');
   const dataTestidElement = (pathname === '/foods' ? 'Meal' : 'Drink');
   const buttonList = (pathname === '/foods' ? foodsDrinksRecipes
   && foodsDrinksRecipes['2'].meals
@@ -119,6 +121,14 @@ export default function Recipes() {
             <div
               data-testid={ `${index}-recipe-card` }
               key={ meal[`str${dataTestidElement}Thumb`] }
+              onClick={ () => {
+                push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
+              } }
+              onKeyPress={ () => {
+                push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
+              } }
+              role="button"
+              tabIndex={ 0 }
             >
               <img
                 src={ meal[`str${dataTestidElement}Thumb`] }
