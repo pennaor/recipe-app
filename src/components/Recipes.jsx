@@ -45,13 +45,9 @@ export default function Recipes() {
     if (searchClick) setHabilitySearch(true);
   }, [searchClick]);
 
-  console.log(searchClick);
-  console.log(habilitySearch);
-
   useEffect(() => {
     // setFoodsDrinksRecipes();
     if ((meals.length > 0 || drinks.length > 0) && searchClick) {
-      console.log('funciona');
       const mealsOrDrinks = foodsDrinksRecipes
        && (dataTestidElement === 'Meal' ? foodsDrinksRecipes
          .filter((e, i) => i !== 0) : foodsDrinksRecipes
@@ -77,7 +73,6 @@ export default function Recipes() {
         ? urlFilterByCategoriesFood : urlFilterByCategoriesDrink)
         .then((data) => data.json());
       setFoodsDrinksCategories(response);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
