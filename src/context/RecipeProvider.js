@@ -29,6 +29,7 @@ export default function RecipeProvider({ children }) {
 
   const [searchClick, setSearchClick] = useState(false);
   const [foodsDrinksRecipes, setFoodsDrinksRecipes] = useState();
+  const [habilityFetch, setHabilityFetch] = useState(true);
 
   const context = {
     user,
@@ -41,6 +42,8 @@ export default function RecipeProvider({ children }) {
     setSearchClick,
     foodsDrinksRecipes,
     setFoodsDrinksRecipes,
+    habilityFetch,
+    setHabilityFetch,
   };
 
   return (
