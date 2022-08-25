@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import fetchRecipe from '../services/fetchRecipe';
+import shareIcon from '../images/shareIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import RecipeContext from '../context/RecipeContext';
 
 export default function CardRecipe(teste) {
@@ -79,6 +81,18 @@ export default function CardRecipe(teste) {
 
   return (
     <div>
+      <button
+        type="button"
+        data-testid="share-btn"
+      >
+        <img src={ shareIcon } alt="Share button" />
+      </button>
+      <button
+        type="button"
+        data-testid="favorite-btn"
+      >
+        <img src={ whiteHeartIcon } alt="Favorite button" />
+      </button>
       {loading
         ? (
           <>
