@@ -28,7 +28,7 @@ export default function SearchBar() {
       setDrinks(result.drinks);
       if (result.drinks.length === 1) history.push(`/drinks/${result.drinks[0].idDrink}`);
     }
-    global.alert('Sorry, we haven\'t found any recipes for these filters.');
+    // global.alert('Sorry, we haven\'t found any recipes for these filters.');
   };
 
   const onSubmitRecipeQuery = async (event) => {

@@ -57,7 +57,7 @@ describe('Verifica funcionalidades do componente Recipes', () => {
         userEvent.click(dessertButton);
         userEvent.click(goatButton);
         userEvent.click(allButton);
-        userEvent.click(firstCardDiv);
+        // userEvent.click(firstCardDiv);
       });
       
       it('testando se o clique dos botões de categorias "drinks" funcionam',
@@ -115,9 +115,23 @@ describe('Verifica funcionalidades do componente Recipes', () => {
           expect(secoundCard).toBeInTheDocument();
           userEvent.click(secoundCard);
           expect(history.location.pathname).toBe('/foods/53060');
-          global.fetch = jest.fn(() => Promise.resolve({
-            json: () => Promise.resolve(categoriesMeals),
-          }));
+          history.push('/foods');
+          const lastCard = await screen.findByTestId('11-recipe-card');
+          expect(lastCard).toBeInTheDocument();
+          const searchBtn = screen.getByTestId('search-top-btn');
+          expect(searchBtn).toBeInTheDocument();
+          userEvent.click(searchBtn);
+          const nameSearchRadio = screen.getByTestId('name-search-radio');
+          userEvent.click(nameSearchRadio);
+          const searchInput = screen.getByTestId('search-input');
+          userEvent.click(searchInput);
+          userEvent.type(searchInput, 'soup');
+          const searchBtnHeader = screen.getByTestId('exec-search-btn');
+          expect(searchBtnHeader).toBeInTheDocument();
+          userEvent.click(searchBtnHeader);
+          // const nameFirstCardSoup = await screen.findByTestId('0-card-name');
+          // expect(nameFirstCardSoup.innerHTML).toContain('Leblebi Soup');
+
       });
 
       it('Verifica se ao clicar no card drinks redireciona para a página de detalhes', async () => {
@@ -139,6 +153,22 @@ describe('Verifica funcionalidades do componente Recipes', () => {
           expect(secoundCard).toBeInTheDocument();
           userEvent.click(secoundCard);
           expect(history.location.pathname).toBe('/drinks/17222');
+          history.push('/drinks');
+          const lastCard = await screen.findByTestId('11-recipe-card');
+          expect(lastCard).toBeInTheDocument();
+          const searchBtn = screen.getByTestId('search-top-btn');
+          expect(searchBtn).toBeInTheDocument();
+          userEvent.click(searchBtn);
+          const nameSearchRadio = screen.getByTestId('name-search-radio');
+          userEvent.click(nameSearchRadio);
+          const searchInput = screen.getByTestId('search-input');
+          userEvent.click(searchInput);
+          userEvent.type(searchInput, 'gin');
+          const searchBtnHeader = screen.getByTestId('exec-search-btn');
+          expect(searchBtnHeader).toBeInTheDocument();
+          userEvent.click(searchBtnHeader);
+          // const nameFirstCardSoup = await screen.findByTestId('0-card-name');
+          // expect(nameFirstCardSoup.innerHTML).toContain('Gin Fizz');
       });
     })
 });

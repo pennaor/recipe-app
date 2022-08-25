@@ -1,15 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipeContext from '../context/RecipeContext';
-import { fetchRecipeAll } from '../services/fetchRecipe';
+import fetchRecipe from '../services/fetchRecipe';
 
 export default function Recipes() {
   const {
-    foodsDrinksRecipes, setFoodsDrinksRecipes } = useContext(RecipeContext);
+    foodsDrinksRecipes, setFoodsDrinksRecipes, drinks, meals, searchClick,
+    habilityFetch, setHabilityFetch } = useContext(RecipeContext);
   const [buttonClickCategory, setButtonClickCategory] = useState();
   const [buttonAll, setButtonAll] = useState(true);
 
-  console.log(useHistory());
+  console.log(drinks);
+  console.log(foodsDrinksRecipes);
+
   const { location: { pathname }, push } = useHistory();
   const TWELVE = 12;
   const FIVE = 5;
@@ -23,22 +26,46 @@ export default function Recipes() {
 
   const fetchAPIDrinkFood = async () => {
     try {
-      const urlDrink = fetchRecipeAll('thecocktaildb', 'all');
-      const urlFood = fetchRecipeAll('themealdb', 'all');
-      const urlFoodCategoryList = fetchRecipeAll('themealdb', 'categories');
-      const urlDrinkCategoryList = fetchRecipeAll('thecocktaildb', 'categories');
-      const responseDrink = await fetch(urlDrink).then((data) => data.json());
-      const responseFood = await fetch(urlFood).then((data) => data.json());
-      const responseFoodCategoryList = await fetch(urlFoodCategoryList)
-        .then((data) => data.json());
-      const responseDrinkCategoryList = await fetch(urlDrinkCategoryList)
-        .then((data) => data.json());
+      const responseDrink = await fetchRecipe('thecocktaildb', '', 'name');
+      const responseFood = await fetchRecipe('themealdb', '', 'name');
+      const responseFoodCategoryList = await fetchRecipe('themealdb', '', 'category');
+      const responseDrinkCategoryList = await fetchRecipe('thecocktaildb',
+        '', 'category');
       setFoodsDrinksRecipes([responseFood, responseDrink,
         responseFoodCategoryList, responseDrinkCategoryList]);
+      setHabilityFetch(false);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const [habilitySearch, setHabilitySearch] = useState(false);
+
+  useEffect(() => {
+    if (searchClick) setHabilitySearch(true);
+  }, [searchClick]);
+
+  console.log(searchClick);
+  console.log(habilitySearch);
+
+  useEffect(() => {
+    // setFoodsDrinksRecipes();
+    if ((meals.length > 0 || drinks.length > 0) && searchClick) {
+      console.log('funciona');
+      const mealsOrDrinks = foodsDrinksRecipes
+       && (dataTestidElement === 'Meal' ? foodsDrinksRecipes
+         .filter((e, i) => i !== 0) : foodsDrinksRecipes
+         .filter((e, i) => i !== 1));
+      setHabilitySearch(false);
+      if (pathname === '/foods') {
+        return setFoodsDrinksRecipes((mealsOrDrinks && meals)
+        && [{ meals }, ...mealsOrDrinks]);
+      }
+      return setFoodsDrinksRecipes((mealsOrDrinks && drinks) && [mealsOrDrinks[0],
+        { drinks }, mealsOrDrinks[1], mealsOrDrinks[2]]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [meals, drinks]);
 
   const [foodsDrinksCategories, setFoodsDrinksCategories] = useState();
 
@@ -57,7 +84,7 @@ export default function Recipes() {
   };
 
   useEffect(() => {
-    fetchAPIDrinkFood();
+    if (habilityFetch) fetchAPIDrinkFood();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
