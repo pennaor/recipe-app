@@ -73,7 +73,7 @@ export default function CardRecipe(teste) {
                   {' '}
                   -
                   {' '}
-                  {measure[i][1]}
+                  {measure[i] && measure[i][1]}
                 </li>))}
             </ul>
             <p data-testid="instructions">
