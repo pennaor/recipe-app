@@ -1,10 +1,9 @@
 import React from 'react';
-import { findAllByAltText, findAllByTestId, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import customRender from './helpers/customRender';
 import mockFetch from './helpers/mockFetch';
-import { meals_single, drinks_single } from './helpers/mockData/single';
 
 describe('Verifica funcionalidades do componente Header', () => {
   describe('testes da composição dos elementos renderizados em Header', () => {
@@ -88,7 +87,7 @@ describe('Verifica funcionalidades do componente Header', () => {
   });
 
   describe('testes do componente SearchBar', () => {
-    beforeEach(() => jest.spyOn(window, 'alert'))
+    beforeEach(() => jest.spyOn(window, 'alert'));
     it('ao clicar no botão de perfil, o usuário deve ser redirecionado para tela de perfil',
     () => {
       const { history } = customRender(<App />, '/foods');
@@ -212,7 +211,7 @@ describe('Verifica funcionalidades do componente Header', () => {
       userEvent.type(searchInput, 'Big');
       userEvent.click(screen.getByRole('radio', { name: /name/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
-      await waitFor(() => { 
+      await waitFor(() => {
         expect(mockSpy).toBeCalled();
         expect(window.alert).toBeCalled();
       });
