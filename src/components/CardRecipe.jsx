@@ -4,6 +4,7 @@ import copy from 'clipboard-copy';
 import fetchRecipe from '../services/fetchRecipe';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 export default function CardRecipe(teste) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -47,6 +48,19 @@ export default function CardRecipe(teste) {
     }
   }, [myRecipe]);
 
+  const ifFavoriteRecipes = () => {
+    const arrayLocal = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    localStorage.setItem('favoriteRecipes', JSON.stringify([...arrayLocal, {
+      id,
+      type: myRecipe[0].strMeal ? 'food' : 'drink',
+      nationality: myRecipe[0].strArea || '',
+      category: myRecipe[0].strCategory,
+      alcoholicOrNot: myRecipe[0].strAlcoholic ? 'Alcoholic' : '',
+      name: myRecipe[0].strMeal || myRecipe[0].strDrink,
+      image: myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb,
+    }]));
+  };
+
   const linkCopied = async () => {
     await copy(`http://localhost:3000${url}`);
     setCopied(true);
@@ -58,11 +72,43 @@ export default function CardRecipe(teste) {
     }
   };
 
+  const favoriteRecipe = () => {
+    if (localStorage.getItem('favoriteRecipes')) {
+      ifFavoriteRecipes();
+    } else {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([{
+        id,
+        type: myRecipe[0].strMeal ? 'food' : 'drink',
+        nationality: myRecipe[0].strArea || '',
+        category: myRecipe[0].strCategory,
+        alcoholicOrNot: myRecipe[0].strAlcoholic ? 'Alcoholic' : '',
+        name: myRecipe[0].strMeal || myRecipe[0].strDrink,
+        image: myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb,
+      }]));
+    }
+  };
+
+  const favoriteIcon = () => {
+    if (JSON.parse(localStorage.getItem('favoriteRecipes'))
+      .some(({ name }) => (
+        name === myRecipe[0].strMeal
+      || name === myRecipe[0].strDrink))
+    ) { return blackHeartIcon; }
+    return whiteHeartIcon;
+  };
+
   return (
     <div>
       {loading
         ? (
           <>
+            <img
+              width="200"
+              src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
+              alt="Qualquer foto"
+              style={ { display: 'block' } }
+              data-testid="recipe-photo"
+            />
             <button
               type="button"
               data-testid="share-btn"
@@ -74,15 +120,13 @@ export default function CardRecipe(teste) {
             <button
               type="button"
               data-testid="favorite-btn"
+              onClick={ favoriteRecipe }
             >
-              <img src={ whiteHeartIcon } alt="Favorite button" />
+              <img
+                src={ () => loading && favoriteIcon() }
+                alt="Favorite button"
+              />
             </button>
-            <img
-              width="200"
-              src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
-              alt="Qualquer foto"
-              data-testid="recipe-photo"
-            />
             <h2 data-testid="recipe-title">
               { myRecipe[0].strMeal
             || myRecipe[0].strDrink}
