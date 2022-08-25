@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import fetchRecipe from '../services/fetchRecipe';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import linkCopied from '../utils/linkCopied';
+import RecipeContext from '../context/RecipeContext';
 
-export default function CardRecipe(teste) {
+export default function RecipeDetails(teste) {
   const [myRecipe, setMyRecipe] = useState([]);
   const [recomendations, setRecomendations] = useState([]);
   const [ingredients, setIngredients] = useState([]);
@@ -15,9 +17,18 @@ export default function CardRecipe(teste) {
   const [copied, setCopied] = useState(false);
   const [favorite, setFavorite] = useState(whiteHeartIcon);
   const { infos: { api, id, url } } = teste;
+  const [recipeStatus, setRecipeStatus] = useState('Start Recipe');
+  const history = useHistory();
+  const {
+    doneRecipes,
+    inProgressRecipes,
+    setInProgressRecipes,
+    favoriteRecipes,
+    // setFavoriteRecipes,
+  } = useContext(RecipeContext);
 
   const likedRecipe = () => {
-    if ([{ name: 'Corba' }].some(({ name }) => (
+    if (favoriteRecipes.some(({ name }) => (
       name === myRecipe[0].strMeal || name === myRecipe[0].strDrink))) {
       setFavorite(blackHeartIcon);
     }
@@ -55,6 +66,7 @@ export default function CardRecipe(teste) {
         key.includes('strMeasure') && value)));
       likedRecipe();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myRecipe]);
 
   const favoriteObject = () => ({
@@ -76,6 +88,30 @@ export default function CardRecipe(teste) {
         JSON.stringify([...arrayLocal, favoriteObject()]));
     } setFavorite(blackHeartIcon);
   };
+
+  const doRecipe = () => {
+    if (recipeStatus === 'Start Recipe') {
+      const key = myRecipe[0].strMeal ? 'meals' : 'cocktails';
+      setInProgressRecipes({
+        ...inProgressRecipes,
+        [key]: { ...inProgressRecipes[key], [id]: ingredients },
+      });
+    }
+    history.push(`${history.location.pathname}/in-progress`);
+  };
+
+  useEffect(() => {
+    const itsDone = doneRecipes.some((recipe) => recipe.id === id);
+
+    const inProgress = api === 'themealdb'
+      ? inProgressRecipes.meals : inProgressRecipes.cocktails;
+
+    if (itsDone) {
+      setRecipeStatus('');
+    } else if (inProgress && inProgress[id]) {
+      setRecipeStatus('Continue Recipe');
+    }
+  }, [doneRecipes, inProgressRecipes, id, api]);
 
   return (
     <div>
@@ -125,7 +161,7 @@ export default function CardRecipe(teste) {
                   {' '}
                   -
                   {' '}
-                  {measure[i][1]}
+                  {measure[i] && measure[i][1]}
                 </li>))}
             </ul>
             <p data-testid="instructions">
@@ -176,17 +212,25 @@ export default function CardRecipe(teste) {
           </>
         )
         : <i>Laoding...</i>}
-      <button
-        type="button"
-        data-testid="start-recipe-btn"
-        style={ { position: 'fixed', bottom: '0' } }
-      >
-        Start Recipe
-      </button>
+
+      { recipeStatus && (
+        <button
+          type="button"
+          data-testid="start-recipe-btn"
+          style={ {
+            position: 'fixed',
+            bottom: '0',
+          } }
+          onClick={ doRecipe }
+        >
+          { recipeStatus }
+        </button>
+      ) }
+
     </div>
   );
 }
 
-CardRecipe.propTypes = {
+RecipeDetails.propTypes = {
   infos: PropTypes.object,
 }.isRequired;
