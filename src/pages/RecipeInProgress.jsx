@@ -1,29 +1,47 @@
-import React from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
+import RecipeContext from '../context/RecipeContext';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 function RecipeInProgress() {
+  const [ingredients, setIngradients] = useState([]);
+  const [informationFood, setInformationFood] = useState([]);
+
   const { id } = useParams();
+  const { inProgressRecipes } = useContext(RecipeContext);
+  const history = useHistory();
+  const typeRecipe = history.location.pathname.includes('foods') ? 'meals' : 'cocktails';
+
+  function mostrarDados() {
+    console.log(history);
+    console.log(inProgressRecipes);
+    console.log(typeRecipe);
+    console.log(id);
+  }
+
+  const getInformationFoods = async () => {
+    
+  }
 
   return (
     <div>
-      <img
-        src={ foto da receita }
+      {/* <img
+        src={  }
         alt="foto da receita finalizada"
         data-testid="recipe-photo"
-      />
+      /> */}
       <h1
         data-testid="recipe-title"
       >
-       { Nome da receita }
+        Botar aqui o titulo da receita
       </h1>
 
       <button
         type="button"
         data-testid="share-btn"
-        onClick={ ação de compartilhar }
+        /* onClick={  } */
       >
         <img
           src={ shareIcon }
@@ -34,40 +52,40 @@ function RecipeInProgress() {
       <button
         type="button"
         data-testid="favorite-btn"
-        onClick={ ação de favoritar }
+        /* onClick={  } */
       >
-  <img
-    src={whiteHeartIcon}
-    alt="icone de favoritar"
-  />
-      </button >
+        <img
+          src={ whiteHeartIcon }
+          alt="icone de favoritar"
+        />
+      </button>
 
       <h4 data-testid="recipe-category">Texto da cetegoria</h4>
 
       <p>Ingredients</p>
 
-{ Fazer um map e imprimir na lista abaixo }
       <li>
         <input
-          data-testid={ `${ind}-ingredient-step` }
+          /* data-testid={ `${ind}-ingredient-step` } */
           type="checkbox"
           name="mudarDepois"
           value="mudarDepois"
-          onChange={ ação de riscar o item listado }
+          /* onChange={ } */
         />
       </li>
 
       <p data-testid="instructions">
-        { Instruções da receita renderizada }
+        Botar aqui as instruções da receita
       </p>
 
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        onClick={ () => mostrarDados() }
       >
         Finish Recipe
       </button>
-    </div >
+    </div>
   );
 }
 
