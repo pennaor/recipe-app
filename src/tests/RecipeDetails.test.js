@@ -1,8 +1,11 @@
 import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import App from '../App';
+import userEvent from '@testing-library/user-event'; 
 import customRender from './helpers/customRender';
 import mockFetch from './helpers/mockFetch';
+
+global.document.execCommand = () => Promise.resolve();
 
 describe('Verifica funcionalidades do componente CardRecipe', () => {
   describe('Deve ser feita uma requisição para a API passando o `id` da receita', () => {
@@ -76,4 +79,39 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
       expect(screen.getByTestId('recipe-photo')).toHaveAttribute('src', strDrinkThumb);
     });
   });
+
+  describe('Os botões de compartilhamento e de favoritar receita devem fazer suas respectivas responsabilidades', () => {
+    it('Ao clicar no botão compartilar, é renderizado a mensagem "Link Copied"', async () => {
+      jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods/52771');
+      const shareBtn = await screen.findByTestId('share-btn');
+      
+      userEvent.click(shareBtn);
+
+      const messageCopied = await screen.findByText(/Link copied!/i)
+      expect(messageCopied).toBeInTheDocument();
+      await waitFor(() => {
+        expect(messageCopied).not.toBeInTheDocument();
+      })
+
+    })
+
+    it('Ao clicar no botão favoritar, na receita pela primeira vez, a imagem no botão é substituída pela imagem do blackHeartIcon', async () => {
+      jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods/52771');
+      const favoriteBtn = await screen.findByTestId('favorite-btn');
+      
+      userEvent.click(favoriteBtn);
+      expect(favoriteBtn).toHaveAttribute('src', 'blackHeartIcon.svg');
+    })
+
+    it('Ao clicar no botão favoritar, na receita pela primeira vez, a imagem no botão é substituída pela imagem do whiteHeartIcon', async () => {
+      jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods/52771');
+      const favoriteBtn = await screen.findByTestId('favorite-btn');
+      
+      userEvent.click(favoriteBtn);
+      expect(favoriteBtn).toHaveAttribute('src', 'whiteHeartIcon.svg');
+    })
+  })
 });
