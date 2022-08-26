@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import ShareButton from '../components/ShareButton';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import shareIcon from '../images/shareIcon.svg';
-import linkCopied from '../utils/linkCopied';
 
 export default function FavoriteRecipes() {
-  const [copied, setCopied] = useState(false);
   const [favoriteRecipesMOCK, setFavoriteRecipesMOCK] = useState([
     {
       id: '52771',
@@ -74,7 +72,7 @@ export default function FavoriteRecipes() {
                 <img
                   data-testid={ `${index}-horizontal-image` }
                   src={ recipe.image }
-                  alt="recipePhoto"
+                  alt={ `recipe of ${recipe.name}` }
                   width="100px"
                 />
               </Link>
@@ -106,23 +104,10 @@ export default function FavoriteRecipes() {
                   alt="unfavorite button"
                 />
               </button>
-              <button
-                type="button"
-                onClick={ () => {
-                  const url = `/${recipe.type}s/${recipe.id}`;
-                  linkCopied(url, setCopied);
-                } }
-              >
-                { !copied ? (
-                  <img
-                    src={ shareIcon }
-                    alt="Share button"
-                    data-testid={ `${index}-horizontal-share-btn` }
-                  />
-                ) : (
-                  <span>Link copied!</span>
-                ) }
-              </button>
+              <ShareButton
+                recipe={ recipe }
+                testid={ `${index}-horizontal-share-btn` }
+              />
               <span
                 data-testid={ `${index}-${''}-horizontal-tag` }
               >
