@@ -4,10 +4,13 @@ import App from '../App';
 import userEvent from '@testing-library/user-event'; 
 import customRender from './helpers/customRender';
 import mockFetch from './helpers/mockFetch';
+import LocalStorageMock from './helpers/mockLocalStorage';
 
 global.document.execCommand = () => Promise.resolve();
+global.localStorage = LocalStorageMock;
 
 describe('Verifica funcionalidades do componente CardRecipe', () => {
+  afterEach(() => global.localStorage = new LocalStorageMock);
   describe('Deve ser feita uma requisição para a API passando o `id` da receita', () => {
     it('na página de comida',
     async () => {
@@ -112,6 +115,64 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
       
       userEvent.click(favoriteBtn);
       expect(favoriteBtn).toHaveAttribute('src', 'whiteHeartIcon.svg');
+    })
+
+    it('Testa se é renderizado as receitas recomendadas', async () => {
+      jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      customRender(<App />, '/foods/52771');
+      
+      const listOfRecomendation = [
+        '0-recomendation-card',
+        '1-recomendation-card',
+        '2-recomendation-card',
+        '3-recomendation-card',
+        '4-recomendation-card',
+        '5-recomendation-card',
+      ]
+
+      const recomendation = await screen.findByTestId('0-recomendation-card');
+      const recomendation1 = await screen.findByTestId('1-recomendation-card');
+      const recomendation2 = await screen.findByTestId('2-recomendation-card');
+      const recomendation3 = await screen.findByTestId('3-recomendation-card');
+      const recomendation4 = await screen.findByTestId('4-recomendation-card');
+      const recomendation5 = await screen.findByTestId('5-recomendation-card');
+
+      expect(recomendation).toBeInTheDocument();
+      expect(recomendation1).toBeInTheDocument();
+      expect(recomendation2).toBeInTheDocument();
+      expect(recomendation3).toBeInTheDocument();
+      expect(recomendation4).toBeInTheDocument();
+      expect(recomendation5).toBeInTheDocument();
+    })
+    it(`Ao renderizar uma receita pela primeira vez o botão deve ter o
+      texto Start Recipe e ao clicá-lo deve ser redirecionado para página Recipe In Progress`, async () => {
+      jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      const { history } = customRender(<App />, '/foods/52771');
+      
+      const startRecipeBtn = await screen.findByTestId('start-recipe-btn');
+
+      expect(startRecipeBtn).toHaveTextContent('Start Recipe');
+      userEvent.click(startRecipeBtn);
+      expect(history.location.pathname).toBe('/foods/52771/in-progress');
+    })
+    it('Ao startar uma receitar o texto do botão deve ser Continue Recipe', async () => {
+      jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      localStorage.setItem('inProgressRecipes', JSON.stringify({ meals: { '52771': [] } }))
+      customRender(<App />, '/foods/52771');
+      
+      const startRecipeBtn = await screen.findByTestId('start-recipe-btn');
+
+      expect(startRecipeBtn).toHaveTextContent('Continue Recipe');
+    })
+
+    it('Ao finalizar uma receita o botão Start Recipe não deve aparecer', async () => {
+      jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+      localStorage.setItem('doneRecipes', JSON.stringify([{ id: '52771' }]))
+      customRender(<App />, '/foods/52771');
+      
+      await waitFor(() => {
+        expect(screen.queryByTestId('start-recipe-btn')).not.toBeInTheDocument();
+      })
     })
   })
 });
