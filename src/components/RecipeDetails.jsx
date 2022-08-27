@@ -7,6 +7,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import linkCopied from '../utils/linkCopied';
 import RecipeContext from '../context/RecipeContext';
+import favoriteRecipe from '../utils/favoriteRecipe';
 
 export default function RecipeDetails(teste) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -69,26 +70,6 @@ export default function RecipeDetails(teste) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myRecipe]);
 
-  const favoriteObject = () => ({
-    id,
-    type: myRecipe[0].strMeal ? 'food' : 'drink',
-    nationality: myRecipe[0].strArea || '',
-    category: myRecipe[0].strCategory,
-    alcoholicOrNot: myRecipe[0].strAlcoholic ? 'Alcoholic' : '',
-    name: myRecipe[0].strMeal || myRecipe[0].strDrink,
-    image: myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb,
-  });
-
-  const favoriteRecipe = () => {
-    if (!localStorage.getItem('favoriteRecipes')) {
-      localStorage.setItem('favoriteRecipes', JSON.stringify([favoriteObject()]));
-    } else {
-      const arrayLocal = JSON.parse(localStorage.getItem('favoriteRecipes'));
-      localStorage.setItem('favoriteRecipes',
-        JSON.stringify([...arrayLocal, favoriteObject()]));
-    } setFavorite(blackHeartIcon);
-  };
-
   const doRecipe = () => {
     if (recipeStatus === 'Start Recipe') {
       const key = myRecipe[0].strMeal ? 'meals' : 'cocktails';
@@ -134,7 +115,7 @@ export default function RecipeDetails(teste) {
             </button>
             <button
               type="button"
-              onClick={ favoriteRecipe }
+              onClick={ () => favoriteRecipe(myRecipe, id, favorite, setFavorite) }
             >
               <img
                 data-testid="favorite-btn"
