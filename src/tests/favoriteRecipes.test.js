@@ -1,9 +1,8 @@
 import React from 'react';
-import { findByText, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import customRender from './helpers/customRender';
-import mockFetch from './helpers/mockFetch';
 import mockLocalStorage from './helpers/mockLocalStorage';
 
 const favoriteRecipes = [

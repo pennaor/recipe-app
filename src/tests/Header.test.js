@@ -194,12 +194,12 @@ describe('Verifica funcionalidades do componente Header', () => {
       const { history } = customRender(<App />, '/foods');
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
-      userEvent.type(searchInput, 'Arrabiata');
+      userEvent.type(searchInput, 'Big Mac');
       userEvent.click(screen.getByRole('radio', { name: /name/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
       await waitFor(() => {
         expect(mockSpy).toBeCalled();
-        expect(history.location.pathname).toBe('/foods/52771');
+        expect(history.location.pathname).toBe('/foods/53013');
       });   
     });
     it('verifica se ao encontrar nenhuma receita de comida, um alerta é emitido',

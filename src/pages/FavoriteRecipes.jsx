@@ -1,42 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
+import useFavoriteManager from '../utils/useFavoriteManager';
+import RecipeContext from '../context/RecipeContext';
 
 export default function FavoriteRecipes() {
-  const [favoriteRecipesMOCK, setFavoriteRecipesMOCK] = useState([
-    {
-      id: '52771',
-      type: 'food',
-      nationality: 'Italian',
-      category: 'Vegetarian',
-      alcoholicOrNot: '',
-      name: 'Spicy Arrabiata Penne',
-      image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
-    },
-    {
-      id: '178319',
-      type: 'drink',
-      nationality: '',
-      category: 'Cocktail',
-      alcoholicOrNot: 'Alcoholic',
-      name: 'Aquamarine',
-      image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
-    },
-  ]);
-  const [recipesToRender, setRecipesToRender] = useState([...favoriteRecipesMOCK]);
+  const { favoriteRecipes } = useContext(RecipeContext);
+  const [recipesToRender, setRecipesToRender] = useState([...favoriteRecipes]);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const onUnfavoriteRecipe = (imgSrc) => {
-    const newFavorites = favoriteRecipesMOCK.filter(({ image }) => image !== imgSrc);
-    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavorites));
-    setFavoriteRecipesMOCK(newFavorites);
-  };
-
+  const { setFavoritedStatus } = useFavoriteManager();
   useEffect(() => {
-    setRecipesToRender(favoriteRecipesMOCK.filter(({ type }) => type !== activeFilter));
-  }, [favoriteRecipesMOCK, activeFilter, setRecipesToRender]);
+    const result = favoriteRecipes.filter(({ type }) => type !== activeFilter);
+    setRecipesToRender(result);
+  }, [favoriteRecipes, activeFilter, setRecipesToRender]);
 
   return (
     <div>
@@ -96,7 +75,7 @@ export default function FavoriteRecipes() {
             <div>
               <button
                 type="button"
-                onClick={ () => onUnfavoriteRecipe(recipe.image) }
+                onClick={ () => setFavoritedStatus([recipe]) }
               >
                 <img
                   data-testid={ `${index}-horizontal-favorite-btn` }
