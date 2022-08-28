@@ -6,7 +6,7 @@ export default function useChefManager() {
   const [recipeStatus, setRecipeStatus] = useState('');
 
   const {
-    doneRecipes, setDoneRecipes,
+    doneRecipes,
     inProgressRecipes, setInProgressRecipes,
   } = useContext(RecipeContext);
 
