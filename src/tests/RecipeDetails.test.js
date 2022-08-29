@@ -15,7 +15,7 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
     it('na página de comida',
     async () => {
       const mockSpy = jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      customRender(<App />, '/foods/52771');
+      customRender(<App />, '/foods/53013');
       await waitFor(() => expect(mockSpy).toBeCalled());
       const title = await screen.findByTestId('recipe-title');
       expect(title).toHaveTextContent('Big Mac');
@@ -52,7 +52,7 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
       ];
       const strMealThumb = 'https://www.themealdb.com/images/media/meals/urzj1d1587670726.jpg';
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      customRender(<App />, '/foods/52771');
+      customRender(<App />, '/foods/53013');
       await screen.findByRole('heading', { name: 'Big Mac' });
       expect(screen.getByTestId('recipe-category')).toHaveTextContent('Beef');
       strIngredients.forEach(([ingredient, measure], i) => {
@@ -86,7 +86,7 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
   describe('Os botões de compartilhamento e de favoritar receita devem fazer suas respectivas responsabilidades', () => {
     it('Ao clicar no botão compartilar, é renderizado a mensagem "Link Copied"', async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      customRender(<App />, '/foods/52771');
+      customRender(<App />, '/foods/53013');
       const shareBtn = await screen.findByTestId('share-btn');
       
       userEvent.click(shareBtn);
@@ -101,7 +101,7 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
 
     it('Ao clicar no botão favoritar, na receita pela primeira vez, a imagem no botão é substituída pela imagem do blackHeartIcon', async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      customRender(<App />, '/foods/52771');
+      customRender(<App />, '/foods/53013');
       const favoriteBtn = await screen.findByTestId('favorite-btn');
       
       userEvent.click(favoriteBtn);
@@ -110,7 +110,7 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
 
     it('Ao clicar no botão favoritar, na receita pela primeira vez, a imagem no botão é substituída pela imagem do whiteHeartIcon', async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      customRender(<App />, '/foods/52771');
+      customRender(<App />, '/foods/53013');
       const favoriteBtn = await screen.findByTestId('favorite-btn');
       
       userEvent.click(favoriteBtn);
@@ -119,7 +119,7 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
 
     it('Testa se é renderizado as receitas recomendadas', async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      customRender(<App />, '/foods/52771');
+      customRender(<App />, '/foods/53013');
       
       const listOfRecomendation = [
         '0-recomendation-card',
@@ -147,28 +147,27 @@ describe('Verifica funcionalidades do componente CardRecipe', () => {
     it(`Ao renderizar uma receita pela primeira vez o botão deve ter o
       texto Start Recipe e ao clicá-lo deve ser redirecionado para página Recipe In Progress`, async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      const { history } = customRender(<App />, '/foods/52771');
+      const { history } = customRender(<App />, '/foods/53013');
       
       const startRecipeBtn = await screen.findByTestId('start-recipe-btn');
 
       expect(startRecipeBtn).toHaveTextContent('Start Recipe');
       userEvent.click(startRecipeBtn);
-      expect(history.location.pathname).toBe('/foods/52771/in-progress');
+      expect(history.location.pathname).toBe('/foods/53013/in-progress');
     })
     it('Ao startar uma receitar o texto do botão deve ser Continue Recipe', async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      localStorage.setItem('inProgressRecipes', JSON.stringify({ meals: { '52771': [] } }))
-      customRender(<App />, '/foods/52771');
+      localStorage.setItem('inProgressRecipes', JSON.stringify({ meals: { 53013: [] } }))
+      customRender(<App />, '/foods/53013');
       
       const startRecipeBtn = await screen.findByTestId('start-recipe-btn');
-
       expect(startRecipeBtn).toHaveTextContent('Continue Recipe');
     })
 
     it('Ao finalizar uma receita o botão Start Recipe não deve aparecer', async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
-      localStorage.setItem('doneRecipes', JSON.stringify([{ id: '52771' }]))
-      customRender(<App />, '/foods/52771');
+      localStorage.setItem('doneRecipes', JSON.stringify([{ id: '53013' }]))
+      customRender(<App />, '/foods/53013');
       
       await waitFor(() => {
         expect(screen.queryByTestId('start-recipe-btn')).not.toBeInTheDocument();
