@@ -1,14 +1,14 @@
-import { useState, useEffect, useContext } from 'react';
-import RecipeContext from '../context/RecipeContext';
+import { useState, useEffect } from 'react';
 
 export default function useChefManager() {
   const [recipe, saveRecipe] = useState([]);
   const [recipeStatus, setRecipeStatus] = useState('');
-
-  const {
-    doneRecipes,
-    inProgressRecipes, setInProgressRecipes,
-  } = useContext(RecipeContext);
+  const [doneRecipes, setDoneRecipes] = useState(
+    JSON.parse(localStorage.getItem('doneRecipes')) ?? [],
+  );
+  const [inProgressRecipes, setInProgressRecipes] = useState(
+    JSON.parse(localStorage.getItem('inProgressRecipes')) ?? {},
+  );
 
   useEffect(() => {
     if (recipe.length) {
@@ -16,6 +16,7 @@ export default function useChefManager() {
       const itsDone = doneRecipes.some((done) => done.id === id);
       const inProgress = recipe[0].idMeal
         ? inProgressRecipes.meals : inProgressRecipes.cocktails;
+
       if (itsDone) {
         setRecipeStatus('');
       } else if (inProgress && inProgress[id]) {
@@ -36,5 +37,13 @@ export default function useChefManager() {
     });
   };
 
-  return { recipeStatus, updateRecipeStatus, startRecipe };
+  return {
+    doneRecipes,
+    setDoneRecipes,
+    inProgressRecipes,
+    setInProgressRecipes,
+    recipeStatus,
+    updateRecipeStatus,
+    startRecipe,
+  };
 }

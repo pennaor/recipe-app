@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import useFavoriteManager from '../utils/useFavoriteManager';
-import RecipeContext from '../context/RecipeContext';
 
 export default function FavoriteRecipes() {
-  const { favoriteRecipes } = useContext(RecipeContext);
+  const { favoriteRecipes, setFavoritedStatus } = useFavoriteManager();
   const [recipesToRender, setRecipesToRender] = useState([...favoriteRecipes]);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const { setFavoritedStatus } = useFavoriteManager();
   useEffect(() => {
     const result = favoriteRecipes.filter(({ type }) => type !== activeFilter);
     setRecipesToRender(result);

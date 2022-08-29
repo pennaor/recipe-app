@@ -7,7 +7,7 @@ import linkCopied from '../utils/linkCopied';
 import useFavoriteManager from '../utils/useFavoriteManager';
 import useChefManager from '../utils/useChefManager';
 
-export default function RecipeDetails(teste) {
+export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
   const [recomendations, setRecomendations] = useState([]);
   const [ingredients, setIngredients] = useState([]);
@@ -15,7 +15,7 @@ export default function RecipeDetails(teste) {
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const { infos: { api, id, url } } = teste;
+  const { infos: { api, id, url } } = props;
 
   const history = useHistory();
   const { favorite, updateFavoritedStatus, setFavoritedStatus } = useFavoriteManager();

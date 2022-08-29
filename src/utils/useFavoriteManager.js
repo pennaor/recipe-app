@@ -1,7 +1,6 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import RecipeContext from '../context/RecipeContext';
 
 const favoriteObject = (myRecipe) => ({
   id: myRecipe[0].idMeal ?? myRecipe[0].idDrink,
@@ -17,7 +16,11 @@ export default function useFavoriteManager() {
   const [recipe, saveRecipe] = useState([]);
   const [favorite, setFavorite] = useState();
   const [parseFavorites, setParseFavorites] = useState(false);
-  const { favoriteRecipes, setFavoriteRecipes } = useContext(RecipeContext);
+
+  const [
+    favoriteRecipes,
+    setFavoriteRecipes,
+  ] = useState(JSON.parse(localStorage.getItem('favoriteRecipes')) ?? []);
 
   useEffect(() => {
     const likedRecipe = () => {
@@ -29,9 +32,7 @@ export default function useFavoriteManager() {
       }
     };
 
-    if (recipe.length > 0) {
-      likedRecipe();
-    }
+    if (recipe.length) likedRecipe();
   }, [recipe, favoriteRecipes]);
 
   useEffect(() => {
@@ -63,5 +64,5 @@ export default function useFavoriteManager() {
     setParseFavorites(true);
   };
 
-  return { favorite, updateFavoritedStatus, setFavoritedStatus };
+  return { favorite, updateFavoritedStatus, favoriteRecipes, setFavoritedStatus };
 }

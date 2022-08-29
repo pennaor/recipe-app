@@ -8,9 +8,6 @@ export default function RecipeProvider({ children }) {
     mealsToken: '1',
     cocktailsToken: '1',
   });
-  const [doneRecipes, setDoneRecipes] = useState([]);
-  const [favoriteRecipes, setFavoriteRecipes] = useState([]);
-  const [inProgressRecipes, setInProgressRecipes] = useState({});
 
   const [meals, setMeals] = useState([]);
 
@@ -27,9 +24,6 @@ export default function RecipeProvider({ children }) {
       mealsToken: localStorage.getItem('mealsToken') ?? '1',
       cocktailsToken: localStorage.getItem('cocktailsToken') ?? '1',
     });
-    setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')) ?? []);
-    setFavoriteRecipes(JSON.parse(localStorage.getItem('favoriteRecipes')) ?? []);
-    setInProgressRecipes(JSON.parse(localStorage.getItem('inProgressRecipes')) ?? {});
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -48,12 +42,6 @@ export default function RecipeProvider({ children }) {
     setSearchClick,
     foodsDrinksRecipes,
     setFoodsDrinksRecipes,
-    doneRecipes,
-    setDoneRecipes,
-    favoriteRecipes,
-    setFavoriteRecipes,
-    inProgressRecipes,
-    setInProgressRecipes,
     habilityFetch,
     setHabilityFetch,
   };

@@ -1,13 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
-
-import RecipeContext from '../context/RecipeContext';
 import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-
 import fetchRecipe from '../services/fetchRecipe';
 import linkCopied from '../utils/linkCopied';
-import favoriteRecipe from '../utils/favoriteRecipe';
+import useChefManager from '../utils/useChefManager';
+import useFavoriteManager from '../utils/useFavoriteManager';
 
 function RecipeInProgress() {
   const [ingredients, setIngredients] = useState([]);
@@ -15,10 +12,10 @@ function RecipeInProgress() {
   const [informationFood, setInformationFood] = useState({});
   const [copied, setCopied] = useState(false);
   const [myRecipe, SetMyRecipe] = useState([]);
-  const [favoriteIcon, setFavoriteIcon] = useState(whiteHeartIcon);
 
   const { params: { id }, url } = useRouteMatch();
-  const { inProgressRecipes } = useContext(RecipeContext);
+  const { favorite, updateFavoritedStatus, setFavoritedStatus } = useFavoriteManager();
+  const { inProgressRecipes } = useChefManager();
   const history = useHistory();
   const typeRecipe = history.location.pathname.includes('foods') ? 'themealdb'
     : 'thecocktaildb';
@@ -33,26 +30,21 @@ function RecipeInProgress() {
     let ingredFiltred = {};
     let measuresFiltred = {};
     if (typeRecipe === 'themealdb') {
-      ingredFiltred = ingredientsObj.filter((e) => e.length > 0);
-      measuresFiltred = measuresObj.filter((e) => e.length > 0);
+      ingredFiltred = ingredientsObj.filter((e) => e && e.length > 0);
+      measuresFiltred = measuresObj.filter((e) => e && e.length > 0);
     } else {
-      ingredFiltred = ingredientsObj.filter((e) => e !== null);
-      measuresFiltred = measuresObj.filter((e) => e !== null);
+      ingredFiltred = ingredientsObj.filter((e) => !!e);
+      measuresFiltred = measuresObj.filter((e) => !!e);
     }
 
     const ingredMeas = ingredFiltred.map((e, i) => `${e} - ${measuresFiltred[i]}`);
     setIngredients(ingredMeas);
-    // console.log(ingredFiltred);
-    // console.log(measuresFiltred);
-    // console.log(ingredMeas);
   }
 
   const getInformationsMeals = async () => {
     const typeFood = 'meals';
     const resultArray = await fetchRecipe(typeRecipe, id);
     const resultObj = resultArray[typeFood][0];
-    console.log(resultObj);
-    console.log(resultArray);
     setInformationFood({
       image: resultObj.strMealThumb,
       name: resultObj.strMeal,
@@ -61,13 +53,13 @@ function RecipeInProgress() {
     });
     getIngredients(resultObj);
     SetMyRecipe(resultArray[typeFood]);
+    updateFavoritedStatus(resultArray[typeFood]);
   };
 
   const getInformationsDrinks = async () => {
     const typeFood = 'drinks';
     const resultArray = await fetchRecipe(typeRecipe, id);
     const resultObj = resultArray[typeFood][0];
-    console.log(resultObj);
     setInformationFood({
       image: resultObj.strDrinkThumb,
       name: resultObj.strDrink,
@@ -77,6 +69,7 @@ function RecipeInProgress() {
     });
     getIngredients(resultObj);
     SetMyRecipe(resultArray[typeFood]);
+    updateFavoritedStatus(resultArray[typeFood]);
   };
 
   useEffect(() => { // componentDidMount
@@ -96,8 +89,6 @@ function RecipeInProgress() {
     } else {
       setIngredientsConluid([...ingredientsConcluid, value]);
     }
-    console.log(value);
-    console.log(ingredientsConcluid);
   }
 
   function mostrarDados() {
@@ -122,7 +113,7 @@ function RecipeInProgress() {
       <button
         type="button"
         data-testid="share-btn"
-        onClick={ () => linkCopied(url, setCopied) }
+        onClick={ () => linkCopied(url.replace(/\/in-progress$/, ''), setCopied) }
       >
         <img
           src={ shareIcon }
@@ -132,12 +123,12 @@ function RecipeInProgress() {
 
       <button
         type="button"
-        data-testid="favorite-btn"
-        onClick={ () => favoriteRecipe(myRecipe, id, favoriteIcon, setFavoriteIcon) }
+        onClick={ () => setFavoritedStatus(myRecipe) }
       >
         <img
-          src={ favoriteIcon }
+          src={ favorite }
           alt="icone de favoritar"
+          data-testid="favorite-btn"
         />
       </button>
 
@@ -155,7 +146,6 @@ function RecipeInProgress() {
             htmlFor={ index }
           >
             <input
-              data-testid={ `${index}-ingredient-step` }
               id={ index }
               value={ ingredient }
               type="checkbox"

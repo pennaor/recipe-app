@@ -1,10 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
-import RecipeContext from '../context/RecipeContext';
+import useChefManager from '../utils/useChefManager';
 
 export default function DoneRecipes() {
-  const { doneRecipes } = useContext(RecipeContext);
+  const { doneRecipes } = useChefManager();
 
   return (
     <div>
