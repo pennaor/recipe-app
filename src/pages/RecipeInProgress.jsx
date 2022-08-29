@@ -42,7 +42,7 @@ function RecipeInProgress() {
 
     const ingredMeas = ingredFiltred.map((e, i) => `${e} - ${measuresFiltred[i]}`);
     setIngredients(ingredMeas);
-    // console.log(ingredFiltred);
+    console.log(ingredientsObj);
     // console.log(measuresFiltred);
     // console.log(ingredMeas);
   }
