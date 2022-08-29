@@ -7,11 +7,15 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 import fetchRecipe from '../services/fetchRecipe';
 import linkCopied from '../utils/linkCopied';
+import favoriteRecipe from '../utils/favoriteRecipe';
 
 function RecipeInProgress() {
   const [ingredients, setIngredients] = useState([]);
+  const [ingredientsConcluid, setIngredientsConluid] = useState([]);
   const [informationFood, setInformationFood] = useState({});
   const [copied, setCopied] = useState(false);
+  const [myRecipe, SetMyRecipe] = useState([]);
+  const [favoriteIcon, setFavoriteIcon] = useState(whiteHeartIcon);
 
   const { params: { id }, url } = useRouteMatch();
   const { inProgressRecipes } = useContext(RecipeContext);
@@ -36,12 +40,11 @@ function RecipeInProgress() {
       measuresFiltred = measuresObj.filter((e) => e !== null);
     }
 
-    const ingredMeas = ingredFiltred.map((e, i) => e = `${e} - ${measuresFiltred[i]}`);
+    const ingredMeas = ingredFiltred.map((e, i) => `${e} - ${measuresFiltred[i]}`);
     setIngredients(ingredMeas);
-
-    /* console.log(ingredFiltred);
-    console.log(measuresFiltred);
-    console.log(ingredMeas); */
+    // console.log(ingredFiltred);
+    // console.log(measuresFiltred);
+    // console.log(ingredMeas);
   }
 
   const getInformationsMeals = async () => {
@@ -49,6 +52,7 @@ function RecipeInProgress() {
     const resultArray = await fetchRecipe(typeRecipe, id);
     const resultObj = resultArray[typeFood][0];
     console.log(resultObj);
+    console.log(resultArray);
     setInformationFood({
       image: resultObj.strMealThumb,
       name: resultObj.strMeal,
@@ -56,6 +60,7 @@ function RecipeInProgress() {
       instructions: resultObj.strInstructions,
     });
     getIngredients(resultObj);
+    SetMyRecipe(resultArray[typeFood]);
   };
 
   const getInformationsDrinks = async () => {
@@ -71,17 +76,29 @@ function RecipeInProgress() {
       alcoholic: resultObj.strAlcoholic,
     });
     getIngredients(resultObj);
+    SetMyRecipe(resultArray[typeFood]);
   };
 
-  useEffect(() => {
-    console.log(url);
-
+  useEffect(() => { // componentDidMount
     if (typeRecipe === 'themealdb') {
       getInformationsMeals();
     } else {
       getInformationsDrinks();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function scratchOutIngredient({ target }) { // Necessário refatorar a função
+    const { value } = target;
+    if (ingredientsConcluid.includes(value)) {
+      const newlistIngredients = ingredientsConcluid.filter((e) => e !== value);
+      setIngredientsConluid(newlistIngredients);
+    } else {
+      setIngredientsConluid([...ingredientsConcluid, value]);
+    }
+    console.log(value);
+    console.log(ingredientsConcluid);
+  }
 
   function mostrarDados() {
     console.log(inProgressRecipes);
@@ -116,10 +133,10 @@ function RecipeInProgress() {
       <button
         type="button"
         data-testid="favorite-btn"
-      /* onClick={  } */
+        onClick={ () => favoriteRecipe(myRecipe, id, favoriteIcon, setFavoriteIcon) }
       >
         <img
-          src={ whiteHeartIcon }
+          src={ favoriteIcon }
           alt="icone de favoritar"
         />
       </button>
@@ -140,10 +157,13 @@ function RecipeInProgress() {
             <input
               data-testid={ `${index}-ingredient-step` }
               id={ index }
+              value={ ingredient }
               type="checkbox"
-              /* onChange={ } */
+              onChange={ (e) => scratchOutIngredient(e) }
             />
-            { ingredient }
+            { ingredientsConcluid.includes(ingredient)
+              ? <span><s>{ ingredient }</s></span>
+              : <span>{ ingredient }</span> }
           </div>
         ))
       }
