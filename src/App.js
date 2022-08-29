@@ -5,8 +5,8 @@ import Foods from './pages/foods/Foods';
 import Drinks from './pages/drinks/Drinks';
 import FoodDetails from './pages/foods/FoodDetails';
 import DrinkDetails from './pages/drinks/DrinkDetails';
-import FoodsInProgress from './pages/foods/FoodsInProgress';
-import DrinksInProgress from './pages/drinks/DrinksInProgress';
+
+import RecipeInProgress from './pages/RecipeInProgress';
 import Profile from './pages/Profile';
 import DoneRecipes from './pages/DoneRecipes';
 import FavoriteRecipes from './pages/FavoriteRecipes';
@@ -18,8 +18,8 @@ function App() {
         <Route path="/favorite-recipes" component={ FavoriteRecipes } />
         <Route path="/done-recipes" component={ DoneRecipes } />
         <Route path="/profile" component={ Profile } />
-        <Route path="/foods/:id/in-progress" component={ FoodsInProgress } />
-        <Route path="/drinks/:id/in-progress" component={ DrinksInProgress } />
+        <Route path="/foods/:id/in-progress" component={ RecipeInProgress } />
+        <Route path="/drinks/:id/in-progress" component={ RecipeInProgress } />
         <Route path="/foods/:id" component={ FoodDetails } />
         <Route path="/drinks/:id" component={ DrinkDetails } />
         <Route path="/foods" component={ Foods } />
