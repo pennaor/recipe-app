@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
-
 import RecipeContext from '../context/RecipeContext';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
-
 import fetchRecipe from '../services/fetchRecipe';
 import linkCopied from '../utils/linkCopied';
 import favoriteRecipe from '../utils/favoriteRecipe';
+
+import '../style/footerStyle.css';
 
 function RecipeInProgress() {
   const [ingredients, setIngredients] = useState([]);
@@ -16,12 +16,21 @@ function RecipeInProgress() {
   const [copied, setCopied] = useState(false);
   const [myRecipe, SetMyRecipe] = useState([]);
   const [favoriteIcon, setFavoriteIcon] = useState(whiteHeartIcon);
+  const [btnDisabled, setBtnDisabled] = useState(true);
 
   const { params: { id }, url } = useRouteMatch();
   const { inProgressRecipes } = useContext(RecipeContext);
   const history = useHistory();
   const typeRecipe = history.location.pathname.includes('foods') ? 'themealdb'
     : 'thecocktaildb';
+
+  function enableBtnFinish() {
+    const lengthIngred = ingredients.length;
+    const lengthIngredConluid = ingredientsConcluid.length;
+    if (lengthIngred === lengthIngredConluid) {
+      setBtnDisabled(false);
+    }
+  }
 
   function getIngredients(obj) {
     const keysIngred = Object.keys(obj).filter((e) => e.includes('strIngredient'));
@@ -42,17 +51,12 @@ function RecipeInProgress() {
 
     const ingredMeas = ingredFiltred.map((e, i) => `${e} - ${measuresFiltred[i]}`);
     setIngredients(ingredMeas);
-    console.log(ingredientsObj);
-    // console.log(measuresFiltred);
-    // console.log(ingredMeas);
   }
 
   const getInformationsMeals = async () => {
     const typeFood = 'meals';
     const resultArray = await fetchRecipe(typeRecipe, id);
     const resultObj = resultArray[typeFood][0];
-    console.log(resultObj);
-    console.log(resultArray);
     setInformationFood({
       image: resultObj.strMealThumb,
       name: resultObj.strMeal,
@@ -67,7 +71,6 @@ function RecipeInProgress() {
     const typeFood = 'drinks';
     const resultArray = await fetchRecipe(typeRecipe, id);
     const resultObj = resultArray[typeFood][0];
-    console.log(resultObj);
     setInformationFood({
       image: resultObj.strDrinkThumb,
       name: resultObj.strDrink,
@@ -96,8 +99,7 @@ function RecipeInProgress() {
     } else {
       setIngredientsConluid([...ingredientsConcluid, value]);
     }
-    console.log(value);
-    console.log(ingredientsConcluid);
+    enableBtnFinish();
   }
 
   function mostrarDados() {
@@ -173,9 +175,11 @@ function RecipeInProgress() {
       </p>
 
       <button
+        className="button-finish"
         type="button"
         data-testid="finish-recipe-btn"
         onClick={ () => mostrarDados() }
+        disabled={ btnDisabled }
       >
         Finish Recipe
       </button>
