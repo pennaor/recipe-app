@@ -182,7 +182,7 @@ function RecipeInProgress() {
         type="button"
         data-testid="finish-recipe-btn"
         onClick={ () => mostrarDados() }
-        disabled={ btnDisabled }
+        disabled={ btnDisabled } // requisito 42
       >
         Finish Recipe
       </button>
