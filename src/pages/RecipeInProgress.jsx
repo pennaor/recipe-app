@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
-import RecipeContext from '../context/RecipeContext';
 import shareIcon from '../images/shareIcon.svg';
-import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import fetchRecipe from '../services/fetchRecipe';
 import linkCopied from '../utils/linkCopied';
-import favoriteRecipe from '../utils/favoriteRecipe';
+import useChefManager from '../utils/useChefManager';
+import useFavoriteManager from '../utils/useFavoriteManager';
 
 import '../style/footerStyle.css';
 
@@ -15,17 +14,17 @@ function RecipeInProgress() {
   const [informationFood, setInformationFood] = useState({});
   const [copied, setCopied] = useState(false);
   const [myRecipe, SetMyRecipe] = useState([]);
-  const [favoriteIcon, setFavoriteIcon] = useState(whiteHeartIcon);
   const [btnDisabled, setBtnDisabled] = useState(true);
 
   const { params: { id }, url } = useRouteMatch();
-  const { inProgressRecipes } = useContext(RecipeContext);
+  const { favorite, updateFavoritedStatus, setFavoritedStatus } = useFavoriteManager();
+  const { inProgressRecipes } = useChefManager();
   const history = useHistory();
   const typeRecipe = history.location.pathname.includes('foods') ? 'themealdb'
     : 'thecocktaildb';
 
   function enableBtnFinish() {
-    const lengthIngred = ingredients.length;
+    const lengthIngred = ingredients.length - 1;
     const lengthIngredConluid = ingredientsConcluid.length;
     if (lengthIngred === lengthIngredConluid) {
       setBtnDisabled(false);
@@ -42,11 +41,11 @@ function RecipeInProgress() {
     let ingredFiltred = {};
     let measuresFiltred = {};
     if (typeRecipe === 'themealdb') {
-      ingredFiltred = ingredientsObj.filter((e) => e.length > 0);
-      measuresFiltred = measuresObj.filter((e) => e.length > 0);
+      ingredFiltred = ingredientsObj.filter((e) => e && e.length > 0);
+      measuresFiltred = measuresObj.filter((e) => e && e.length > 0);
     } else {
-      ingredFiltred = ingredientsObj.filter((e) => e !== null);
-      measuresFiltred = measuresObj.filter((e) => e !== null);
+      ingredFiltred = ingredientsObj.filter((e) => !!e);
+      measuresFiltred = measuresObj.filter((e) => !!e);
     }
 
     const ingredMeas = ingredFiltred.map((e, i) => `${e} - ${measuresFiltred[i]}`);
@@ -65,6 +64,7 @@ function RecipeInProgress() {
     });
     getIngredients(resultObj);
     SetMyRecipe(resultArray[typeFood]);
+    updateFavoritedStatus(resultArray[typeFood]);
   };
 
   const getInformationsDrinks = async () => {
@@ -80,6 +80,7 @@ function RecipeInProgress() {
     });
     getIngredients(resultObj);
     SetMyRecipe(resultArray[typeFood]);
+    updateFavoritedStatus(resultArray[typeFood]);
   };
 
   useEffect(() => { // componentDidMount
@@ -96,8 +97,10 @@ function RecipeInProgress() {
     if (ingredientsConcluid.includes(value)) {
       const newlistIngredients = ingredientsConcluid.filter((e) => e !== value);
       setIngredientsConluid(newlistIngredients);
+      console.log(btnDisabled);
     } else {
       setIngredientsConluid([...ingredientsConcluid, value]);
+      console.log(btnDisabled);
     }
     enableBtnFinish();
   }
@@ -124,7 +127,7 @@ function RecipeInProgress() {
       <button
         type="button"
         data-testid="share-btn"
-        onClick={ () => linkCopied(url, setCopied) }
+        onClick={ () => linkCopied(url.replace(/\/in-progress$/, ''), setCopied) }
       >
         <img
           src={ shareIcon }
@@ -134,12 +137,12 @@ function RecipeInProgress() {
 
       <button
         type="button"
-        data-testid="favorite-btn"
-        onClick={ () => favoriteRecipe(myRecipe, id, favoriteIcon, setFavoriteIcon) }
+        onClick={ () => setFavoritedStatus(myRecipe) }
       >
         <img
-          src={ favoriteIcon }
+          src={ favorite }
           alt="icone de favoritar"
+          data-testid="favorite-btn"
         />
       </button>
 
@@ -157,7 +160,6 @@ function RecipeInProgress() {
             htmlFor={ index }
           >
             <input
-              data-testid={ `${index}-ingredient-step` }
               id={ index }
               value={ ingredient }
               type="checkbox"
