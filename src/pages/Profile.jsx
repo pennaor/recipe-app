@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function Profile() {
+  const [email, setEmail] = useState('');
+  useEffect(() => {
+    setEmail(JSON.parse(localStorage.getItem('user')).email);
+  }, []);
   return (
     <div>
       <Header />
@@ -27,7 +31,7 @@ export default function Profile() {
             Logout
           </button>
         </section>
-        <p data-testid="profile-email">Email</p>
+        <p data-testid="profile-email">{ email }</p>
       </main>
       <Footer />
     </div>
