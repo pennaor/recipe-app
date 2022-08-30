@@ -5,6 +5,8 @@ import App from '../App';
 import customRender from './helpers/customRender';
 import mockFetch from './helpers/mockFetch';
 
+global.window.alert = jest.fn(() => null);
+
 describe('Verifica funcionalidades do componente Header', () => {
   describe('testes da composição dos elementos renderizados em Header', () => {
     it('a página Foods deve renderizar o header com icones de perfil e pesquisa assim como com título "Foods"',
@@ -58,36 +60,35 @@ describe('Verifica funcionalidades do componente Header', () => {
     });
     it('a página de receita de comidas não deve possuir header',
     () => {
-      const { history } = customRender(<App />, '/foods/333');
-      expect(history.location.pathname).toBe('/foods/333');
+      const { history } = customRender(<App />, '/foods/53013');
+      expect(history.location.pathname).toBe('/foods/53013');
       expect(screen.queryByAltText('icone de perfil')).not.toBeInTheDocument();
       expect(screen.queryByAltText('icone de pesquisa')).not.toBeInTheDocument();
     });
     it('a página de progresso da receita de comida não deve possuir header',
     () => {
-      const { history } = customRender(<App />, '/foods/333/in-progress');
-      expect(history.location.pathname).toBe('/foods/333/in-progress');
+      const { history } = customRender(<App />, '/foods/53013/in-progress');
+      expect(history.location.pathname).toBe('/foods/53013/in-progress');
       expect(screen.queryByAltText('icone de perfil')).not.toBeInTheDocument();
       expect(screen.queryByAltText('icone de pesquisa')).not.toBeInTheDocument();
     });
     it('a página de receita de bebidas não deve possuir header',
     () => {
-      const { history } = customRender(<App />, '/drinks/333');
-      expect(history.location.pathname).toBe('/drinks/333');
+      const { history } = customRender(<App />, '/drinks/178319');
+      expect(history.location.pathname).toBe('/drinks/178319');
       expect(screen.queryByAltText('icone de perfil')).not.toBeInTheDocument();
       expect(screen.queryByAltText('icone de pesquisa')).not.toBeInTheDocument();
     });
     it('a página de progresso da receita de bebida não deve possuir header',
     () => {
-      const { history } = customRender(<App />, '/drinks/333/in-progress');
-      expect(history.location.pathname).toBe('/drinks/333/in-progress');
+      const { history } = customRender(<App />, '/drinks/178319/in-progress');
+      expect(history.location.pathname).toBe('/drinks/178319/in-progress');
       expect(screen.queryByAltText('icone de perfil')).not.toBeInTheDocument();
       expect(screen.queryByAltText('icone de pesquisa')).not.toBeInTheDocument();
     });
   });
 
   describe('testes do componente SearchBar', () => {
-    beforeEach(() => jest.spyOn(window, 'alert'));
     it('ao clicar no botão de perfil, o usuário deve ser redirecionado para tela de perfil',
     () => {
       const { history } = customRender(<App />, '/foods');
@@ -194,12 +195,12 @@ describe('Verifica funcionalidades do componente Header', () => {
       const { history } = customRender(<App />, '/foods');
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
-      userEvent.type(searchInput, 'Arrabiata');
+      userEvent.type(searchInput, 'Big Mac');
       userEvent.click(screen.getByRole('radio', { name: /name/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
       await waitFor(() => {
         expect(mockSpy).toBeCalled();
-        expect(history.location.pathname).toBe('/foods/52771');
+        expect(history.location.pathname).toBe('/foods/53013');
       });   
     });
     it('verifica se ao encontrar nenhuma receita de comida, um alerta é emitido',

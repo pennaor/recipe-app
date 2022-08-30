@@ -1,14 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
-import RecipeContext from '../context/RecipeContext';
-// import useChefManager from '../utils/useChefManager';
-// import { doneRecipes } from '../tests/helpers/mockData/oneMealNDrinkDoneRecipe';
+import useChefManager from '../utils/useChefManager';
 
 export default function DoneRecipes() {
-  // const { doneRecipes } = useChefManager();
-  const { doneRecipes } = useContext(RecipeContext);
+  const { doneRecipes } = useChefManager();
   const [btnFoodOrDrink, setBtnFoodOrDrink] = useState('');
 
   return (
