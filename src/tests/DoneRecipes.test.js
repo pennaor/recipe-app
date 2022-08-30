@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import App from '../App';
 import customRender from './helpers/customRender';
 import userEvent from '@testing-library/user-event';
@@ -8,12 +8,12 @@ import LocalStorageMock from './helpers/mockLocalStorage';
 
 const doneRecipes = [
   {
-    id: '52771',
+    id: '53013',
     type: 'food',
     nationality: 'Italian',
     category: 'Vegetarian',
     alcoholicOrNot: '',
-    name: 'Spicy Arrabiata Penne',
+    name: 'Big Mac',
     image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
     doneDate: '23/06/2020',
     tags: ['Pasta', 'Curry'],
@@ -32,7 +32,7 @@ const doneRecipes = [
 ];
 
 global.localStorage = LocalStorageMock;
-localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
+global.localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
 global.document.execCommand = () => Promise.resolve({})
 
 global.window.alert = jest.fn();
@@ -52,7 +52,7 @@ describe('Done recipes screen', () => {
       }));
       customRender(<App />, '/done-recipes');
       const firstNameCard = await screen.findByTestId('0-horizontal-name');
-      expect(firstNameCard).toHaveTextContent('Spicy Arrabiata Penne');
+      expect(firstNameCard).toHaveTextContent('Big Mac');
       const secoundNameCard = await screen.findByTestId('1-horizontal-name');
       expect(secoundNameCard).toHaveTextContent('Aquamarine');
     });
@@ -76,8 +76,19 @@ describe('Done recipes screen', () => {
       expect(secoundImageCard.src).toBe(doneRecipes[1].image);
       expect(secoundImageCard).not.toBeInTheDocument();
       userEvent.click(btnAll);
+      userEvent.click(btnAll);
       expect(await screen.findByTestId('0-horizontal-image')).toBeInTheDocument();
-      expect(await screen.findByTestId('1-horizontal-image')).toBeInTheDocument();      
+      expect(await screen.findByTestId('1-horizontal-image')).toBeInTheDocument();
+      userEvent.click(btnFood);
+      expect(await screen.findByTestId('0-horizontal-image')).toBeInTheDocument();
+      await waitFor(() => expect(screen.queryByTestId('1-horizontal-image')).not.toBeInTheDocument());
+      userEvent.click(btnFood);
+      expect(await screen.findByTestId('0-horizontal-image')).toBeInTheDocument();
+      expect(await screen.findByTestId('1-horizontal-image')).toBeInTheDocument();
+      userEvent.click(btnDrink);
+      expect(await screen.findByTestId(/-horizontal-image/i)).toBeInTheDocument();
+      userEvent.click(btnDrink);
+      expect(await screen.findAllByTestId(/-horizontal-image/i)).toHaveLength(2);
     });
     it('Todos os data-testids estão disponíveis', async () => {
       jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
@@ -85,20 +96,19 @@ describe('Done recipes screen', () => {
       expect(history.location.pathname).toBe('/done-recipes');
       const title = await screen.findByRole('heading', { name: 'Done Recipes' });
       expect(title).toBeInTheDocument();
-      await screen.findAllByTestId(/horizontal-image/i);
+      const recipe = await screen.findByTestId(/0-horizontal-image/i);
       doneRecipes.forEach(({id, name, image, type}, index) => {
         const elementImage = screen.getByTestId(`${index}-horizontal-image`);
         expect(elementImage.src).toBe(image);
-        userEvent.click(elementImage);
-        expect(history.location.pathname).toBe(`/${type}s/${id}`);
-        history.push('/done-recipes');
-        expect(history.location.pathname).toBe(`/done-recipes`);
         const elementName = screen.getByTestId(`${index}-horizontal-name`);
         expect(elementName).toHaveTextContent(name);
-        userEvent.click(elementName);
-        // console.log(history.location.pathname);
-        expect(history.location.pathname).toBe(`/${type}s/${id}`);
-      })
+      });
+      userEvent.click(recipe);
+      expect(history.location.pathname).toBe(`/foods/53013`);
+      history.push('/done-recipes');
+      expect(history.location.pathname).toBe(`/done-recipes`);
+      userEvent.click(await screen.findByTestId(/1-horizontal-image/i));
+      expect(history.location.pathname).toBe(`/drinks/178319`);
     });
   });
 });
