@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../style/Profile.css';
 
 export default function Profile() {
   const [email, setEmail] = useState('');
@@ -24,11 +26,16 @@ export default function Profile() {
   };
 
   return (
-    <div>
-      <Header />
-      <main>
+    <div className="div">
+      <main >
         <section className="navigation">
+          <p data-testid="profile-email" className="profile-email">
+            E-mail: {
+              email.length > 0 ? email : 'Email'
+            }
+          </p>
           <button
+            className="btn btn-info button"
             type="button"
             data-testid="profile-done-btn"
             onClick={ () => push('/done-recipes') }
@@ -36,6 +43,7 @@ export default function Profile() {
             Done Recipes
           </button>
           <button
+            className="btn btn-info button"
             type="button"
             data-testid="profile-favorite-btn"
             onClick={ () => push('/favorite-recipes') }
@@ -43,6 +51,7 @@ export default function Profile() {
             Favorite Recipes
           </button>
           <button
+            className="btn btn-danger button"
             type="button"
             data-testid="profile-logout-btn"
             onClick={ () => logout() }
@@ -50,11 +59,6 @@ export default function Profile() {
             Logout
           </button>
         </section>
-        <p data-testid="profile-email">
-          {
-            email.length > 0 ? email : 'Email'
-          }
-        </p>
       </main>
       <Footer />
     </div>
