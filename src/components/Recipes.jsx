@@ -97,7 +97,7 @@ export default function Recipes() {
   const render = listToRender();
 
   return (
-    <div>
+    <>
       <div>
         {
           buttonList && buttonList.map((button) => button && (
@@ -146,6 +146,7 @@ export default function Recipes() {
                 src={ meal[`str${dataTestidElement}Thumb`] }
                 alt={ meal[`str${dataTestidElement}Thumb}`] }
                 data-testid={ `${index}-card-img` }
+                style={ { maxWidth: '250px' } }
               />
               <p
                 data-testid={ `${index}-card-name` }
@@ -156,6 +157,6 @@ export default function Recipes() {
             </div>
           )))
       }
-    </div>
+    </>
   );
 }

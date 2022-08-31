@@ -46,34 +46,38 @@ export default function Login() {
   };
 
   return (
-    <div className="text-center">
-      <img className="crown" src={ crownIcon } alt="coroa" />
+    <div className="login text-center">
       <form onSubmit={ onSubmitHandler } className="form-signin">
-        <h1 className="h3 mb-3 font-weight-normal">King of Recipes</h1>
-        <label htmlFor="email">
-          <input
-            type="email"
-            id="email"
-            name="email"
-            data-testid="email-input"
-            onChange={ ({ target }) => setEmail(target.value) }
-            value={ email }
-            className="form-control email-input"
-            placeholder="E-mail"
-          />
-        </label>
-        <label htmlFor="password">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            data-testid="password-input"
-            onChange={ ({ target }) => setPassword(target.value) }
-            value={ password }
-            className="form-control password-input"
-            placeholder="Senha"
-          />
-        </label>
+        <div className="login-title-container">
+          <img className="crown" src={ crownIcon } alt="coroa" />
+          <h1 className="h3 mb-3 font-weight-normal login-title">King of Recipes</h1>
+        </div>
+        <div>
+          <label htmlFor="email">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              data-testid="email-input"
+              onChange={ ({ target }) => setEmail(target.value) }
+              value={ email }
+              className="form-control email-input"
+              placeholder="E-mail"
+            />
+          </label>
+          <label htmlFor="password">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              data-testid="password-input"
+              onChange={ ({ target }) => setPassword(target.value) }
+              value={ password }
+              className="form-control password-input"
+              placeholder="Senha"
+            />
+          </label>
+        </div>
         <button
           id="form-button"
           type="submit"

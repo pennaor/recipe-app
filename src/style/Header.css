@@ -1,9 +1,15 @@
-body {
-  padding-bottom: 20px;
+.navbar {
+  align-items: center;
+  background-color: rgb(220, 53, 69);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-.navbar {
-  margin-bottom: 20px;
+.profile-img {
+  filter: invert(98%)
+    sepia(72%) saturate(0%) hue-rotate(106deg) brightness(105%) contrast(100%);
 }
 
 header {
@@ -11,4 +17,22 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+}
+
+.search-button {
+  background: none;
+  border: none;
+  filter: invert(98%)
+    sepia(72%) saturate(0%) hue-rotate(106deg) brightness(105%) contrast(100%);
+}
+
+.filters-div {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+.filters-radio {
+  margin-right: 3px;
 }

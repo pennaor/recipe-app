@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import Collapse from 'react-bootstrap/Collapse';
 import RecipeContext from '../context/RecipeContext';
 import fetchRecipe from '../services/fetchRecipe';
 
-export default function SearchBar() {
+export default function SearchBar({ showSearchInput }) {
   const [searchInputValue, setSearchInputValue] = useState('');
   const [filtersValue, setFiltersValue] = useState('ingredient');
 
@@ -45,66 +47,79 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={ onSubmitRecipeQuery } className="form-inline my-2 my-md-0">
-      <input
-        type="text"
-        title="Buscar receitas"
-        placeholder="Buscar receitas"
-        value={ searchInputValue }
-        onChange={ onChangeSearchInput }
-        data-testid="search-input"
-        required
-        className="form-control"
-      />
+    <Collapse in={ showSearchInput }>
       <div>
-        <label htmlFor="ingredientFilter">
-          <input
-            type="radio"
-            name="searchFilter"
-            value="ingredient"
-            id="ingredientFilter"
-            onChange={ onChangeFiltersValue }
-            checked={ filtersValue === 'ingredient' }
-            data-testid="ingredient-search-radio"
-            className="form-control"
-          />
-          Ingredient
-        </label>
-        <label htmlFor="nameFilter">
-          <input
-            type="radio"
-            name="searchFilter"
-            value="name"
-            id="nameFilter"
-            onChange={ onChangeFiltersValue }
-            checked={ filtersValue === 'name' }
-            data-testid="name-search-radio"
-            className="form-control"
-          />
-          Name
-        </label>
-        <label htmlFor="firtLetterFilter">
-          <input
-            type="radio"
-            name="searchFilter"
-            value="firstLetter"
-            id="firtLetterFilter"
-            onChange={ onChangeFiltersValue }
-            checked={ filtersValue === 'firstLetter' }
-            data-testid="first-letter-search-radio"
-            className="form-control"
-          />
-          First letter
-        </label>
+        { showSearchInput && (
+          <form
+            id="searchbar-form"
+            onSubmit={ onSubmitRecipeQuery }
+            className="form-inline my-2 my-md-0"
+          >
+            <input
+              type="text"
+              title="Buscar receitas"
+              placeholder="Buscar receitas"
+              value={ searchInputValue }
+              onChange={ onChangeSearchInput }
+              data-testid="search-input"
+              required
+              className="form-control"
+            />
+            <div className="filters-div">
+              <label htmlFor="ingredientFilter">
+                <input
+                  type="radio"
+                  name="searchFilter"
+                  value="ingredient"
+                  id="ingredientFilter"
+                  onChange={ onChangeFiltersValue }
+                  checked={ filtersValue === 'ingredient' }
+                  data-testid="ingredient-search-radio"
+                  className="filters-radio"
+                />
+                Ingredient
+              </label>
+              <label htmlFor="nameFilter">
+                <input
+                  type="radio"
+                  name="searchFilter"
+                  value="name"
+                  id="nameFilter"
+                  onChange={ onChangeFiltersValue }
+                  checked={ filtersValue === 'name' }
+                  data-testid="name-search-radio"
+                  className="filters-radio"
+                />
+                Name
+              </label>
+              <label htmlFor="firtLetterFilter">
+                <input
+                  type="radio"
+                  name="searchFilter"
+                  value="firstLetter"
+                  id="firtLetterFilter"
+                  onChange={ onChangeFiltersValue }
+                  checked={ filtersValue === 'firstLetter' }
+                  data-testid="first-letter-search-radio"
+                  className="filters-radio"
+                />
+                First letter
+              </label>
+            </div>
+            <button
+              type="submit"
+              onClick={ () => setSearchClick(true) }
+              data-testid="exec-search-btn"
+            >
+              Search
+            </button>
+          </form>
+        ) }
       </div>
-      <button
-        type="submit"
-        onClick={ () => setSearchClick(true) }
-        data-testid="exec-search-btn"
-      >
-        Search
-
-      </button>
-    </form>
+    </Collapse>
   );
 }
+
+SearchBar.propTypes = {
+  showSearchInput: PropTypes.bool.isRequired,
+};

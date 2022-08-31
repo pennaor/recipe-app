@@ -1,22 +1,35 @@
-html, body {
-  height: 100%;
+.login {
+  align-items: center;
+  display: flex;
+  height: 90vh;
+  justify-content: center;
 }
 
-body {
-  align-items: center;
-  background-color: 'whitesmoke';
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
+.login-title-container {
   display: flex;
-  -ms-flex-align: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding-bottom: 40px;
-  padding-top: 40px;
+  flex-direction: column;
+}
+
+.login-title {
+  line-height: 0.8;
+}
+
+.crown {
+  align-self: start;
+  transform: rotate(350deg);
+  width: 30px;
+}
+
+label {
+  margin-bottom: 0;
 }
 
 .form-signin {
-  margin: 0 auto;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
   max-width: 330px;
   padding: 15px;
   width: 100%;
@@ -47,7 +60,7 @@ body {
 .form-signin .password-input {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .form-button {
@@ -55,6 +68,3 @@ body {
   width: 40%;
 }
 
-.crown {
-  width: 30px;
-}
