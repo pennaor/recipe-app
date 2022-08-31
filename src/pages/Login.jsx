@@ -2,6 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 import RecipeContext from '../context/RecipeContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../style/Login.css';
+import crownIcon from '../images/coroa.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -43,12 +46,11 @@ export default function Login() {
   };
 
   return (
-    <div className="Login">
-      <h3>Login</h3>
-      <form onSubmit={ onSubmitHandler }>
+    <div className="text-center">
+      <img className="crown" src={ crownIcon } alt="coroa" />
+      <form onSubmit={ onSubmitHandler } className="form-signin">
+        <h1 className="h3 mb-3 font-weight-normal">King of Recipes</h1>
         <label htmlFor="email">
-          E-mail
-          { ' ' }
           <input
             type="email"
             id="email"
@@ -56,11 +58,11 @@ export default function Login() {
             data-testid="email-input"
             onChange={ ({ target }) => setEmail(target.value) }
             value={ email }
+            className="form-control email-input"
+            placeholder="E-mail"
           />
         </label>
         <label htmlFor="password">
-          Senha
-          { ' ' }
           <input
             type="password"
             id="password"
@@ -68,14 +70,18 @@ export default function Login() {
             data-testid="password-input"
             onChange={ ({ target }) => setPassword(target.value) }
             value={ password }
+            className="form-control password-input"
+            placeholder="Senha"
           />
         </label>
         <button
+          id="form-button"
           type="submit"
           disabled={ isInvalidEmail || isInvalidPassword }
           data-testid="login-submit-btn"
+          className="btn btn-lg btn-danger btn-block form-button"
         >
-          Enter
+          Entrar
         </button>
       </form>
     </div>

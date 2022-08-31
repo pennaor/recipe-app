@@ -1,0 +1,14 @@
+body {
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+header {
+  margin: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}

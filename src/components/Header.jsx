@@ -1,8 +1,11 @@
+/* eslint-disable react/jsx-max-depth */
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 import SearchBar from './SearchBar';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import '../style/Header.css';
 
 function Header() {
   const [showSearchInput, setShowSearchInput] = useState(false);
@@ -35,15 +38,15 @@ function Header() {
   return (
     <>
       <header>
-        <nav>
-          <Link to="/profile">
-            <img
-              src={ profileIcon }
-              alt="icone de perfil"
-              data-testid="profile-top-btn"
-            />
-          </Link>
-          <div>
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div className="container">
+            <Link to="/profile" className="navbar-brand">
+              <img
+                src={ profileIcon }
+                alt="icone de perfil"
+                data-testid="profile-top-btn"
+              />
+            </Link>
             { !hideSearchIcon && (
               <button
                 type="button"
@@ -56,9 +59,12 @@ function Header() {
                 />
               </button>
             ) }
-            { showSearchInput && (
-              <SearchBar />
-            ) }
+
+            <div className="collapse navbar-collapse" id="navbarsExample07">
+              { showSearchInput && (
+                <SearchBar />
+              ) }
+            </div>
           </div>
         </nav>
       </header>

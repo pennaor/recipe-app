@@ -45,7 +45,7 @@ export default function SearchBar() {
   };
 
   return (
-    <form onSubmit={ onSubmitRecipeQuery }>
+    <form onSubmit={ onSubmitRecipeQuery } className="form-inline my-2 my-md-0">
       <input
         type="text"
         title="Buscar receitas"
@@ -54,6 +54,7 @@ export default function SearchBar() {
         onChange={ onChangeSearchInput }
         data-testid="search-input"
         required
+        className="form-control"
       />
       <div>
         <label htmlFor="ingredientFilter">
@@ -65,6 +66,7 @@ export default function SearchBar() {
             onChange={ onChangeFiltersValue }
             checked={ filtersValue === 'ingredient' }
             data-testid="ingredient-search-radio"
+            className="form-control"
           />
           Ingredient
         </label>
@@ -77,6 +79,7 @@ export default function SearchBar() {
             onChange={ onChangeFiltersValue }
             checked={ filtersValue === 'name' }
             data-testid="name-search-radio"
+            className="form-control"
           />
           Name
         </label>
@@ -89,6 +92,7 @@ export default function SearchBar() {
             onChange={ onChangeFiltersValue }
             checked={ filtersValue === 'firstLetter' }
             data-testid="first-letter-search-radio"
+            className="form-control"
           />
           First letter
         </label>
