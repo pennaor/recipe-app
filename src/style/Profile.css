@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+.div {
+  background: url('../images/e9d7c47c4a23314ecdb74bba026e0124.jpg') no-repeat;
+  border: 1px solid;
+  display: flex;
+  height: 100vh;
+  padding: 5%;
+  text-align: center;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.navigation {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
+}
+
+button {
+  width: 50vw;
+}
+
+.profile-email {
+  color: rgb(255, 255, 255);
+  font-family: cursive;;
+  font-size: 7vw;
+  font-weight: bolder;
+}
