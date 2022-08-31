@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Profile.css';
 
@@ -60,7 +58,6 @@ export default function Profile() {
           </button>
         </section>
       </main>
-      <Footer />
     </div>
   );
 }
