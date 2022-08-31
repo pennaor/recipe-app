@@ -1,6 +1,12 @@
 footer {
+  align-items: center;
+  background-color: rgb(220, 53, 69);
   bottom: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   margin: auto;
   position: fixed;
   width: 100%;
 }
+

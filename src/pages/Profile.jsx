@@ -28,7 +28,6 @@ export default function Profile() {
       <main>
         <section className="navigation">
           <p data-testid="profile-email" className="profile-email">
-            E-mail:
             {
               email.length > 0 ? email : 'Email'
             }

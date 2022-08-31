@@ -128,38 +128,41 @@ export default function Recipes() {
             </button>
           ))
         }
-
       </div>
-      {
-        (render && render
-          .map((meal, index) => (index < TWELVE) && (
-            <div
-              data-testid={ `${index}-recipe-card` }
-              key={ meal[`str${dataTestidElement}Thumb`] }
-              onClick={ () => {
-                push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
-              } }
-              onKeyPress={ () => {
-                push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
-              } }
-              role="button"
-              tabIndex={ 0 }
-            >
-              <img
-                src={ meal[`str${dataTestidElement}Thumb`] }
-                alt={ meal[`str${dataTestidElement}Thumb}`] }
-                data-testid={ `${index}-card-img` }
-                style={ { maxWidth: '250px' } }
-              />
-              <p
-                data-testid={ `${index}-card-name` }
+      <div className="recipes-cards-container">
+        {
+          (render && render
+            .map((meal, index) => (index < TWELVE) && (
+              <div
+                data-testid={ `${index}-recipe-card` }
+                key={ meal[`str${dataTestidElement}Thumb`] }
+                onClick={ () => {
+                  push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
+                } }
+                onKeyPress={ () => {
+                  push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
+                } }
+                role="button"
+                tabIndex={ 0 }
+                className="recipe-card"
               >
-                {meal[`str${dataTestidElement}`]}
+                <img
+                  src={ meal[`str${dataTestidElement}Thumb`] }
+                  alt={ meal[`str${dataTestidElement}Thumb}`] }
+                  data-testid={ `${index}-card-img` }
+                  style={ { maxWidth: '250px' } }
+                />
+                <h4
+                  data-testid={ `${index}-card-name` }
+                  className="recipe-title"
+                >
+                  {meal[`str${dataTestidElement}`]}
 
-              </p>
-            </div>
-          )))
-      }
+                </h4>
+              </div>
+            )))
+        }
+      </div>
     </div>
   );
 }

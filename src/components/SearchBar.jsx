@@ -20,6 +20,7 @@ export default function SearchBar({ showSearchInput }) {
     if (result.meals && result.meals.length) {
       setMeals(result.meals);
       if (result.meals.length === 1) history.push(`/foods/${result.meals[0].idMeal}`);
+      return;
     }
     global.alert('Sorry, we haven\'t found any recipes for these filters.');
   };
@@ -29,6 +30,7 @@ export default function SearchBar({ showSearchInput }) {
     if (result.drinks && result.drinks.length) {
       setDrinks(result.drinks);
       if (result.drinks.length === 1) history.push(`/drinks/${result.drinks[0].idDrink}`);
+      return;
     }
     global.alert('Sorry, we haven\'t found any recipes for these filters.');
   };

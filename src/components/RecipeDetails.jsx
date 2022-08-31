@@ -6,6 +6,7 @@ import shareIcon from '../images/shareIcon.svg';
 import linkCopied from '../utils/linkCopied';
 import useFavoriteManager from '../utils/useFavoriteManager';
 import useChefManager from '../utils/useChefManager';
+import '../style/RecipeDetails.css';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -136,6 +137,7 @@ export default function RecipeDetails(props) {
             )}
             <h2>Recommended</h2>
             <div
+              className="recommended"
               style={ { overflow: 'auto', whiteSpace: 'nowrap', width: '300px' } }
             >
               { recomendations.map((option, i) => (
@@ -163,7 +165,7 @@ export default function RecipeDetails(props) {
             </div>
           </>
         )
-        : <i>Laoding...</i>}
+        : <i>Loading...</i>}
 
       { recipeStatus && (
         <button
