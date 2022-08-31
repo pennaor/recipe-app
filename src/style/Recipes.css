@@ -1,3 +1,20 @@
 .recipes {
   padding: 50px 5px 0;
 }
+
+.categorys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  height: 120px;
+  justify-content: center;
+  margin: auto;
+  max-width: 500px;
+  padding: 10px;
+}
+
+.category-button {
+  flex-basis: 35%;
+  max-height: 31px;
+  max-width: 168px;
+}

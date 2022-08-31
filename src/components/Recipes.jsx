@@ -99,7 +99,15 @@ export default function Recipes() {
 
   return (
     <div className="recipes">
-      <div>
+      <div className="categorys">
+        <button
+          type="button"
+          onClick={ () => setButtonAll(true) }
+          data-testid="All-category-filter"
+          className="btn btn-sm btn-outline-primary category-button"
+        >
+          All
+        </button>
         {
           buttonList && buttonList.map((button) => button && (
             <button
@@ -113,19 +121,13 @@ export default function Recipes() {
                 }
                 setButtonClickCategory(button.strCategory);
               } }
+              className="btn btn-sm btn-outline-primary category-button"
             >
               {button.strCategory}
 
             </button>
           ))
         }
-        <button
-          type="button"
-          onClick={ () => setButtonAll(true) }
-          data-testid="All-category-filter"
-        >
-          All
-        </button>
 
       </div>
       {

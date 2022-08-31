@@ -34,7 +34,7 @@ export default function Profile() {
             }
           </p>
           <button
-            className="btn btn-info button"
+            className="btn btn-info profile-button"
             type="button"
             data-testid="profile-done-btn"
             onClick={ () => push('/done-recipes') }
@@ -42,7 +42,7 @@ export default function Profile() {
             Done Recipes
           </button>
           <button
-            className="btn btn-info button"
+            className="btn btn-info profile-button"
             type="button"
             data-testid="profile-favorite-btn"
             onClick={ () => push('/favorite-recipes') }
@@ -50,7 +50,7 @@ export default function Profile() {
             Favorite Recipes
           </button>
           <button
-            className="btn btn-danger button"
+            className="btn btn-danger profile-button"
             type="button"
             data-testid="profile-logout-btn"
             onClick={ () => logout() }

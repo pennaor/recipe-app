@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 
 .div {
+  align-items: center;
   background: url('../images/e9d7c47c4a23314ecdb74bba026e0124.jpg') no-repeat;
   border: 1px solid;
   display: flex;
   height: 100vh;
+  justify-content: center;
   padding: 5%;
   text-align: center;
   width: 100vw;
-  align-items: center;
-  justify-content: center;
 }
 
 .navigation {
@@ -19,13 +19,13 @@
   gap: 3vh;
 }
 
-button {
+.profile-button {
   width: 50vw;
 }
 
 .profile-email {
-  color: rgb(255, 255, 255);
-  font-family: cursive;;
+  color: white;
+  font-family: cursive;
   font-size: 7vw;
-  font-weight: bolder;
+  font-weight: 700;
 }
