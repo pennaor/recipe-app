@@ -4,7 +4,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 20px;
 }
 
 .profile-img {
@@ -26,13 +25,35 @@ header {
     sepia(72%) saturate(0%) hue-rotate(106deg) brightness(105%) contrast(100%);
 }
 
+.search-bar {
+  background-color: rgb(239 237 237);
+  margin-top: 0;
+}
+
+.search-bar-form {
+  margin-top: 0;
+  padding: 10px;
+}
+
 .filters-div {
   display: flex;
   gap: 10px;
   justify-content: center;
+  padding: 5px 0;
   width: 100%;
 }
 
 .filters-radio {
   margin-right: 3px;
+}
+
+.page-title {
+  color: white;
+  margin: 0;
+  text-align: center;
+}
+
+.search-bar-button {
+  margin: 4px auto 0;
+  width: 25%;
 }

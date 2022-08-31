@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipeContext from '../context/RecipeContext';
 import fetchRecipe from '../services/fetchRecipe';
+import '../style/Recipes.css';
 
 export default function Recipes() {
   const {
@@ -97,7 +98,7 @@ export default function Recipes() {
   const render = listToRender();
 
   return (
-    <>
+    <div className="recipes">
       <div>
         {
           buttonList && buttonList.map((button) => button && (
@@ -157,6 +158,6 @@ export default function Recipes() {
             </div>
           )))
       }
-    </>
+    </div>
   );
 }

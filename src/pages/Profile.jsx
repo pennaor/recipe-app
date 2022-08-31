@@ -25,10 +25,11 @@ export default function Profile() {
 
   return (
     <div className="div">
-      <main >
+      <main>
         <section className="navigation">
           <p data-testid="profile-email" className="profile-email">
-            E-mail: {
+            E-mail:
+            {
               email.length > 0 ? email : 'Email'
             }
           </p>

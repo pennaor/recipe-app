@@ -48,12 +48,12 @@ export default function SearchBar({ showSearchInput }) {
 
   return (
     <Collapse in={ showSearchInput }>
-      <div>
+      <div className="search-bar">
         { showSearchInput && (
           <form
             id="searchbar-form"
             onSubmit={ onSubmitRecipeQuery }
-            className="form-inline my-2 my-md-0"
+            className="form-inline my-md-0 search-bar-form"
           >
             <input
               type="text"
@@ -110,6 +110,7 @@ export default function SearchBar({ showSearchInput }) {
               type="submit"
               onClick={ () => setSearchClick(true) }
               data-testid="exec-search-btn"
+              className="btn btn-sm btn-danger btn-block search-bar-button"
             >
               Search
             </button>

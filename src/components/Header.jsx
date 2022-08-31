@@ -32,37 +32,35 @@ function Header() {
   }
 
   return (
-    <>
-      <header>
-        <nav className="navbar navbar-expand-lg navbar-dark">
-          <Link to="/profile">
+    <header>
+      <nav className="navbar navbar-expand-lg navbar-dark">
+        <Link to="/profile">
+          <img
+            src={ profileIcon }
+            alt="icone de perfil"
+            data-testid="profile-top-btn"
+            className="profile-img"
+          />
+        </Link>
+        <h4 data-testid="page-title" className="page-title">{ pageTitle }</h4>
+        { !hideSearchIcon && (
+          <button
+            type="button"
+            onClick={ () => setShowSearchInput(!showSearchInput) }
+            aria-controls="searchbar-form"
+            aria-expanded={ showSearchInput }
+            className="search-button"
+          >
             <img
-              src={ profileIcon }
-              alt="icone de perfil"
-              data-testid="profile-top-btn"
-              className="profile-img"
+              src={ searchIcon }
+              alt="icone de pesquisa"
+              data-testid="search-top-btn"
             />
-          </Link>
-          { !hideSearchIcon && (
-            <button
-              type="button"
-              onClick={ () => setShowSearchInput(!showSearchInput) }
-              aria-controls="searchbar-form"
-              aria-expanded={ showSearchInput }
-              className="search-button"
-            >
-              <img
-                src={ searchIcon }
-                alt="icone de pesquisa"
-                data-testid="search-top-btn"
-              />
-            </button>
-          ) }
-        </nav>
-      </header>
-      <h1 data-testid="page-title">{ pageTitle }</h1>
+          </button>
+        ) }
+      </nav>
       <SearchBar showSearchInput={ showSearchInput } />
-    </>
+    </header>
   );
 }
 
