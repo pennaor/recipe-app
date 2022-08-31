@@ -104,7 +104,7 @@ export default function Recipes() {
           type="button"
           onClick={ () => setButtonAll(true) }
           data-testid="All-category-filter"
-          className="btn btn-sm btn-outline-primary category-button"
+          className="btn btn-sm btn-outline-danger category-button"
         >
           All
         </button>
@@ -121,7 +121,7 @@ export default function Recipes() {
                 }
                 setButtonClickCategory(button.strCategory);
               } }
-              className="btn btn-sm btn-outline-primary category-button"
+              className="btn btn-sm btn-outline-danger category-button"
             >
               {button.strCategory}
 
