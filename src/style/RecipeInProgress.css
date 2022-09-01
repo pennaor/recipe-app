@@ -1,5 +1,43 @@
-.button-finish {
-  bottom: 0;
-  margin: auto;
-  position: fixed;
+.recipe-in-progress-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px;
+}
+
+input[type=checkbox] {
+  margin-right: 8px;
+}
+
+input[type=checkbox]:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(220, 53, 69);
+  margin-top: -6px;
+}
+
+input[type=checkbox]:checked:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(220, 53, 69);
+}
+
+input[type=checkbox]:checked:after {
+  content: "";
+  display: block;
+  margin-left: 5px;
+  margin-top: -6px;
+  width: 10px;
+  height: 16px;
+  border: solid white;
+  border-width: 0 4px 4px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }

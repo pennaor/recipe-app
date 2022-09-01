@@ -84,9 +84,9 @@ export default function RecipeDetails(props) {
                 >
                   { myRecipe[0].strMeal || myRecipe[0].strDrink }
                 </h5>
-                <p data-testid="recipe-category" className="card-text text-center">
+                <h4 data-testid="recipe-category" className="card-text text-center">
                   { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
-                </p>
+                </h4>
                 <div>
                   <button
                     type="button"
@@ -111,37 +111,18 @@ export default function RecipeDetails(props) {
                 </div>
               </div>
             </div>
-            {/* <img
-              width="200"
-              src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
-              alt="Qualquer foto"
-              style={ { display: 'block' } }
-              data-testid="recipe-photo"
-              className="recipe-photo"
-            /> */}
-
-
             {copied && <p style={ { display: 'block' } }>Link copied!</p>}
-            {/* <div>
-              <h2 data-testid="recipe-title" className="recipe-title text-center">
-                { myRecipe[0].strMeal
-              || myRecipe[0].strDrink}
-              </h2>
-              <h6 data-testid="recipe-category" className="recipe-category text-center">
-                { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
-              </h6>
-            </div> */}
             <div className="col-md-3">
               <hr />
             </div>
             <div className="card ingredients-card">
-              <h4 className="card-header ingredients-title text-center">Ingredients</h4>
+              <h2 className="card-header ingredients-title text-center">Ingredients</h2>
               <ul className="list-group list-group-flush ingredients-list text-center">
                 {loading && ingredients.map((ingredient, i) => (
                   <li
                     key={ ingredient }
                     data-testid={ `${i}-ingredient-name-and-measure` }
-                    className="list-group-item ingredients-list-item"
+                    className="list-group list-group-flush ingredients-list text-center"
                   >
                     {ingredient[1]}
                     {' '}
@@ -151,12 +132,13 @@ export default function RecipeDetails(props) {
                   </li>))}
               </ul>
             </div>
-            <div className="col-md-8">
-              <h2 className="text-center instructions-title">Instructions</h2>
-              <hr />
-              <p data-testid="instructions">
-                {myRecipe[0].strInstructions}
-              </p>
+            <div className="col-md-8 ingredients-card">
+              <h2 className="card-header ingredients-title text-center">Instructions</h2>
+              <div className="list-group list-group-item list-group-flush ingredients-list text-center">
+                <p data-testid="instructions" className="instructions">
+                  {myRecipe[0].strInstructions}
+                </p>
+              </div>
             </div>
 
             <h2>Video</h2>

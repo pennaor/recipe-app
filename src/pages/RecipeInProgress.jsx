@@ -113,76 +113,91 @@ function RecipeInProgress() {
   }
 
   return (
-    <div>
-      <img
-        src={ informationFood.image }
-        alt="foto da receita finalizada"
-        data-testid="recipe-photo"
-      />
-      <h1
-        data-testid="recipe-title"
-      >
-        { informationFood.name }
-      </h1>
-
-      <button
-        type="button"
-        data-testid="share-btn"
-        onClick={ () => linkCopied(url.replace(/\/in-progress$/, ''), setCopied) }
-      >
+    <div className="recipe-details-container">
+      <section className="card recipe-card">
         <img
-          src={ shareIcon }
-          alt="iconde de compartilhar"
+          className="card-img-top recipe-photo"
+          src={ informationFood.image }
+          alt="foto da receita finalizada"
+          data-testid="recipe-photo"
         />
-      </button>
+        <div className="card-body">
+          <h1
+            data-testid="recipe-title"
+          >
+            { informationFood.name }
+          </h1>
 
-      <button
-        type="button"
-        onClick={ () => setFavoritedStatus(myRecipe) }
-      >
-        <img
-          src={ favorite }
-          alt="icone de favoritar"
-          data-testid="favorite-btn"
-        />
-      </button>
+          <h4 data-testid="recipe-category" className="card-text text-center">{informationFood.category}</h4>
+
+          <button
+            type="button"
+            data-testid="share-btn"
+            onClick={ () => linkCopied(url.replace(/\/in-progress$/, ''), setCopied) }
+          >
+            <img
+              src={ shareIcon }
+              alt="iconde de compartilhar"
+            />
+          </button>
+
+          <button
+            type="button"
+            onClick={ () => setFavoritedStatus(myRecipe) }
+          >
+            <img
+              src={ favorite }
+              alt="icone de favoritar"
+              data-testid="favorite-btn"
+            />
+          </button>
+        </div>
+      </section>
 
       {copied && <p>Link copied!</p>}
 
-      <h4 data-testid="recipe-category">{informationFood.category}</h4>
+      <section className="ingredients-card card">
+        <h4 className="card-header ingredients-title text-center">Ingredients</h4>
+        <div className="list-group list-group-flush ingredients-list text-center">
+          {
+            ingredients.map((ingredient, index) => (
+              <label
+                className="ingredients-list"
+                key={ index }
+                data-testid={ `${index}-ingredient-step` }
+                htmlFor={ index }
+              >
+                <input
+                  id={ index }
+                  value={ ingredient }
+                  type="checkbox"
+                  onChange={ (e) => scratchOutIngredient(e) }
+                />
+                {' '}
+                { ingredientsConcluid.includes(ingredient)
+                  ? <span><s>{ ingredient }</s></span>
+                  : <span>{ ingredient }</span> }
+              </label>
+            ))
+          }
+        </div>
+      </section>
 
-      <h5>Ingredients:</h5>
-
-      {
-        ingredients.map((ingredient, index) => (
-          <div
-            key={ index }
-            data-testid={ `${index}-ingredient-step` }
-            htmlFor={ index }
-          >
-            <input
-              id={ index }
-              value={ ingredient }
-              type="checkbox"
-              onChange={ (e) => scratchOutIngredient(e) }
-            />
-            { ingredientsConcluid.includes(ingredient)
-              ? <span><s>{ ingredient }</s></span>
-              : <span>{ ingredient }</span> }
-          </div>
-        ))
-      }
-
-      <p data-testid="instructions">
+      <p data-testid="instructions" className="instructions">
         { informationFood.instructions }
       </p>
 
       <button
-        className="button-finish"
         type="button"
         data-testid="finish-recipe-btn"
         onClick={ () => mostrarDados() }
-        disabled={ btnDisabled } // requisito 42
+        disabled={ btnDisabled }
+        style={ {
+          position: 'fixed',
+          bottom: '7px',
+          width: '15em',
+          height: '2.5em',
+        } }
       >
         Finish Recipe
       </button>

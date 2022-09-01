@@ -7,13 +7,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 5px;
-}
-
-
-.recipe-title, .recipe-category {
-
-
+  padding: 15px;
 }
 
 .recipe-title {
@@ -31,16 +25,31 @@
 }
 
 .ingredients-card {
-  width: 18rem;
+  display: flex;
+  flex-direction: column;
+  width: 26rem;
+  background-color: rgba(152, 153, 154, 0.264);
+  border-radius: 10px;
+  padding: 15px;
 }
 
 .ingredients-list {
   padding: 5px;
+  font-size: 1.7rem;
+  font-weight: 700;
 }
 
 .instructions-title {
   font-size: 2.5rem;
   margin-bottom: 0.25rem;
+}
+
+.instructions {
+  font-size: 1.7rem;
+  font-weight: 500;
+  text-align: justify;
+  border-radius: 10px;
+  padding: 15px;
 }
 
 .recipe-card {
@@ -53,7 +62,7 @@
   flex-direction: column;
   gap: 0;
   padding-bottom: 10px;
-  width: 15rem;
+  width: 26rem;
 }
 
 .like-btn, .share-btn {
