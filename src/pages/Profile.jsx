@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Profile.css';
+import Footer from '../components/Footer';
 
 export default function Profile() {
   const [email, setEmail] = useState('');
@@ -58,6 +59,7 @@ export default function Profile() {
           </button>
         </section>
       </main>
+      <Footer />
     </div>
   );
 }

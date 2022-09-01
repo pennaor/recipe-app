@@ -67,59 +67,98 @@ export default function RecipeDetails(props) {
   };
 
   return (
-    <div>
+    <div className="recipe-details-container">
       {loading
         ? (
           <>
-            <img
+            <div className="card recipe-card">
+              <img
+                className="card-img-top recipe-photo"
+                src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
+                alt="recipe"
+              />
+              <div className="card-body">
+                <h5
+                  className="card-title recipe-title text-center"
+                  data-testid="recipe-title"
+                >
+                  { myRecipe[0].strMeal || myRecipe[0].strDrink }
+                </h5>
+                <p data-testid="recipe-category" className="card-text text-center">
+                  { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
+                </p>
+                <div>
+                  <button
+                    type="button"
+                    onClick={ () => setFavoritedStatus(myRecipe) }
+                    className=""
+                  >
+                    <img
+                      data-testid="favorite-btn"
+                      src={ favorite }
+                      alt="Favorite button"
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    data-testid="share-btn"
+                    onClick={ () => linkCopied(url, setCopied) }
+                    className="share-btn btn-outline-primary"
+                  >
+                    <img src={ shareIcon } alt="Share button" />
+                  </button>
+
+                </div>
+              </div>
+            </div>
+            {/* <img
               width="200"
               src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
               alt="Qualquer foto"
               style={ { display: 'block' } }
               data-testid="recipe-photo"
-            />
-            <button
-              type="button"
-              data-testid="share-btn"
-              onClick={ () => linkCopied(url, setCopied) }
-            >
-              <img src={ shareIcon } alt="Share button" />
-            </button>
-            <button
-              type="button"
-              onClick={ () => setFavoritedStatus(myRecipe) }
-            >
-              <img
-                data-testid="favorite-btn"
-                src={ favorite }
-                alt="Favorite button"
-              />
-            </button>
+              className="recipe-photo"
+            /> */}
+
+
             {copied && <p style={ { display: 'block' } }>Link copied!</p>}
-            <h2 data-testid="recipe-title">
-              { myRecipe[0].strMeal
-            || myRecipe[0].strDrink}
-            </h2>
-            <h4 data-testid="recipe-category">
-              { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
-            </h4>
-            <h2>Ingridients</h2>
-            <ul>
-              {loading && ingredients.map((ingredient, i) => (
-                <li
-                  key={ ingredient }
-                  data-testid={ `${i}-ingredient-name-and-measure` }
-                >
-                  {ingredient[1]}
-                  {' '}
-                  -
-                  {' '}
-                  {measure[i] && measure[i][1]}
-                </li>))}
-            </ul>
-            <p data-testid="instructions">
-              {myRecipe[0].strInstructions}
-            </p>
+            {/* <div>
+              <h2 data-testid="recipe-title" className="recipe-title text-center">
+                { myRecipe[0].strMeal
+              || myRecipe[0].strDrink}
+              </h2>
+              <h6 data-testid="recipe-category" className="recipe-category text-center">
+                { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
+              </h6>
+            </div> */}
+            <div className="col-md-3">
+              <hr />
+            </div>
+            <div className="card ingredients-card">
+              <h4 className="card-header ingredients-title text-center">Ingredients</h4>
+              <ul className="list-group list-group-flush ingredients-list text-center">
+                {loading && ingredients.map((ingredient, i) => (
+                  <li
+                    key={ ingredient }
+                    data-testid={ `${i}-ingredient-name-and-measure` }
+                    className="list-group-item ingredients-list-item"
+                  >
+                    {ingredient[1]}
+                    {' '}
+                    -
+                    {' '}
+                    {measure[i] && measure[i][1]}
+                  </li>))}
+              </ul>
+            </div>
+            <div className="col-md-8">
+              <h2 className="text-center instructions-title">Instructions</h2>
+              <hr />
+              <p data-testid="instructions">
+                {myRecipe[0].strInstructions}
+              </p>
+            </div>
+
             <h2>Video</h2>
             {api === 'themealdb' && (
               <iframe

@@ -6,7 +6,7 @@ import linkCopied from '../utils/linkCopied';
 import useChefManager from '../utils/useChefManager';
 import useFavoriteManager from '../utils/useFavoriteManager';
 
-import '../style/footerStyle.css';
+import '../style/Footer.css';
 import '../style/RecipeInProgress.css';
 
 function RecipeInProgress() {
