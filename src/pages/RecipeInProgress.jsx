@@ -29,6 +29,8 @@ function RecipeInProgress() {
     const lengthIngredConluid = ingredientsConcluid.length;
     if (lengthIngred === lengthIngredConluid) {
       setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
     }
   }
 
@@ -93,15 +95,12 @@ function RecipeInProgress() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function scratchOutIngredient({ target }) { // Necessário refatorar a função
-    const { value } = target;
+  function scratchOutIngredient({ target: { value } }) { // Necessário refatorar a função
     if (ingredientsConcluid.includes(value)) {
       const newlistIngredients = ingredientsConcluid.filter((e) => e !== value);
       setIngredientsConluid(newlistIngredients);
-      console.log(btnDisabled);
     } else {
       setIngredientsConluid([...ingredientsConcluid, value]);
-      console.log(btnDisabled);
     }
     enableBtnFinish();
   }
@@ -127,9 +126,11 @@ function RecipeInProgress() {
           >
             { informationFood.name }
           </h1>
-
-          <h4 data-testid="recipe-category" className="card-text text-center">{informationFood.category}</h4>
-
+          <h4 data-testid="recipe-category" className="card-text text-center">
+            {
+              informationFood.category
+            }
+          </h4>
           <button
             type="button"
             data-testid="share-btn"
@@ -140,7 +141,6 @@ function RecipeInProgress() {
               alt="iconde de compartilhar"
             />
           </button>
-
           <button
             type="button"
             onClick={ () => setFavoritedStatus(myRecipe) }
@@ -158,16 +158,20 @@ function RecipeInProgress() {
 
       <section className="ingredients-card card">
         <h4 className="card-header ingredients-title text-center">Ingredients</h4>
-        <div className="list-group list-group-flush ingredients-list text-center">
+        <div
+          className="list-group list-group-flush ingredients-list"
+        >
           {
             ingredients.map((ingredient, index) => (
               <label
-                className="ingredients-list"
+                className="ingredients-list list-group-item"
                 key={ index }
                 data-testid={ `${index}-ingredient-step` }
                 htmlFor={ index }
+                style={ { padding: '10px' } }
               >
                 <input
+                  className="checkbox"
                   id={ index }
                   value={ ingredient }
                   type="checkbox"

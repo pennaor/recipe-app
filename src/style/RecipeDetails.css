@@ -25,18 +25,17 @@
 }
 
 .ingredients-card {
+  background-color: rgba(152, 153, 154, 0);
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   width: 26rem;
-  background-color: rgba(152, 153, 154, 0.264);
-  border-radius: 10px;
-  padding: 15px;
 }
 
 .ingredients-list {
-  padding: 5px;
   font-size: 1.7rem;
   font-weight: 700;
+  padding: 5px;
 }
 
 .instructions-title {
@@ -45,11 +44,11 @@
 }
 
 .instructions {
+  border-radius: 10px;
   font-size: 1.7rem;
   font-weight: 500;
-  text-align: justify;
-  border-radius: 10px;
   padding: 15px;
+  text-align: justify;
 }
 
 .recipe-card {
@@ -66,7 +65,7 @@
 }
 
 .like-btn, .share-btn {
-  margin-left: 4px;
   background-color: white;
   border-radius: 5%;
+  margin-left: 4px;
 }

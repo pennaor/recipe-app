@@ -122,7 +122,7 @@ export default function RecipeDetails(props) {
                   <li
                     key={ ingredient }
                     data-testid={ `${i}-ingredient-name-and-measure` }
-                    className="list-group list-group-flush ingredients-list text-center"
+                    className="list-group-item"
                   >
                     {ingredient[1]}
                     {' '}
@@ -134,7 +134,10 @@ export default function RecipeDetails(props) {
             </div>
             <div className="col-md-8 ingredients-card">
               <h2 className="card-header ingredients-title text-center">Instructions</h2>
-              <div className="list-group list-group-item list-group-flush ingredients-list text-center">
+              <div
+                className="list-group list-group-item
+              list-group-flush ingredients-list text-center"
+              >
                 <p data-testid="instructions" className="instructions">
                   {myRecipe[0].strInstructions}
                 </p>
