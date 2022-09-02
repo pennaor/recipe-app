@@ -150,7 +150,7 @@ export default function Recipes() {
                   src={ meal[`str${dataTestidElement}Thumb`] }
                   alt={ meal[`str${dataTestidElement}Thumb}`] }
                   data-testid={ `${index}-card-img` }
-                  style={ { maxWidth: '250px' } }
+                  className="recipe-photo"
                 />
                 <h4
                   data-testid={ `${index}-card-name` }

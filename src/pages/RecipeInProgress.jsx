@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
 import fetchRecipe from '../services/fetchRecipe';
-import linkCopied from '../utils/linkCopied';
 import useChefManager from '../utils/useChefManager';
 import useFavoriteManager from '../utils/useFavoriteManager';
 
 import '../style/Footer.css';
 import '../style/RecipeInProgress.css';
+import FavoriteButton from '../components/FavoriteButton';
+import ShareButton from '../components/ShareButton';
 
 function RecipeInProgress() {
   const [ingredients, setIngredients] = useState([]);
   const [ingredientsConcluid, setIngredientsConluid] = useState([]);
   const [informationFood, setInformationFood] = useState({});
-  const [copied, setCopied] = useState(false);
   const [myRecipe, SetMyRecipe] = useState([]);
   const [btnDisabled, setBtnDisabled] = useState(true);
 
@@ -112,49 +111,38 @@ function RecipeInProgress() {
   }
 
   return (
-    <div className="recipe-details-container">
-      <section className="card recipe-card">
+    <div className="in-progress-recipe-container">
+      <section className="card in-progress-recipe-card">
         <img
-          className="card-img-top recipe-photo"
+          className="card-img-top in-progress-recipe-photo"
           src={ informationFood.image }
           alt="foto da receita finalizada"
           data-testid="recipe-photo"
         />
         <div className="card-body">
-          <h1
+          <h5
             data-testid="recipe-title"
+            className="card-title text-center in-progress-recipe-title"
           >
             { informationFood.name }
-          </h1>
+          </h5>
           <h4 data-testid="recipe-category" className="card-text text-center">
             {
               informationFood.category
             }
           </h4>
-          <button
-            type="button"
-            data-testid="share-btn"
-            onClick={ () => linkCopied(url.replace(/\/in-progress$/, ''), setCopied) }
-          >
-            <img
-              src={ shareIcon }
-              alt="iconde de compartilhar"
+          <div>
+            <FavoriteButton
+              onClick={ () => setFavoritedStatus(myRecipe) }
+              favorite={ favorite }
             />
-          </button>
-          <button
-            type="button"
-            onClick={ () => setFavoritedStatus(myRecipe) }
-          >
-            <img
-              src={ favorite }
-              alt="icone de favoritar"
-              data-testid="favorite-btn"
+            <ShareButton
+              url={ url.replace(/\/in-progress$/, '') }
+              recipe={ myRecipe[0] }
             />
-          </button>
+          </div>
         </div>
       </section>
-
-      {copied && <p>Link copied!</p>}
 
       <section className="ingredients-card card">
         <h4 className="card-header ingredients-title text-center">Ingredients</h4>

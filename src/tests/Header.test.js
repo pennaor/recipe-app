@@ -209,7 +209,7 @@ describe('Verifica funcionalidades do componente Header', () => {
       customRender(<App />, '/foods');
       userEvent.click(screen.getByAltText('icone de pesquisa'));
       const searchInput = screen.getByPlaceholderText('Buscar receitas');
-      userEvent.type(searchInput, 'Big');
+      userEvent.type(searchInput, 'comidaInvalida');
       userEvent.click(screen.getByRole('radio', { name: /name/i }));
       userEvent.click(screen.getByRole('button', { name: /search/i }));
       await waitFor(() => {

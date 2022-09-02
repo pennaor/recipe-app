@@ -29,16 +29,22 @@
 
 .recipe-card {
   align-items: center;
-  background-color: rgb(239 237 237);
-  border: 1px solid #dc354591;
+  background-color: rgb(220, 53, 69);
+  border: none;
   border-radius: 2%;
+  color: white;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   padding-bottom: 10px;
+  width: 16rem;
 }
 
 .recipe-title {
   text-align: center;
+}
 
+.recipe-photo {
+  margin-top: 3px;
+  max-width: 250px;
 }

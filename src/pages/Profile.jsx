@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../style/Profile.css';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function Profile() {
@@ -25,41 +26,44 @@ export default function Profile() {
   };
 
   return (
-    <div className="div">
-      <main>
-        <section className="navigation">
-          <p data-testid="profile-email" className="profile-email">
-            {
-              email.length > 0 ? email : 'Email'
-            }
-          </p>
-          <button
-            className="btn btn-info profile-button"
-            type="button"
-            data-testid="profile-done-btn"
-            onClick={ () => push('/done-recipes') }
-          >
-            Done Recipes
-          </button>
-          <button
-            className="btn btn-info profile-button"
-            type="button"
-            data-testid="profile-favorite-btn"
-            onClick={ () => push('/favorite-recipes') }
-          >
-            Favorite Recipes
-          </button>
-          <button
-            className="btn btn-danger profile-button"
-            type="button"
-            data-testid="profile-logout-btn"
-            onClick={ () => logout() }
-          >
-            Logout
-          </button>
-        </section>
-      </main>
-      <Footer />
-    </div>
+    <>
+      <Header />
+      <div className="profile">
+        <main>
+          <section className="navigation">
+            <p data-testid="profile-email" className="profile-email">
+              {
+                email.length > 0 ? email : 'Email'
+              }
+            </p>
+            <button
+              className="btn btn-info profile-button"
+              type="button"
+              data-testid="profile-done-btn"
+              onClick={ () => push('/done-recipes') }
+            >
+              Done Recipes
+            </button>
+            <button
+              className="btn btn-info profile-button"
+              type="button"
+              data-testid="profile-favorite-btn"
+              onClick={ () => push('/favorite-recipes') }
+            >
+              Favorite Recipes
+            </button>
+            <button
+              className="btn btn-danger profile-button"
+              type="button"
+              data-testid="profile-logout-btn"
+              onClick={ () => logout() }
+            >
+              Logout
+            </button>
+          </section>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 }

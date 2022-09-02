@@ -54,7 +54,7 @@ describe('Verifica funcionalidades da página de Favorite Recipes', () => {
     expect(recipesNames[0]).toHaveTextContent('Spicy Arrabiata Penne');
     expect(recipesNames[1]).toHaveTextContent('Aquamarine');
 
-    const unFavoriteButton = screen.getAllByAltText(/unfavorite button/i);
+    const unFavoriteButton = screen.getAllByAltText(/favorite button/i);
     expect(unFavoriteButton).toHaveLength(2);
     expect(unFavoriteButton[0]).toHaveAttribute('src', 'blackHeartIcon.svg');
     expect(unFavoriteButton[1]).toHaveAttribute('src', 'blackHeartIcon.svg');
@@ -84,7 +84,7 @@ describe('Verifica funcionalidades da página de Favorite Recipes', () => {
     expect(recipesImages[0]).toHaveAttribute('src', favoriteRecipes[0].image);
     expect(recipesImages[1]).toHaveAttribute('src', favoriteRecipes[1].image);
   
-    const unFavoriteButton = screen.getAllByAltText(/unfavorite button/i);
+    const unFavoriteButton = screen.getAllByAltText(/favorite button/i);
     expect(unFavoriteButton).toHaveLength(2);
 
     userEvent.click(unFavoriteButton[0]);

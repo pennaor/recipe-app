@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import FavoriteButton from '../components/FavoriteButton';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import useFavoriteManager from '../utils/useFavoriteManager';
+import '../style/FavoriteRecipes.css';
 
 export default function FavoriteRecipes() {
   const { favoriteRecipes, setFavoritedStatus } = useFavoriteManager();
@@ -16,7 +18,7 @@ export default function FavoriteRecipes() {
   }, [favoriteRecipes, activeFilter, setRecipesToRender]);
 
   return (
-    <div>
+    <div className="favorite-recipes">
       <Header />
       <div>
         <button
@@ -71,18 +73,13 @@ export default function FavoriteRecipes() {
             </div>
 
             <div>
-              <button
-                type="button"
+              <FavoriteButton
                 onClick={ () => setFavoritedStatus([recipe]) }
-              >
-                <img
-                  data-testid={ `${index}-horizontal-favorite-btn` }
-                  src={ blackHeartIcon }
-                  alt="unfavorite button"
-                />
-              </button>
+                testid={ `${index}-horizontal-favorite-btn` }
+                favorite={ blackHeartIcon }
+              />
               <ShareButton
-                recipe={ recipe }
+                url={ `/${recipe.type}s/${recipe.id}` }
                 testid={ `${index}-horizontal-share-btn` }
               />
               <span

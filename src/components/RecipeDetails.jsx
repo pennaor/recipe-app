@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import fetchRecipe from '../services/fetchRecipe';
-import shareIcon from '../images/shareIcon.svg';
-import linkCopied from '../utils/linkCopied';
 import useFavoriteManager from '../utils/useFavoriteManager';
 import useChefManager from '../utils/useChefManager';
 import '../style/RecipeDetails.css';
+import ShareButton from './ShareButton';
+import FavoriteButton from './FavoriteButton';
+
+const temporaryClassName = `list-group list-group-flush
+details-ingredients-list text-center`;
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -14,7 +17,6 @@ export default function RecipeDetails(props) {
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   const { infos: { api, id, url } } = props;
 
@@ -67,19 +69,20 @@ export default function RecipeDetails(props) {
   };
 
   return (
-    <div className="recipe-details-container">
+    <div className="details-recipe-container">
       {loading
         ? (
           <>
-            <div className="card recipe-card">
+            <div className="card details-recipe-card">
               <img
-                className="card-img-top recipe-photo"
+                className="card-img-top details-recipe-photo"
                 src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
                 alt="recipe"
+                data-testid="recipe-photo"
               />
               <div className="card-body">
                 <h5
-                  className="card-title recipe-title text-center"
+                  className="card-title details-recipe-title text-center"
                   data-testid="recipe-title"
                 >
                   { myRecipe[0].strMeal || myRecipe[0].strDrink }
@@ -88,36 +91,30 @@ export default function RecipeDetails(props) {
                   { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
                 </h4>
                 <div>
-                  <button
-                    type="button"
+                  <FavoriteButton
                     onClick={ () => setFavoritedStatus(myRecipe) }
-                    className=""
-                  >
-                    <img
-                      data-testid="favorite-btn"
-                      src={ favorite }
-                      alt="Favorite button"
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    data-testid="share-btn"
-                    onClick={ () => linkCopied(url, setCopied) }
-                    className="share-btn btn-outline-primary"
-                  >
-                    <img src={ shareIcon } alt="Share button" />
-                  </button>
-
+                    favorite={ favorite }
+                  />
+                  <ShareButton
+                    url={ url }
+                    recipe={ myRecipe[0] }
+                  />
                 </div>
               </div>
             </div>
-            {copied && <p style={ { display: 'block' } }>Link copied!</p>}
+
             <div className="col-md-3">
               <hr />
             </div>
             <div className="card ingredients-card">
-              <h2 className="card-header ingredients-title text-center">Ingredients</h2>
-              <ul className="list-group list-group-flush ingredients-list text-center">
+              <h2
+                className="card-header details-ingredients-title text-center"
+              >
+                Ingredients
+              </h2>
+              <ul
+                className={ temporaryClassName }
+              >
                 {loading && ingredients.map((ingredient, i) => (
                   <li
                     key={ ingredient }
@@ -133,10 +130,14 @@ export default function RecipeDetails(props) {
               </ul>
             </div>
             <div className="col-md-8 ingredients-card">
-              <h2 className="card-header ingredients-title text-center">Instructions</h2>
+              <h2
+                className="card-header details-ingredients-title text-center"
+              >
+                Instructions
+              </h2>
               <div
                 className="list-group list-group-item
-              list-group-flush ingredients-list text-center"
+              list-group-flush details-ingredients-list text-center"
               >
                 <p data-testid="instructions" className="instructions">
                   {myRecipe[0].strInstructions}

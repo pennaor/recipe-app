@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import shareIcon from '../images/shareIcon.svg';
 import linkCopied from '../utils/linkCopied';
 
-export default function ShareButton({ recipe, testid }) {
+export default function ShareButton({ url, testid }) {
   const [copied, setCopied] = useState(false);
+
   return (
     <button
       type="button"
+      className="details-share-btn btn-outline-primary"
       onClick={ () => {
-        const url = `/${recipe.type}s/${recipe.id}`;
         linkCopied(url, setCopied);
       } }
     >
@@ -28,8 +29,16 @@ export default function ShareButton({ recipe, testid }) {
 
 ShareButton.propTypes = {
   recipe: PropTypes.shape({
-    type: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-  }).isRequired,
-  testid: PropTypes.string.isRequired,
+    idMeal: PropTypes.string,
+    idDrink: PropTypes.string,
+    id: PropTypes.string,
+  }),
+  url: PropTypes.string,
+  testid: PropTypes.string,
+};
+
+ShareButton.defaultProps = {
+  recipe: {},
+  url: '',
+  testid: 'share-btn',
 };
