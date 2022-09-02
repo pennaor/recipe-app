@@ -4,12 +4,9 @@ import { useHistory } from 'react-router-dom';
 import fetchRecipe from '../services/fetchRecipe';
 import useFavoriteManager from '../utils/useFavoriteManager';
 import useChefManager from '../utils/useChefManager';
-import '../style/RecipeDetails.css';
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
-
-const temporaryClassName = `list-group list-group-flush
-details-ingredients-list text-center`;
+import '../style/RecipeDetails.css';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -113,7 +110,8 @@ export default function RecipeDetails(props) {
                 Ingredients
               </h2>
               <ul
-                className={ temporaryClassName }
+                className="list-group list-group-flush
+                details-ingredients-list text-center"
               >
                 {loading && ingredients.map((ingredient, i) => (
                   <li
@@ -137,42 +135,35 @@ export default function RecipeDetails(props) {
               </h2>
               <div
                 className="list-group list-group-item
-              list-group-flush details-ingredients-list text-center"
+                list-group-flush details-instructions"
               >
-                <p data-testid="instructions" className="instructions">
-                  {myRecipe[0].strInstructions}
+                <p data-testid="instructions">
+                  { myRecipe[0].strInstructions }
                 </p>
               </div>
             </div>
-
             <h2>Video</h2>
             {api === 'themealdb' && (
               <iframe
-                data-testid="video"
-                width="300"
-                height="200"
                 src={ `https://www.youtube.com/embed/${myRecipe[0].strYoutube.split('=')[1]}` }
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer;
-              autoplay; clipboard-write;
-              encrypted-media; gyroscope; picture-in-picture"
+                autoplay; clipboard-write;
+                encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
+                className="details-recipe-video"
+                data-testid="video"
               />
             )}
-            <h2>Recommended</h2>
+            <h2>Recomendations</h2>
             <div
-              className="recommended"
-              style={ { overflow: 'auto', whiteSpace: 'nowrap', width: '300px' } }
+              className="details-recomendations"
             >
               { recomendations.map((option, i) => (
                 <div
-                  style={ {
-                    width: '160px',
-                    display: 'inline-block',
-                    textAlign: 'center',
-                  } }
                   key={ i }
+                  className="details-recomendation-card"
                   data-testid={ `${i}-recomendation-card` }
                 >
                   <img
