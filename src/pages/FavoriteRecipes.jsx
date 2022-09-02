@@ -18,80 +18,82 @@ export default function FavoriteRecipes() {
   }, [favoriteRecipes, activeFilter, setRecipesToRender]);
 
   return (
-    <div className="favorite-recipes">
+    <>
       <Header />
-      <div>
-        <button
-          type="button"
-          data-testid="filter-by-all-btn"
-          onClick={ () => setActiveFilter('all') }
-        >
-          All
-        </button>
-        <button
-          type="button"
-          data-testid="filter-by-food-btn"
-          onClick={ () => setActiveFilter('drink') }
-        >
-          Food
-        </button>
-        <button
-          type="button"
-          data-testid="filter-by-drink-btn"
-          onClick={ () => setActiveFilter('food') }
-        >
-          Drinks
-        </button>
-      </div>
-      <div>
-        { recipesToRender.map((recipe, index) => (
-          <div key={ recipe.name }>
-            <div>
-              <Link to={ `/${recipe.type}s/${recipe.id}` }>
-                <img
-                  data-testid={ `${index}-horizontal-image` }
-                  src={ recipe.image }
-                  alt={ `recipe of ${recipe.name}` }
-                  width="100px"
-                />
-              </Link>
-            </div>
+      <div className="favorite-recipes">
+        <div>
+          <button
+            type="button"
+            data-testid="filter-by-all-btn"
+            onClick={ () => setActiveFilter('all') }
+          >
+            All
+          </button>
+          <button
+            type="button"
+            data-testid="filter-by-food-btn"
+            onClick={ () => setActiveFilter('drink') }
+          >
+            Food
+          </button>
+          <button
+            type="button"
+            data-testid="filter-by-drink-btn"
+            onClick={ () => setActiveFilter('food') }
+          >
+            Drinks
+          </button>
+        </div>
+        <div>
+          { recipesToRender.map((recipe, index) => (
+            <div key={ recipe.name }>
+              <div>
+                <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                  <img
+                    data-testid={ `${index}-horizontal-image` }
+                    src={ recipe.image }
+                    alt={ `recipe of ${recipe.name}` }
+                    width="100px"
+                  />
+                </Link>
+              </div>
 
-            <div>
-              <p data-testid={ `${index}-horizontal-top-text` }>
-                { recipe.alcoholicOrNot
-                  || `${recipe.nationality} - ${recipe.category}` }
-              </p>
-              <Link to={ `/${recipe.type}s/${recipe.id}` }>
-                <p data-testid={ `${index}-horizontal-name` }>
-                  { recipe.name }
+              <div>
+                <p data-testid={ `${index}-horizontal-top-text` }>
+                  { recipe.alcoholicOrNot
+                    || `${recipe.nationality} - ${recipe.category}` }
                 </p>
-              </Link>
-              <p data-testid={ `${index}-horizontal-done-date` }>
-                Data
-              </p>
-            </div>
+                <Link to={ `/${recipe.type}s/${recipe.id}` }>
+                  <p data-testid={ `${index}-horizontal-name` }>
+                    { recipe.name }
+                  </p>
+                </Link>
+                <p data-testid={ `${index}-horizontal-done-date` }>
+                  Data
+                </p>
+              </div>
 
-            <div>
-              <FavoriteButton
-                onClick={ () => setFavoritedStatus([recipe]) }
-                testid={ `${index}-horizontal-favorite-btn` }
-                favorite={ blackHeartIcon }
-              />
-              <ShareButton
-                url={ `/${recipe.type}s/${recipe.id}` }
-                testid={ `${index}-horizontal-share-btn` }
-              />
-              <span
-                data-testid={ `${index}-${''}-horizontal-tag` }
-              >
-                Tag
-              </span>
-            </div>
+              <div>
+                <FavoriteButton
+                  onClick={ () => setFavoritedStatus([recipe]) }
+                  testid={ `${index}-horizontal-favorite-btn` }
+                  favorite={ blackHeartIcon }
+                />
+                <ShareButton
+                  url={ `/${recipe.type}s/${recipe.id}` }
+                  testid={ `${index}-horizontal-share-btn` }
+                />
+                <span
+                  data-testid={ `${index}-${''}-horizontal-tag` }
+                >
+                  Tag
+                </span>
+              </div>
 
-          </div>
-        )) }
+            </div>
+          )) }
+        </div>
       </div>
-    </div>
+    </>
   );
 }
