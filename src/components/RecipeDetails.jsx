@@ -143,7 +143,7 @@ export default function RecipeDetails(props) {
                 </p>
               </div>
             </div>
-            <h2>Video</h2>
+            <h4>Video</h4>
             {api === 'themealdb' && (
               <iframe
                 src={ `https://www.youtube.com/embed/${myRecipe[0].strYoutube.split('=')[1]}` }
@@ -157,7 +157,6 @@ export default function RecipeDetails(props) {
                 data-testid="video"
               />
             )}
-            <h2>Recommendation</h2>
             <Recommendations
               recommendations={ recomendations }
               type={ url.includes('foods') ? '/drinks' : '/foods' }

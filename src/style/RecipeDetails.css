@@ -71,10 +71,22 @@
 
 .details-recomendations {
   background-color: rgb(220, 53, 69);
-  border: 5px solid  rgb(220, 53, 69);
+  border: 3px solid  rgb(220, 53, 69);
   border-radius: 0.25rem;
   max-width: 450px;
+  padding-bottom: 0.5rem;
   width: 100%;
+}
+
+.details-recomendations a {
+  background-color: transparent;
+  color: transparent;
+  text-decoration: none;
+}
+
+.details-recomendations a:hover {
+  color: transparent;
+  text-decoration: none;
 }
 
 .details-recomendation-card {
@@ -82,43 +94,34 @@
   border: none;
   border-radius: 0;
   color: white;
+  gap: 0.7rem;
   width: 50%;
 }
 
 .details-recomendation-card:first-child {
+  border-right: 0.1em solid rgb(220, 53, 69);
   float: left;
 }
 
 .details-recomendation-card:last-child {
+  border-left: 0.1em solid rgb(220, 53, 69);
   float: right;
-}
-
-.details-recomendation-card a {
-  background-color: transparent;
-  color: transparent;
-  text-decoration: none;
-}
-
-.details-recomendation-card a:hover {
-  color: transparent;
-  text-decoration: none;
 }
 
 .details-recomendations-recipe-photo {
   width: 100%;
-
-}
-
-.details-recomendations-recipe-photo.right {
-  border-left: 0.1em solid rgb(220, 53, 69);
-}
-
-.details-recomendations-recipe-photo.left {
-  border-right: 0.1em solid rgb(220, 53, 69);
 }
 
 .details-recomendation-card-title {
   color: white;
   font-size: 0.9rem;
-  padding: 0.5rem 0 0.1rem;
+}
+
+.carousel-control-next-icon, .carousel-control-prev-icon {
+  filter: drop-shadow(0 0 black);
+}
+
+.carousel-control-next, .carousel-control-prev {
+  bottom: 0.5rem;
+  top: unset;
 }
