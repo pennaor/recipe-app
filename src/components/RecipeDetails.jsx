@@ -8,6 +8,7 @@ import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import '../style/RecipeDetails.css';
 import Recommendations from './Recommendations';
+import RecipeVideo from './RecipeVideo';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -143,20 +144,10 @@ export default function RecipeDetails(props) {
                 </p>
               </div>
             </div>
-            <h4>Video</h4>
-            {api === 'themealdb' && (
-              <iframe
-                src={ `https://www.youtube.com/embed/${myRecipe[0].strYoutube.split('=')[1]}` }
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer;
-                autoplay; clipboard-write;
-                encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="details-recipe-video"
-                data-testid="video"
-              />
-            )}
+
+            <RecipeVideo
+              url={ myRecipe[0].strYoutube }
+            />
             <Recommendations
               recommendations={ recomendations }
               type={ url.includes('foods') ? '/drinks' : '/foods' }
