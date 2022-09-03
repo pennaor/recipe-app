@@ -7,6 +7,7 @@ import useChefManager from '../utils/useChefManager';
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import '../style/RecipeDetails.css';
+import Recommendations from './Recommendations';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -156,29 +157,11 @@ export default function RecipeDetails(props) {
                 data-testid="video"
               />
             )}
-            <h2>Recomendations</h2>
-            <div
-              className="details-recomendations"
-            >
-              { recomendations.map((option, i) => (
-                <div
-                  key={ i }
-                  className="details-recomendation-card"
-                  data-testid={ `${i}-recomendation-card` }
-                >
-                  <img
-                    width="130"
-                    src={ option.strMealThumb || option.strDrinkThumb }
-                    alt="recipe recomedations"
-                  />
-                  <p
-                    data-testid={ `${i}-recomendation-title` }
-                  >
-                    { option.strDrink || option.strMeal }
-                  </p>
-                </div>
-              )) }
-            </div>
+            <h2>Recommendation</h2>
+            <Recommendations
+              recommendations={ recomendations }
+              type={ url.includes('foods') ? '/drinks' : '/foods' }
+            />
           </>
         )
         : <i>Loading...</i>}

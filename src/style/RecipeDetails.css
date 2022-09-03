@@ -65,19 +65,60 @@
 }
 
 .details-recipe-video {
-  height: 200px;
-  width: 250px;
+  height: 35vh;
+  width: 35vh;
 }
 
 .details-recomendations {
-  margin-bottom: 50px;
-  overflow: auto;
-  white-space: nowrap;
-  width: 250px;
+  background-color: rgb(220, 53, 69);
+  border: 5px solid  rgb(220, 53, 69);
+  border-radius: 0.25rem;
+  max-width: 450px;
+  width: 100%;
 }
 
 .details-recomendation-card {
-  display: inline-block;
-  text-align: center;
-  width: 126px;
+  background-color: rgb(220, 53, 69);
+  border: none;
+  border-radius: 0;
+  color: white;
+  width: 50%;
+}
+
+.details-recomendation-card:first-child {
+  float: left;
+}
+
+.details-recomendation-card:last-child {
+  float: right;
+}
+
+.details-recomendation-card a {
+  background-color: transparent;
+  color: transparent;
+  text-decoration: none;
+}
+
+.details-recomendation-card a:hover {
+  color: transparent;
+  text-decoration: none;
+}
+
+.details-recomendations-recipe-photo {
+  width: 100%;
+
+}
+
+.details-recomendations-recipe-photo.right {
+  border-left: 0.1em solid rgb(220, 53, 69);
+}
+
+.details-recomendations-recipe-photo.left {
+  border-right: 0.1em solid rgb(220, 53, 69);
+}
+
+.details-recomendation-card-title {
+  color: white;
+  font-size: 0.9rem;
+  padding: 0.5rem 0 0.1rem;
 }
