@@ -1,28 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import fetchRecipe from '../services/fetchRecipe';
 import useFavoriteManager from '../utils/useFavoriteManager';
-import useChefManager from '../utils/useChefManager';
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import '../style/RecipeDetails.css';
 import Recommendations from './Recommendations';
 import RecipeVideo from './RecipeVideo';
 import Loading from './Loading';
+import DoRecipeButton from './DoRecipeButton';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
-
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const { infos: { api, id, url } } = props;
-
-  const history = useHistory();
   const { favorite, updateFavoritedStatus, setFavoritedStatus } = useFavoriteManager();
-  const { recipeStatus, updateRecipeStatus, startRecipe } = useChefManager();
 
   useEffect(() => {
     const fetchMeal = async () => {
@@ -47,17 +41,9 @@ export default function RecipeDetails(props) {
       setMeasure(recepies.filter(([key, value]) => (
         key.includes('strMeasure') && value)));
       updateFavoritedStatus(myRecipe);
-      updateRecipeStatus(myRecipe);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [myRecipe]);
-
-  const doRecipe = () => {
-    if (recipeStatus === 'Start Recipe') {
-      startRecipe(ingredients);
-    }
-    history.push(`${history.location.pathname}/in-progress`);
-  };
 
   return loading ? (
     <div className="details-recipe-container">
@@ -143,19 +129,10 @@ export default function RecipeDetails(props) {
             : { api: 'themealdb', key: 'meals', routeTo: '/foods' }
         }
       />
-      { recipeStatus && (
-        <button
-          type="button"
-          data-testid="start-recipe-btn"
-          style={ {
-            position: 'fixed',
-            bottom: '0',
-          } }
-          onClick={ doRecipe }
-        >
-          { recipeStatus }
-        </button>
-      ) }
+      <DoRecipeButton
+        recipe={ myRecipe }
+        ingredients={ ingredients }
+      />
     </div>
   ) : (
     <Loading />
