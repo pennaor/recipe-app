@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import DoRecipeButton from './DoRecipeButton';
 
 export default function RecipeIngrendients({ recipe }) {
-  const [ingredients, setIngredients] = useState([]);
-  const [measure, setMeasure] = useState([]);
-
-  useEffect(() => {
-    const recepies = Object.entries(recipe[0]);
-    setIngredients(recepies.filter(([key, value]) => (
-      key.includes('strIngredient') && value)));
-    setMeasure(recepies.filter(([key, value]) => (
-      key.includes('strMeasure') && value)));
-  }, [recipe]);
+  const ingredients = [];
+  const MAX_INGREDIENTS = 20;
+  for (let i = 1; i <= MAX_INGREDIENTS; i += 1) {
+    const ingredient = recipe[`strIngredient${i}`];
+    const measure = recipe[`strMeasure${i}`];
+    if (!ingredient) {
+      break;
+    }
+    ingredients.push({ ingredient, measure });
+  }
 
   return ingredients.length ? (
     <>
@@ -26,17 +26,17 @@ export default function RecipeIngrendients({ recipe }) {
           className="list-group list-group-flush
       details-ingredients-list text-center"
         >
-          { ingredients.map((ingredient, i) => (
+          { ingredients.map(({ ingredient, measure }, i) => (
             <li
               key={ ingredient }
               data-testid={ `${i}-ingredient-name-and-measure` }
               className="list-group-item"
             >
-              {ingredient[1]}
+              {ingredient}
               {' '}
               -
               {' '}
-              {measure[i] && measure[i][1]}
+              {measure}
             </li>)) }
         </ul>
       </div>
@@ -49,5 +49,5 @@ export default function RecipeIngrendients({ recipe }) {
 }
 
 RecipeIngrendients.propTypes = {
-  recipe: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  recipe: PropTypes.shape({}).isRequired,
 };

@@ -11,10 +11,10 @@ export default function useChefManager() {
   );
 
   useEffect(() => {
-    if (recipe.length) {
-      const id = recipe[0].idMeal ?? recipe[0].idDrink;
+    if (recipe) {
+      const id = recipe.idMeal ?? recipe.idDrink;
       const itsDone = doneRecipes.some((done) => done.id === id);
-      const inProgress = recipe[0].idMeal
+      const inProgress = recipe.idMeal
         ? inProgressRecipes.meals : inProgressRecipes.cocktails;
 
       if (itsDone) {
@@ -29,8 +29,8 @@ export default function useChefManager() {
 
   const updateRecipeStatus = (recipeToCheck) => saveRecipe(recipeToCheck);
   const startRecipe = (ingredients) => {
-    const key = recipe[0].strMeal ? 'meals' : 'cocktails';
-    const id = recipe[0].idMeal ?? recipe[0].idDrink;
+    const key = recipe.strMeal ? 'meals' : 'cocktails';
+    const id = recipe.idMeal ?? recipe.idDrink;
     setInProgressRecipes({
       ...inProgressRecipes,
       [key]: { ...inProgressRecipes[key], [id]: ingredients },

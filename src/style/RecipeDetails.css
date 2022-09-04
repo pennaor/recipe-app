@@ -125,3 +125,9 @@
   bottom: 0.5rem;
   top: unset;
 }
+
+.do-recipe-btn {
+  bottom: 0;
+  position: fixed;
+  z-index: 2;
+}

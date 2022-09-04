@@ -68,7 +68,7 @@ export default function RecipeDetails(props) {
       </div>
 
       <RecipeIngrendients
-        recipe={ myRecipe }
+        recipe={ myRecipe[0] }
       />
       <RecipeInstructions
         recipe={ myRecipe }

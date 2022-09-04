@@ -21,12 +21,9 @@ export default function DoRecipeButton({ recipe, ingredients }) {
   return recipeStatus ? (
     <button
       type="button"
-      data-testid="start-recipe-btn"
-      style={ {
-        position: 'fixed',
-        bottom: '0',
-      } }
       onClick={ doRecipe }
+      className="do-recipe-btn"
+      data-testid="start-recipe-btn"
     >
       { recipeStatus }
     </button>
@@ -34,8 +31,8 @@ export default function DoRecipeButton({ recipe, ingredients }) {
 }
 
 DoRecipeButton.propTypes = {
-  recipe: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  ingredients: PropTypes.arrayOf(PropTypes.array),
+  recipe: PropTypes.shape({}).isRequired,
+  ingredients: PropTypes.arrayOf(PropTypes.shape({})),
 };
 
 DoRecipeButton.defaultProps = {
