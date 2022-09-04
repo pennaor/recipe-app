@@ -9,10 +9,11 @@ import FavoriteButton from './FavoriteButton';
 import '../style/RecipeDetails.css';
 import Recommendations from './Recommendations';
 import RecipeVideo from './RecipeVideo';
+import Loading from './Loading';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
-  const [recomendations, setRecomendations] = useState([]);
+
   const [ingredients, setIngredients] = useState([]);
   const [measure, setMeasure] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -26,19 +27,10 @@ export default function RecipeDetails(props) {
   useEffect(() => {
     const fetchMeal = async () => {
       const retorno = await fetchRecipe(api, id);
-      const RECOMENDATIONS_LEN = 6;
       if (api === 'themealdb') {
         setMyRecipe(retorno.meals);
-        const options = await fetchRecipe('thecocktaildb', '', 'name');
-        if (options.drinks && options.drinks.length >= RECOMENDATIONS_LEN) {
-          setRecomendations(options.drinks.slice(0, RECOMENDATIONS_LEN));
-        }
       } else {
         setMyRecipe(retorno.drinks);
-        const options = await fetchRecipe('themealdb', '', 'name');
-        if (options.meals && options.meals.length >= RECOMENDATIONS_LEN) {
-          setRecomendations(options.meals.slice(0, RECOMENDATIONS_LEN));
-        }
       }
 
       setLoading(true);
@@ -67,95 +59,90 @@ export default function RecipeDetails(props) {
     history.push(`${history.location.pathname}/in-progress`);
   };
 
-  return (
+  return loading ? (
     <div className="details-recipe-container">
-      {loading
-        ? (
-          <>
-            <div className="card details-recipe-card">
-              <img
-                className="card-img-top details-recipe-photo"
-                src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
-                alt="recipe"
-                data-testid="recipe-photo"
-              />
-              <div className="card-body">
-                <h5
-                  className="card-title details-recipe-title text-center"
-                  data-testid="recipe-title"
-                >
-                  { myRecipe[0].strMeal || myRecipe[0].strDrink }
-                </h5>
-                <h4 data-testid="recipe-category" className="card-text text-center">
-                  { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
-                </h4>
-                <div>
-                  <FavoriteButton
-                    onClick={ () => setFavoritedStatus(myRecipe) }
-                    favorite={ favorite }
-                  />
-                  <ShareButton
-                    url={ url }
-                    recipe={ myRecipe[0] }
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-3">
-              <hr />
-            </div>
-            <div className="card ingredients-card">
-              <h2
-                className="card-header details-ingredients-title text-center"
-              >
-                Ingredients
-              </h2>
-              <ul
-                className="list-group list-group-flush
-                details-ingredients-list text-center"
-              >
-                {loading && ingredients.map((ingredient, i) => (
-                  <li
-                    key={ ingredient }
-                    data-testid={ `${i}-ingredient-name-and-measure` }
-                    className="list-group-item"
-                  >
-                    {ingredient[1]}
-                    {' '}
-                    -
-                    {' '}
-                    {measure[i] && measure[i][1]}
-                  </li>))}
-              </ul>
-            </div>
-            <div className="col-md-8 ingredients-card">
-              <h2
-                className="card-header details-ingredients-title text-center"
-              >
-                Instructions
-              </h2>
-              <div
-                className="list-group list-group-item
-                list-group-flush details-instructions"
-              >
-                <p data-testid="instructions">
-                  { myRecipe[0].strInstructions }
-                </p>
-              </div>
-            </div>
-
-            <RecipeVideo
-              url={ myRecipe[0].strYoutube }
+      <div className="card details-recipe-card">
+        <img
+          className="card-img-top details-recipe-photo"
+          src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
+          alt="recipe"
+          data-testid="recipe-photo"
+        />
+        <div className="card-body">
+          <h5
+            className="card-title details-recipe-title text-center"
+            data-testid="recipe-title"
+          >
+            { myRecipe[0].strMeal || myRecipe[0].strDrink }
+          </h5>
+          <h4 data-testid="recipe-category" className="card-text text-center">
+            { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
+          </h4>
+          <div>
+            <FavoriteButton
+              onClick={ () => setFavoritedStatus(myRecipe) }
+              favorite={ favorite }
             />
-            <Recommendations
-              recommendations={ recomendations }
-              type={ url.includes('foods') ? '/drinks' : '/foods' }
+            <ShareButton
+              url={ url }
+              recipe={ myRecipe[0] }
             />
-          </>
-        )
-        : <i>Loading...</i>}
+          </div>
+        </div>
+      </div>
 
+      <div className="col-md-3">
+        <hr />
+      </div>
+      <div className="card ingredients-card">
+        <h2
+          className="card-header details-ingredients-title text-center"
+        >
+          Ingredients
+        </h2>
+        <ul
+          className="list-group list-group-flush
+          details-ingredients-list text-center"
+        >
+          {loading && ingredients.map((ingredient, i) => (
+            <li
+              key={ ingredient }
+              data-testid={ `${i}-ingredient-name-and-measure` }
+              className="list-group-item"
+            >
+              {ingredient[1]}
+              {' '}
+              -
+              {' '}
+              {measure[i] && measure[i][1]}
+            </li>))}
+        </ul>
+      </div>
+      <div className="col-md-8 ingredients-card">
+        <h2
+          className="card-header details-ingredients-title text-center"
+        >
+          Instructions
+        </h2>
+        <div
+          className="list-group list-group-item
+          list-group-flush details-instructions"
+        >
+          <p data-testid="instructions">
+            { myRecipe[0].strInstructions }
+          </p>
+        </div>
+      </div>
+      <RecipeVideo
+        url={ myRecipe[0].strYoutube }
+      />
+      <Recommendations
+        api={
+          api.includes('themealdb')
+            ? { api: 'thecocktaildb', key: 'drinks', routeTo: '/drinks' }
+            : { api: 'themealdb', key: 'meals', routeTo: '/foods' }
+        }
+      />
       { recipeStatus && (
         <button
           type="button"
@@ -169,8 +156,9 @@ export default function RecipeDetails(props) {
           { recipeStatus }
         </button>
       ) }
-
     </div>
+  ) : (
+    <Loading />
   );
 }
 
