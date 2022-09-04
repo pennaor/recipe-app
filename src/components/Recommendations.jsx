@@ -46,8 +46,7 @@ export default function Recommendations({ api: { api, key, routeTo } }) {
               >
                 <Link
                   to={
-                    `${routeTo}
-                    /${last.idDrink ?? last.idMeal}`
+                    `${routeTo}/${last.idDrink ?? last.idMeal}`
                   }
                 >
                   <div className="card details-recomendation-card">
@@ -68,8 +67,7 @@ export default function Recommendations({ api: { api, key, routeTo } }) {
                 </Link>
                 <Link
                   to={
-                    `${routeTo}
-                    /${last.idDrink ?? last.idMeal}`
+                    `${routeTo}/${last.idDrink ?? last.idMeal}`
                   }
                 >
                   <div className="card details-recomendation-card">

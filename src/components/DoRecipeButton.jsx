@@ -35,7 +35,7 @@ export default function DoRecipeButton({ recipe, ingredients }) {
 
 DoRecipeButton.propTypes = {
   recipe: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  ingredients: PropTypes.arrayOf(PropTypes.shape({})),
+  ingredients: PropTypes.arrayOf(PropTypes.array),
 };
 
 DoRecipeButton.defaultProps = {
