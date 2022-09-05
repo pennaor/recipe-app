@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
-export default function FavoriteButton({ onClick, favorite, testid }) {
-  return (
+export default function FavoriteButton({ recipe, useManager, testid }) {
+  const { favoriteRecipes, updateFavoriteStatus } = useManager;
+  const [favorite, setFavorite] = useState('');
+
+  useEffect(() => {
+    if (favoriteRecipes.some(({ id }) => (
+      id === recipe.idMeal || id === recipe.idDrink || id === recipe.id))) {
+      setFavorite(blackHeartIcon);
+    } else {
+      setFavorite(whiteHeartIcon);
+    }
+  }, [recipe, setFavorite, favoriteRecipes]);
+
+  return favorite ? (
     <button
       type="button"
-      onClick={ onClick }
+      onClick={ () => updateFavoriteStatus(recipe) }
     >
       <img
         data-testid={ testid }
@@ -13,17 +27,22 @@ export default function FavoriteButton({ onClick, favorite, testid }) {
         alt="Favorite button"
       />
     </button>
-  );
+  ) : null;
 }
 
 FavoriteButton.propTypes = {
-  onClick: PropTypes.func,
-  favorite: PropTypes.string,
+  recipe: PropTypes.shape({
+    id: PropTypes.string,
+    idMeal: PropTypes.string,
+    idDrink: PropTypes.string,
+  }).isRequired,
+  useManager: PropTypes.shape({
+    favoriteRecipes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    updateFavoriteStatus: PropTypes.func.isRequired,
+  }).isRequired,
   testid: PropTypes.string,
 };
 
 FavoriteButton.defaultProps = {
-  onClick: () => null,
-  favorite: '',
   testid: 'favorite-btn',
 };

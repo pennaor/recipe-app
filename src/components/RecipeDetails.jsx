@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import fetchRecipe from '../services/fetchRecipe';
-import useFavoriteManager from '../utils/useFavoriteManager';
+
 import ShareButton from './ShareButton';
 import FavoriteButton from './FavoriteButton';
 import '../style/RecipeDetails.css';
@@ -10,21 +10,20 @@ import RecipeVideo from './RecipeVideo';
 import Loading from './Loading';
 import RecipeIngrendients from './RecipeIngredients';
 import RecipeInstructions from './RecipeInstructions';
+import useFavoriteManager from '../utils/useFavoriteManager';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState([]);
+  const favoriteManager = useFavoriteManager();
   const { infos: { api, id, url } } = props;
-  const { favorite, updateFavoritedStatus, setFavoritedStatus } = useFavoriteManager();
 
   useEffect(() => {
     const fetchMeal = async () => {
       const retorno = await fetchRecipe(api, id);
       if (api === 'themealdb') {
         setMyRecipe(retorno.meals);
-        updateFavoritedStatus(retorno.meals);
       } else {
         setMyRecipe(retorno.drinks);
-        updateFavoritedStatus(retorno.drinks);
       }
     };
     fetchMeal();
@@ -52,8 +51,8 @@ export default function RecipeDetails(props) {
           </h4>
           <div>
             <FavoriteButton
-              onClick={ () => setFavoritedStatus(myRecipe) }
-              favorite={ favorite }
+              recipe={ myRecipe[0] }
+              useManager={ favoriteManager }
             />
             <ShareButton
               url={ url }
@@ -63,19 +62,34 @@ export default function RecipeDetails(props) {
         </div>
       </div>
 
-      <div className="col-md-3">
+      <div className="col-10 col-lg-8">
         <hr />
       </div>
 
       <RecipeIngrendients
         recipe={ myRecipe[0] }
       />
+
+      <div className="col-10 col-lg-8">
+        <hr />
+      </div>
+
       <RecipeInstructions
-        recipe={ myRecipe }
+        recipe={ myRecipe[0] }
       />
+
+      <div className="col-10 col-lg-8">
+        <hr />
+      </div>
+
       <RecipeVideo
         url={ myRecipe[0].strYoutube }
       />
+
+      <div className="col-10 col-lg-8">
+        <hr />
+      </div>
+
       <Recommendations
         api={
           api.includes('themealdb')

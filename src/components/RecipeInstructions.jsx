@@ -14,7 +14,7 @@ export default function RecipeInstructions({ recipe }) {
         list-group-flush details-instructions"
       >
         <p data-testid="instructions">
-          { recipe[0].strInstructions }
+          { recipe.strInstructions }
         </p>
       </div>
     </div>
@@ -22,7 +22,7 @@ export default function RecipeInstructions({ recipe }) {
 }
 
 RecipeInstructions.propTypes = {
-  recipe: PropTypes.arrayOf(PropTypes.shape({
+  recipe: PropTypes.shape({
     strInstructions: PropTypes.string,
-  })).isRequired,
+  }).isRequired,
 };

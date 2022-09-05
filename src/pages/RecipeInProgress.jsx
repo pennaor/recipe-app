@@ -8,6 +8,7 @@ import '../style/Footer.css';
 import '../style/RecipeInProgress.css';
 import FavoriteButton from '../components/FavoriteButton';
 import ShareButton from '../components/ShareButton';
+import Loading from '../components/Loading';
 
 function RecipeInProgress() {
   const [ingredients, setIngredients] = useState([]);
@@ -17,7 +18,7 @@ function RecipeInProgress() {
   const [btnDisabled, setBtnDisabled] = useState(true);
 
   const { params: { id }, url } = useRouteMatch();
-  const { favorite, updateFavoritedStatus, setFavoritedStatus } = useFavoriteManager();
+  const favoriteManager = useFavoriteManager();
   const { inProgressRecipes } = useChefManager();
   const history = useHistory();
   const typeRecipe = history.location.pathname.includes('foods') ? 'themealdb'
@@ -66,7 +67,6 @@ function RecipeInProgress() {
     });
     getIngredients(resultObj);
     SetMyRecipe(resultArray[typeFood]);
-    updateFavoritedStatus(resultArray[typeFood]);
   };
 
   const getInformationsDrinks = async () => {
@@ -82,7 +82,6 @@ function RecipeInProgress() {
     });
     getIngredients(resultObj);
     SetMyRecipe(resultArray[typeFood]);
-    updateFavoritedStatus(resultArray[typeFood]);
   };
 
   useEffect(() => { // componentDidMount
@@ -110,7 +109,7 @@ function RecipeInProgress() {
     console.log(id);
   }
 
-  return (
+  return myRecipe.length ? (
     <div className="in-progress-recipe-container">
       <section className="card in-progress-recipe-card">
         <img
@@ -133,8 +132,8 @@ function RecipeInProgress() {
           </h4>
           <div>
             <FavoriteButton
-              onClick={ () => setFavoritedStatus(myRecipe) }
-              favorite={ favorite }
+              recipe={ myRecipe[0] }
+              useManager={ favoriteManager }
             />
             <ShareButton
               url={ url.replace(/\/in-progress$/, '') }
@@ -194,6 +193,8 @@ function RecipeInProgress() {
         Finish Recipe
       </button>
     </div>
+  ) : (
+    <Loading />
   );
 }
 
