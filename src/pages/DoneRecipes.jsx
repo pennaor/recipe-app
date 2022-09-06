@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
-import useChefManager from '../utils/useChefManager';
+import useChefManager from '../hooks/useChefManager';
 import '../style/DoneRecipes.css';
 
 export default function DoneRecipes() {

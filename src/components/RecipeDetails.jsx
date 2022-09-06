@@ -10,9 +10,9 @@ import RecipeVideo from './RecipeVideo';
 import Loading from './Loading';
 import RecipeIngrendients from './RecipeIngredients';
 import RecipeInstructions from './RecipeInstructions';
-import useFavoriteManager from '../utils/useFavoriteManager';
+import useFavoriteManager from '../hooks/useFavoriteManager';
+import useChefManager from '../hooks/useChefManager';
 import DoRecipeButton from './DoRecipeButton';
-import useChefManager from '../utils/useChefManager';
 
 export default function RecipeDetails(props) {
   const [myRecipe, setMyRecipe] = useState();

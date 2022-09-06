@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useFavoriteManager from '../hooks/useFavoriteManager';
 import FavoriteButton from '../components/FavoriteButton';
 import Header from '../components/Header';
 import ShareButton from '../components/ShareButton';
-import useFavoriteManager from '../utils/useFavoriteManager';
 import '../style/FavoriteRecipes.css';
 
 export default function FavoriteRecipes() {

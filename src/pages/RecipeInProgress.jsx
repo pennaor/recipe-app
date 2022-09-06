@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import fetchRecipe from '../services/fetchRecipe';
-import useFavoriteManager from '../utils/useFavoriteManager';
-import '../style/Footer.css';
-import '../style/RecipeInProgress.css';
+import useFavoriteManager from '../hooks/useFavoriteManager';
+import useChefManager from '../hooks/useChefManager';
 import FavoriteButton from '../components/FavoriteButton';
 import ShareButton from '../components/ShareButton';
-import Loading from '../components/Loading';
 import RecipeIngrendients from '../components/RecipeIngredients';
 import RecipeInstructions from '../components/RecipeInstructions';
-import useChefManager from '../utils/useChefManager';
+import Loading from '../components/Loading';
+import '../style/Footer.css';
+import '../style/RecipeInProgress.css';
 
 function RecipeInProgress() {
   const [recipe, setRecipe] = useState();
@@ -26,15 +26,6 @@ function RecipeInProgress() {
   const favoriteManager = useFavoriteManager();
   const api = url.includes('foods') ? 'themealdb'
     : 'thecocktaildb';
-
-  // save infos:
-  // const information = {
-  //   image: recipe.strMealThumb,
-  //   name: recipe.strMeal,
-  //   category: recipe.strCategory,
-  //   instructions: recipe.strInstructions,
-  // };
-  // if (typeFood === 'drinks') information.alcoholic = recipe.strAlcoholic;
 
   useEffect(() => {
     const getRecipesInformations = async (typeFood) => {
@@ -67,7 +58,7 @@ function RecipeInProgress() {
         <img
           className="card-img-top in-progress-recipe-photo"
           src={ recipe.strMealThumb || recipe.strDrinkThumb }
-          alt="foto da receita finalizada"
+          alt="Recipe"
           data-testid="recipe-photo"
         />
         <div className="card-body">
