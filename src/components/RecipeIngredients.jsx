@@ -16,7 +16,7 @@ export default function RecipeIngrendients({ scratchOutIngredient, chefManager }
       </h2>
       <ul
         className="list-group list-group-flush
-          details-ingredients-list text-center"
+          details-ingredients-list"
       >
         { ingredients.map(({ ingredient, measure }, i) => {
           const isIngredientChecked = checkedIngredients.includes(ingredient);

@@ -20,7 +20,7 @@ export default function DoRecipeButton({ chefManager }) {
     <button
       type="button"
       onClick={ doRecipe }
-      className="do-recipe-btn"
+      className="btn btn-danger do-recipe-btn"
       data-testid="start-recipe-btn"
     >
       { recipeStatus }

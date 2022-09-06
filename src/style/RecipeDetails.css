@@ -3,7 +3,20 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
+  padding: 15px 15px 60px;
+}
+
+.details-recipe-card {
+  align-items: center;
+  background-color: rgb(220, 53, 69);
+  border: none;
+  border-radius: 2%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 500px;
+  padding-bottom: 10px;
 }
 
 .details-recipe-title {
@@ -44,18 +57,6 @@
   font-weight: 500;
   padding: 15px;
   text-align: justify;
-}
-
-.details-recipe-card {
-  align-items: center;
-  background-color: rgb(220, 53, 69);
-  border: none;
-  border-radius: 2%;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding-bottom: 10px;
 }
 
 .details-like-btn, .details-share-btn {
@@ -128,6 +129,7 @@
 
 .do-recipe-btn {
   bottom: 0;
+  margin: 10px 0;
   position: fixed;
   z-index: 2;
 }

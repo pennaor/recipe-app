@@ -14,6 +14,8 @@ import '../style/RecipeInProgress.css';
 function RecipeInProgress() {
   const [recipe, setRecipe] = useState();
   const chefManager = useChefManager();
+  const favoriteManager = useFavoriteManager();
+  const { params: { id }, url } = useRouteMatch();
   const {
     updateRecipeStatus,
     updateInProgressRecipes,
@@ -22,8 +24,6 @@ function RecipeInProgress() {
     finishRecipe,
   } = chefManager;
 
-  const { params: { id }, url } = useRouteMatch();
-  const favoriteManager = useFavoriteManager();
   const api = url.includes('foods') ? 'themealdb'
     : 'thecocktaildb';
 
@@ -84,7 +84,7 @@ function RecipeInProgress() {
         </div>
       </section>
 
-      <div className="col-10 col-lg-8">
+      <div className="col-9">
         <hr />
       </div>
 
@@ -93,7 +93,7 @@ function RecipeInProgress() {
         scratchOutIngredient={ (event) => scratchOutIngredient(event) }
       />
 
-      <div className="col-10 col-lg-8">
+      <div className="col-9">
         <hr />
       </div>
 
@@ -104,7 +104,7 @@ function RecipeInProgress() {
       <button
         type="button"
         onClick={ finishRecipe }
-        className="do-recipe-btn"
+        className="btn btn-danger finish-recipe-btn"
         data-testid="finish-recipe-btn"
         disabled={ ingredients && ingredients.length !== checkedIngredients.length }
       >
