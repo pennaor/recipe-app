@@ -1,21 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import useChefManager from '../utils/useChefManager';
 
-export default function DoRecipeButton({ recipe, ingredients }) {
-  const history = useHistory();
-  const { recipeStatus, updateRecipeStatus, startRecipe } = useChefManager();
-
-  useEffect(() => {
-    updateRecipeStatus(recipe);
-  }, [recipe, updateRecipeStatus]);
+export default function DoRecipeButton({ chefManager }) {
+  const {
+    recipeStatus,
+    startRecipe,
+    continueRecipe,
+  } = chefManager;
 
   const doRecipe = () => {
     if (recipeStatus === 'Start Recipe') {
-      startRecipe(ingredients);
+      startRecipe();
+    } else if (recipeStatus === 'Continue Recipe') {
+      continueRecipe();
     }
-    history.push(`${history.location.pathname}/in-progress`);
   };
 
   return recipeStatus ? (
@@ -31,10 +29,9 @@ export default function DoRecipeButton({ recipe, ingredients }) {
 }
 
 DoRecipeButton.propTypes = {
-  recipe: PropTypes.shape({}).isRequired,
-  ingredients: PropTypes.arrayOf(PropTypes.shape({})),
-};
-
-DoRecipeButton.defaultProps = {
-  ingredients: [],
+  chefManager: PropTypes.shape({
+    recipeStatus: PropTypes.string,
+    startRecipe: PropTypes.func,
+    continueRecipe: PropTypes.func,
+  }).isRequired,
 };

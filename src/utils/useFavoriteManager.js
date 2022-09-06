@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 const favoriteObject = (myRecipe) => ({
   id: myRecipe.idMeal ?? myRecipe.idDrink ?? myRecipe.id,
@@ -21,7 +21,7 @@ export default function useFavoriteManager() {
     return recipeId !== id;
   });
 
-  const updateFavoriteStatus = useCallback((recipe) => {
+  const updateFavoriteStatus = (recipe) => {
     const storedRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) ?? [];
     const updatedRecipes = filterRecipes(storedRecipes, recipe);
     if (storedRecipes.length === updatedRecipes.length) {
@@ -29,7 +29,7 @@ export default function useFavoriteManager() {
     }
     localStorage.setItem('favoriteRecipes', JSON.stringify(updatedRecipes));
     setFavoriteRecipes(updatedRecipes);
-  }, [setFavoriteRecipes]);
+  };
 
   return { favoriteRecipes, updateFavoriteStatus };
 }

@@ -38,7 +38,6 @@ export default function Recipes() {
   };
 
   useEffect(() => {
-    // setFoodsDrinksRecipes();
     if ((meals.length > 0 || drinks.length > 0) && searchClick) {
       const mealsOrDrinks = foodsDrinksRecipes
        && (dataTestidElement === 'Meal' ? foodsDrinksRecipes
@@ -109,11 +108,11 @@ export default function Recipes() {
           All
         </button>
         {
-          buttonList && buttonList.map((button) => button && (
+          buttonList && buttonList.map((button, i) => button && (
             <button
               type="button"
               data-testid={ `${button.strCategory}-category-filter` }
-              key={ button.strCategory }
+              key={ `${button.strCategory}${i}` }
               onClick={ () => {
                 if (buttonClickCategory === button.strCategory) {
                   setButtonClickCategory('');
@@ -132,35 +131,39 @@ export default function Recipes() {
       <div className="recipes-cards-container">
         {
           (render && render
-            .map((meal, index) => (index < TWELVE) && (
-              <div
-                data-testid={ `${index}-recipe-card` }
-                key={ meal[`str${dataTestidElement}Thumb`] }
-                onClick={ () => {
-                  push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
-                } }
-                onKeyPress={ () => {
-                  push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
-                } }
-                role="button"
-                tabIndex={ 0 }
-                className="recipe-card"
-              >
-                <img
-                  src={ meal[`str${dataTestidElement}Thumb`] }
-                  alt={ meal[`str${dataTestidElement}Thumb}`] }
-                  data-testid={ `${index}-card-img` }
-                  className="recipe-photo"
-                />
-                <h4
-                  data-testid={ `${index}-card-name` }
-                  className="recipe-title"
+            .slice(0, TWELVE)
+            .map((meal, index) => {
+              const thumb = meal[`str${dataTestidElement}Thumb`];
+              return (
+                <div
+                  data-testid={ `${index}-recipe-card` }
+                  key={ `${thumb} ${index}` }
+                  onClick={ () => {
+                    push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
+                  } }
+                  onKeyPress={ () => {
+                    push(`${pathToRedirect}${meal[`id${dataTestidElement}`]}`);
+                  } }
+                  role="button"
+                  tabIndex={ 0 }
+                  className="recipe-card"
                 >
-                  {meal[`str${dataTestidElement}`]}
+                  <img
+                    src={ meal[`str${dataTestidElement}Thumb`] }
+                    alt={ meal[`str${dataTestidElement}Thumb}`] }
+                    data-testid={ `${index}-card-img` }
+                    className="recipe-photo"
+                  />
+                  <h4
+                    data-testid={ `${index}-card-name` }
+                    className="recipe-title"
+                  >
+                    {meal[`str${dataTestidElement}`]}
 
-                </h4>
-              </div>
-            )))
+                  </h4>
+                </div>
+              );
+            }))
         }
       </div>
     </div>

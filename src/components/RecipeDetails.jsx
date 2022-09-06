@@ -11,31 +11,41 @@ import Loading from './Loading';
 import RecipeIngrendients from './RecipeIngredients';
 import RecipeInstructions from './RecipeInstructions';
 import useFavoriteManager from '../utils/useFavoriteManager';
+import DoRecipeButton from './DoRecipeButton';
+import useChefManager from '../utils/useChefManager';
 
 export default function RecipeDetails(props) {
-  const [myRecipe, setMyRecipe] = useState([]);
+  const [myRecipe, setMyRecipe] = useState();
+  const chefManager = useChefManager();
   const favoriteManager = useFavoriteManager();
+  const { updateRecipeStatus } = chefManager;
   const { infos: { api, id, url } } = props;
 
   useEffect(() => {
     const fetchMeal = async () => {
       const retorno = await fetchRecipe(api, id);
       if (api === 'themealdb') {
-        setMyRecipe(retorno.meals);
+        setMyRecipe(retorno.meals[0]);
       } else {
-        setMyRecipe(retorno.drinks);
+        setMyRecipe(retorno.drinks[0]);
       }
     };
     fetchMeal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return myRecipe.length ? (
+  useEffect(() => {
+    if (myRecipe) {
+      updateRecipeStatus(myRecipe);
+    }
+  }, [myRecipe, updateRecipeStatus]);
+
+  return myRecipe ? (
     <div className="details-recipe-container">
       <div className="card details-recipe-card">
         <img
           className="card-img-top details-recipe-photo"
-          src={ myRecipe[0].strMealThumb || myRecipe[0].strDrinkThumb }
+          src={ myRecipe.strMealThumb || myRecipe.strDrinkThumb }
           alt="recipe"
           data-testid="recipe-photo"
         />
@@ -44,19 +54,19 @@ export default function RecipeDetails(props) {
             className="card-title details-recipe-title text-center"
             data-testid="recipe-title"
           >
-            { myRecipe[0].strMeal || myRecipe[0].strDrink }
+            { myRecipe.strMeal || myRecipe.strDrink }
           </h5>
           <h4 data-testid="recipe-category" className="card-text text-center">
-            { myRecipe[0].strAlcoholic || myRecipe[0].strCategory }
+            { myRecipe.strAlcoholic || myRecipe.strCategory }
           </h4>
           <div>
             <FavoriteButton
-              recipe={ myRecipe[0] }
+              recipe={ myRecipe }
               useManager={ favoriteManager }
             />
             <ShareButton
               url={ url }
-              recipe={ myRecipe[0] }
+              recipe={ myRecipe }
             />
           </div>
         </div>
@@ -67,7 +77,8 @@ export default function RecipeDetails(props) {
       </div>
 
       <RecipeIngrendients
-        recipe={ myRecipe[0] }
+        recipe={ myRecipe }
+        chefManager={ chefManager }
       />
 
       <div className="col-10 col-lg-8">
@@ -75,7 +86,7 @@ export default function RecipeDetails(props) {
       </div>
 
       <RecipeInstructions
-        recipe={ myRecipe[0] }
+        recipe={ myRecipe }
       />
 
       <div className="col-10 col-lg-8">
@@ -83,7 +94,7 @@ export default function RecipeDetails(props) {
       </div>
 
       <RecipeVideo
-        url={ myRecipe[0].strYoutube }
+        url={ myRecipe.strYoutube }
       />
 
       <div className="col-10 col-lg-8">
@@ -97,6 +108,11 @@ export default function RecipeDetails(props) {
             : { api: 'themealdb', key: 'meals', routeTo: '/foods' }
         }
       />
+
+      <DoRecipeButton
+        chefManager={ chefManager }
+      />
+
     </div>
   ) : (
     <Loading />
