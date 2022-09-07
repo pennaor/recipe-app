@@ -9,7 +9,7 @@ export default function ShareButton({ url, testid }) {
   return (
     <button
       type="button"
-      className="details-share-btn btn-outline-primary"
+      className="details-share-btn"
       onClick={ () => {
         linkCopied(url, setCopied);
       } }

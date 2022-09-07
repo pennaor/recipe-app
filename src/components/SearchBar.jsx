@@ -65,7 +65,7 @@ export default function SearchBar({ showSearchInput }) {
               onChange={ onChangeSearchInput }
               data-testid="search-input"
               required
-              className="form-control"
+              className="form-control search-input"
             />
             <div className="filters-div">
               <label htmlFor="ingredientFilter">
