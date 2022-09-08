@@ -22,8 +22,9 @@
 .favorite-recipes-cards-container {
   align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 40px;
+  justify-content: center;
   margin-top: 20px;
 }
 
